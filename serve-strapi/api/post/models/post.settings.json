@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "blog_post",
+  "info": {
+    "name": "post"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "markdown": {
+      "type": "richtext"
+    },
+    "tags": {
+      "collection": "tag"
+    },
+    "category": {
+      "model": "category"
+    },
+    "intro": {
+      "type": "string"
+    },
+    "releaseDate": {
+      "type": "datetime"
+    },
+    "show": {
+      "type": "boolean",
+      "default": true
+    },
+    "readTime": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}
