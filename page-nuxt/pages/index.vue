@@ -16,7 +16,6 @@
 <script>
 export default {
   async asyncData ({ $strapi }) {
-    // console.log('123')
     const res = await $strapi.graphql({
       query: `
 query {
