@@ -5,6 +5,9 @@
       <h1 class="title">
         page-nuxt
       </h1>
+      <div v-if="post.markdown">
+        <div v-html="$md.render(post.markdown)"></div>
+      </div>
       <div class="links">
         <a
           href="https://nuxtjs.org/"
@@ -28,7 +31,18 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      post: {}
+    }
+  },
+  async asyncData ({ $strapi }) {
+    // console.log('123')
+    const test = await $strapi.find('posts')
+    return { post: test[0] }
+  }
+}
 </script>
 
 <style>

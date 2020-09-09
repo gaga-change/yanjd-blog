@@ -12,7 +12,11 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.0",
+    "@nuxtjs/markdownit": "^1.2.10",
+    "@nuxtjs/strapi": "^0.1.6",
     "element-ui": "^2.13.2",
+    "markdown-it-attrs": "^3.0.3",
+    "markdown-it-div": "^1.1.0",
     "nuxt": "^2.14.0"
   },
   "devDependencies": {
