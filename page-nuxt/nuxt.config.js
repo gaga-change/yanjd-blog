@@ -1,5 +1,8 @@
 
 export default {
+  server: {
+    port: 8712
+  },
   /*
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode
@@ -65,7 +68,8 @@ export default {
   */
   axios: {},
   strapi: {
-    entities: ['posts', 'tags', 'categories']
+    entities: ['posts', 'tags', 'categories'],
+    url: process.env.STRAPI_URL || 'http://localhost:8710'
   },
   markdownit: {
     preset: 'default',
