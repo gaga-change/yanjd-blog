@@ -6,28 +6,19 @@
         <div class="title">
           <h1>
             <nuxt-link to="/">
-              title
+              title {{ navIndex }}
             </nuxt-link>
           </h1>
         </div>
         <div class="navgiation">
           <ul>
-            <li>
-              <nuxt-link to="/">
-                首页
-              </nuxt-link>
-            </li>
-            <li>
-              <nuxt-link to="/">
-                归档
-              </nuxt-link>
-            </li>
-            <li>
-              <nuxt-link to="/">
-                关于我
+            <li v-for="(item, index) in navs" :key="item.url" :ref="`nav${index}`" @mouseover="navIndex=index" @mouseleave="navIndex=-1">
+              <nuxt-link :to="item.url">
+                {{ item.name }}
               </nuxt-link>
             </li>
           </ul>
+          <div class="bsas-line" :style="{opacity: navIndex > -1 ? 1 : 0, width: `${navIndex === -1 ? 0 : navWidthArr[navIndex]}px`,right: `${baseLineRight}px`}" />
         </div>
       </div>
     </div>
@@ -59,6 +50,52 @@
   </div>
 </template>
 
+<script>
+export default {
+  data () {
+    return {
+      navIndex: -1,
+      navWidthArr: [],
+      navs: [
+        {
+          url: '/',
+          name: '首页'
+        },
+        {
+          url: '/archives',
+          name: '归档'
+        },
+        {
+          url: '/about',
+          name: '关于我'
+        }
+      ]
+    }
+  },
+  computed: {
+    baseLineRight () {
+      let sum = 0
+      if (this.navIndex === -1) {
+        return 0
+      }
+      for (let i = this.navWidthArr.length - 1; i > -1; i--) {
+        if (i === this.navIndex) {
+          break
+        }
+        sum += this.navWidthArr[i]
+      }
+      return sum
+    }
+  },
+  mounted () {
+    const navWidthArr = this.navs.map((v, i) => {
+      return this.$refs[`nav${i}`][0].clientWidth
+    })
+    this.navWidthArr = navWidthArr
+  }
+}
+</script>
+
 <style lang="scss">
 @import url('normalize.css/normalize.css');
 
@@ -77,6 +114,13 @@ a:hover {
   color: #9933CC;
 }
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
 .container {
   margin: auto;
   padding: 0 30px;
@@ -90,7 +134,7 @@ a:hover {
     border-bottom: 1px solid #e8e8e8;
   }
   .header-area {
-    overflow: hidden;
+    // overflow: hidden;
     .title {
       width: 200px;
       float: left;
@@ -107,7 +151,8 @@ a:hover {
       }
     }
     .navgiation {
-      overflow: hidden;
+      position: relative;
+      // overflow: hidden;
       text-align: right;
       height: 60px;
       line-height: 60px;
@@ -115,7 +160,9 @@ a:hover {
         padding: 0;
         color: rgba(0, 0, 0, 0.85);
         list-style: none;
+        font-size: 0;
         li {
+          font-size: 1rem;
           display: inline-block;
           a {
             position: relative;
@@ -125,18 +172,27 @@ a:hover {
             text-decoration: none;
             &:hover {
               color: #9933CC;
-              &:after {
-                position: absolute;
-                content: ' ';
-                width: 100%;
-                height: 2px;
-                bottom: 0;
-                left: 0;
-                background-color: #9933CC;
-              }
+              // &:after {
+              //   position: absolute;
+              //   content: ' ';
+              //   width: 100%;
+              //   height: 2px;
+              //   bottom: 0;
+              //   left: 0;
+              //   background-color: #9933CC;
+              // }
             }
           }
         }
+      }
+      .bsas-line {
+        position: absolute;
+        transition: all .5s;
+        width: 100px;
+        height: 2px;
+        bottom: -1px;
+        right: 0;
+        background-color: #9933CC;
       }
     }
     @media only screen and (max-width: 768px) {
