@@ -18,9 +18,6 @@
 
 <script>
 export default {
-  async fetch ({ store, $strapi }) {
-    await store.dispatch('INIT_DATA', $strapi)
-  },
   async asyncData ({ $strapi }) {
     const res = await $strapi.graphql({
       query: `

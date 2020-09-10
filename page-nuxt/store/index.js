@@ -19,8 +19,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async INIT_DATA ({ commit }, strapi) {
-    const res = await strapi.graphql({
+  async nuxtServerInit ({ commit }, { $strapi }) {
+    const res = await $strapi.graphql({
       query: `
 query {
   categories {

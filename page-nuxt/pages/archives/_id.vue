@@ -20,12 +20,6 @@ export default {
       id: null,
       post: null
     }
-  },
-  async mounted () {
-    if (this.id) {
-      const res = await this.$strapi.findOne('posts', this.id)
-      console.log(res)
-    }
   }
 }
 </script>
