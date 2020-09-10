@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="">
     <div>
       <div v-for="post in posts" :key="post.id">
         <div>

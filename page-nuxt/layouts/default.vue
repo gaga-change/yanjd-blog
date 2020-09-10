@@ -22,31 +22,15 @@
         </div>
       </div>
     </div>
-    <el-row>
-      <el-col :xs="24" :sm="24" :md="8">
-        <div class="">
-          ****
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :md="16">
-        <div class="">
-          导航栏
-        </div>
-      </el-col>
-    </el-row>
     <!-- 主体内容 -->
-    <el-row>
-      <el-col :xs="24" :sm="16" :md="17">
-        <div class="">
-          <Nuxt />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="8" :md="7">
-        <div class="">
-          侧边栏
-        </div>
-      </el-col>
-    </el-row>
+    <div class="container page-center">
+      <div class="page-con">
+        <Nuxt />
+      </div>
+      <div class="page-right">
+        侧边栏
+      </div>
+    </div>
   </div>
 </template>
 
@@ -133,6 +117,7 @@ a:hover {
   .header-fa {
     border-bottom: 1px solid #e8e8e8;
   }
+  // 头部
   .header-area {
     // overflow: hidden;
     .title {
@@ -172,15 +157,6 @@ a:hover {
             text-decoration: none;
             &:hover {
               color: #9933CC;
-              // &:after {
-              //   position: absolute;
-              //   content: ' ';
-              //   width: 100%;
-              //   height: 2px;
-              //   bottom: 0;
-              //   left: 0;
-              //   background-color: #9933CC;
-              // }
             }
           }
         }
@@ -196,6 +172,9 @@ a:hover {
       }
     }
     @media only screen and (max-width: 768px) {
+      .bsas-line {
+        display: none;
+      }
       .title {
         width: 100%;
         text-align: center;
@@ -206,9 +185,28 @@ a:hover {
       }
     }
   }
-}
-
- .el-col {
-    border-radius: 4px;
+  // 页面中部
+  .page-center {
+    display: flex;
+    overflow: hidden;
+    // 内容区域
+    .page-con {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      font-size: 1rem;
+    }
+    // 侧边栏
+    .page-right {
+      width: 300px;
+      // float: right;
+    }
+    @media only screen and (max-width: 768px) {
+      display: block;
+      .page-right {
+        width: 100%;
+      }
+    }
   }
+}
 </style>
