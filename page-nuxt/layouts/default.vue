@@ -29,6 +29,28 @@
       </div>
       <div class="page-right">
         侧边栏
+        <div>
+          <h3>
+            分类
+          </h3>
+          <ul>
+            <li v-for="item in $store.state.categories" :key="item.id">
+              {{ item.name }}
+            </li>
+          </ul>
+          <h3>标签</h3>
+          <ul>
+            <li v-for="item in $store.state.tags" :key="item.id">
+              {{ item.name }}
+            </li>
+          </ul>
+          <h3>最新发布</h3>
+          <ul>
+            <li v-for="item in $store.state.newPosts" :key="item.id">
+              {{ item.title }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

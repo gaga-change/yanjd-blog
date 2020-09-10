@@ -1,6 +1,9 @@
 <template>
   <div class="">
     <div>
+      <div>
+        123 {{ $store.state.counter }}
+      </div>
       <div v-for="post in posts" :key="post.id">
         <div>
           {{ post.title }}
@@ -15,6 +18,9 @@
 
 <script>
 export default {
+  async fetch ({ store, $strapi }) {
+    await store.dispatch('INIT_DATA', $strapi)
+  },
   async asyncData ({ $strapi }) {
     const res = await $strapi.graphql({
       query: `
