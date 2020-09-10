@@ -17,15 +17,16 @@
     "element-ui": "^2.13.2",
     "markdown-it-attrs": "^3.0.3",
     "markdown-it-div": "^1.1.0",
+    "normalize.css": "^8.0.1",
     "nuxt": "^2.14.0"
   },
   "devDependencies": {
-    "sass-loader": "^10.0.2",
-    "node-sass": "^4.14.1",
     "@nuxtjs/eslint-config": "^3.1.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.5.0",
-    "eslint-plugin-nuxt": "^1.0.0"
+    "eslint-plugin-nuxt": "^1.0.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^10.0.2"
   }
 }
