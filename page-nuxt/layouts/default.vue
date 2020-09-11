@@ -14,7 +14,7 @@
           <ul>
             <li v-for="(item, index) in navs" :key="item.url" :ref="`nav${index}`" @mouseover="navIndex=index" @mouseleave="navIndex=-1">
               <nuxt-link :to="item.url">
-                {{ item.name }}
+                <em :class="`iconfont ${item.icon}`" /> {{ item.name }}
               </nuxt-link>
             </li>
           </ul>
@@ -65,15 +65,18 @@ export default {
       navs: [
         {
           url: '/',
-          name: '首页'
+          name: '首页',
+          icon: 'icon-zhuye'
         },
         {
           url: '/archives',
-          name: '归档'
+          name: '归档',
+          icon: 'icon-guidangicon'
         },
         {
           url: '/about',
-          name: '关于我'
+          name: '关于我',
+          icon: 'icon-wo'
         }
       ]
     }
@@ -117,13 +120,16 @@ html {
 }
 
 a:hover {
-  color: #9933CC;
+  color: #93c;
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+.fade-enter,
+.fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 
@@ -131,10 +137,12 @@ a:hover {
   margin: auto;
   padding: 0 30px;
   max-width: 1080px;
+
   @media only screen and (max-width: 768px) {
     padding: 0 15px;
   }
 }
+
 .default-layout {
   .header-fa {
     border-bottom: 1px solid #e8e8e8;
@@ -147,61 +155,72 @@ a:hover {
       float: left;
       height: 60px;
       line-height: 60px;
+
       h1 {
         margin: 0;
         font-size: 2rem;
         color: rgba(0, 0, 0, 0.85);
+
         a {
           color: inherit;
           text-decoration: none;
         }
       }
     }
+
     .navgiation {
       position: relative;
       // overflow: hidden;
       text-align: right;
       height: 60px;
       line-height: 60px;
+
       ul {
         padding: 0;
         color: rgba(0, 0, 0, 0.85);
         list-style: none;
         font-size: 0;
+
         li {
           font-size: 1rem;
           display: inline-block;
+
           a {
             position: relative;
             display: block;
             padding: 0 15px;
             color: inherit;
             text-decoration: none;
+
             &:hover {
-              color: #9933CC;
+              color: #93c;
             }
           }
         }
       }
+
       .bsas-line {
         position: absolute;
-        transition: all .5s;
+        transition: all 0.5s;
         width: 100px;
         height: 2px;
         bottom: -1px;
         right: 0;
-        background-color: #9933CC;
+        background-color: #93c;
       }
     }
+
     @media only screen and (max-width: 768px) {
       .bsas-line {
         display: none;
       }
+
       .title {
         width: 100%;
         text-align: center;
         float: none;
       }
+
       .navgiation {
         text-align: center;
       }
@@ -223,8 +242,10 @@ a:hover {
       width: 300px;
       // float: right;
     }
+
     @media only screen and (max-width: 768px) {
       display: block;
+
       .page-right {
         width: 100%;
       }
