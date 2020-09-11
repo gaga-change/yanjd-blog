@@ -28,36 +28,18 @@
         <Nuxt />
       </div>
       <div class="page-right">
-        侧边栏
-        <div>
-          <h3>
-            分类
-          </h3>
-          <ul>
-            <li v-for="item in $store.state.categories" :key="item.id">
-              {{ item.name }}
-            </li>
-          </ul>
-          <h3>标签</h3>
-          <ul>
-            <li v-for="item in $store.state.tags" :key="item.id">
-              {{ item.name }}
-            </li>
-          </ul>
-          <h3>热门文章</h3>
-          <ul>
-            <li v-for="item in $store.state.notPosts" :key="item.id">
-              {{ item.title }}
-            </li>
-          </ul>
-        </div>
+        <RightMenu />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import RightMenu from '@/components/RightMenu'
 export default {
+  components: {
+    RightMenu
+  },
   data () {
     return {
       navIndex: -1,
@@ -239,8 +221,7 @@ a:hover {
     }
     // 侧边栏
     .page-right {
-      width: 300px;
-      // float: right;
+      width: 266px;
     }
 
     @media only screen and (max-width: 768px) {
