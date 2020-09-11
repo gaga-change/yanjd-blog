@@ -44,9 +44,9 @@
               {{ item.name }}
             </li>
           </ul>
-          <h3>最新发布</h3>
+          <h3>热门文章</h3>
           <ul>
-            <li v-for="item in $store.state.newPosts" :key="item.id">
+            <li v-for="item in $store.state.notPosts" :key="item.id">
               {{ item.title }}
             </li>
           </ul>

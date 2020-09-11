@@ -3,7 +3,7 @@
 export const state = () => ({
   tags: [],
   categories: [],
-  newPosts: []
+  notPosts: []
 })
 
 export const mutations = {
@@ -13,8 +13,8 @@ export const mutations = {
   setCategories (state, data) {
     state.categories = data || []
   },
-  setNewPosts (state, data) {
-    state.newPosts = data || []
+  setnotPosts (state, data) {
+    state.notPosts = data || []
   }
 }
 
@@ -31,7 +31,7 @@ query {
     name
     id
   }
-  posts(start: 0, limit: 10, sort: "releaseDate:desc", where: { show: true }) {
+  posts(start: 0, limit: 10, sort: "readTime:desc", where: { show: true }) {
     id
     title
   }
@@ -40,7 +40,7 @@ query {
     })
     commit('setTags', res.tags)
     commit('setCategories', res.categories)
-    commit('setNewPosts', res.posts)
+    commit('setnotPosts', res.posts)
     // const { data } = await axios.get('http://my-api/stars')
     // commit('SET_STARS', data)
   }
