@@ -228,7 +228,8 @@ a:hover {
       display: block;
 
       .page-right {
-        width: 100%;
+        display: none;
+        // width: 100%;
       }
     }
   }
