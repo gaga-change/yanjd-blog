@@ -34,7 +34,7 @@
         </h3>
         <ul>
           <li v-for="item in $store.state.notPosts" :key="item.id">
-            <nuxt-link :to="`/article/${item.id}`">
+            <nuxt-link :to="`/archives/${item.id}`">
               {{ item.title }}
             </nuxt-link>
           </li>
