@@ -1,11 +1,11 @@
 <template>
   <div>
-    <button v-if="loading">
+    <!-- <button v-if="loading">
       加载中...
     </button>
     <button v-if="noMore">
       没有更多了....
-    </button>
+    </button> -->
   </div>
 </template>
 
@@ -35,8 +35,6 @@ export default {
         this.$emit('loadMore', () => {
           this.loading = false
         })
-        // 写后台加载数据的函数
-        console.log('距顶部' + scrollTop + '可视区高度' + windowHeight + '滚动条总高度' + scrollHeight)
       }
     }
   }
