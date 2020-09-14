@@ -1,4 +1,3 @@
-
 export default {
   server: {
     port: 8712
@@ -34,6 +33,7 @@ export default {
   */
   css: [
     // 'element-ui/lib/theme-chalk/index.css'
+    '@/assets/github.scss'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -83,7 +83,17 @@ export default {
     use: [
       'markdown-it-div',
       'markdown-it-attrs'
-    ]
+    ],
+    highlight (str, lang) {
+      const hljs = require('highlight.js')
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(lang, str).value
+        } catch (__) {}
+      }
+
+      return '' // use external default escaping
+    }
   },
   /*
   ** Build configuration
