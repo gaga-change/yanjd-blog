@@ -4,6 +4,6 @@ WORKDIR /usr/src/app
 COPY package.json .
 RUN npm --registry https://registry.npm.taobao.org install
 COPY . .
-EXPOSE 80
+EXPOSE 8710
 RUN npm run build
 CMD npm start
