@@ -8,7 +8,7 @@
         </h3>
         <ul>
           <li v-for="item in $store.state.categories" :key="item.id">
-            <nuxt-link to="/">
+            <nuxt-link :to="`/categories/${item.id}`">
               {{ item.name }}
             </nuxt-link>
           </li>
@@ -21,7 +21,7 @@
         </h3>
         <ul>
           <li v-for="item in $store.state.tags" :key="item.id">
-            <nuxt-link to="/">
+            <nuxt-link :to="`/tags/${item.id}`">
               {{ item.name }}
             </nuxt-link>
           </li>
@@ -136,7 +136,8 @@ a {
     color: #fff;
   }
 
-  .category li a:hover {
+  .category li a:hover,
+  .category li a.nuxt-link-exact-active {
     color: #fff;
     padding: 0 0 0 10px;
 

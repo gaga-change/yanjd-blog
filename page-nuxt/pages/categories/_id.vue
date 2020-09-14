@@ -15,11 +15,11 @@ export default {
     LoadMore,
     PostItem
   },
-  async asyncData ({ $strapi }) {
+  async asyncData ({ $strapi, params }) {
     const res = await $strapi.graphql({
       query: `
 query {
-  postsConnection(limit: 10, start: 0, where: { show: true }) {
+  postsConnection(limit: 10, start: 0, where: { show: true, category: "${params.id}" }) {
     aggregate {
       count
     }
@@ -45,13 +45,15 @@ query {
     const { postsConnection } = res
     return {
       posts: postsConnection.values,
-      total: postsConnection.aggregate.count
+      total: postsConnection.aggregate.count,
+      id: params.id
     }
   },
   data () {
     return {
       posts: [],
-      total: 0
+      total: 0,
+      id: ''
     }
   },
   computed: {
@@ -64,7 +66,7 @@ query {
       const res = await this.$strapi.graphql({
         query: `
 query {
-  postsConnection(limit: 10, start: ${this.posts.length}, where: { show: true }) {
+  postsConnection(limit: 10, start: ${this.posts.length}, where: { show: true, category: "${this.id}" }) {
     aggregate {
       count
     }
