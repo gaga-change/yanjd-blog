@@ -131,7 +131,8 @@ a {
     background-color: #fff;
   }
 
-  .tags li a:hover {
+  .tags li a:hover,
+  .tags li a.nuxt-link-exact-active {
     background-color: #93c;
     color: #fff;
   }

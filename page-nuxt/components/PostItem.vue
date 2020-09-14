@@ -18,7 +18,7 @@
           <span class="tags-list">
             <em class="iconfont icon-biaoqian-" />
             <span v-for="tag in post.tags" :key="tag.id" class="tag-item">
-              <nuxt-link :to="`/`">{{ tag.name }}</nuxt-link>
+              <nuxt-link :to="`/tags/${tag.id}`">{{ tag.name }}</nuxt-link>
             </span>
           </span>
         </div>
