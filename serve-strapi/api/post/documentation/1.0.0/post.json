@@ -586,6 +586,13 @@
             "type": "integer",
             "default": 0
           },
+          "html": {
+            "type": "string"
+          },
+          "mdRender": {
+            "type": "boolean",
+            "default": false
+          },
           "created_by": {
             "required": [
               "id",
@@ -703,6 +710,13 @@
           "readTime": {
             "type": "integer",
             "default": 0
+          },
+          "html": {
+            "type": "string"
+          },
+          "mdRender": {
+            "type": "boolean",
+            "default": false
           },
           "created_by": {
             "type": "string"

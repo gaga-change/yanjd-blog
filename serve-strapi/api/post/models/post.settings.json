@@ -34,6 +34,15 @@
     "readTime": {
       "type": "integer",
       "default": 0
+    },
+    "html": {
+      "type": "text",
+      "private": false
+    },
+    "mdRender": {
+      "type": "boolean",
+      "default": false,
+      "required": false
     }
   }
 }
