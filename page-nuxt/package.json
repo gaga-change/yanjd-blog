@@ -14,11 +14,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.0",
-    "@nuxtjs/markdownit": "^1.2.10",
     "@nuxtjs/strapi": "^0.1.6",
-    "highlight.js": "^10.2.0",
-    "markdown-it-attrs": "^3.0.3",
-    "markdown-it-div": "^1.1.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.14.0"
   },

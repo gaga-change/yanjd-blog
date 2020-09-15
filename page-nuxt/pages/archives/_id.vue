@@ -3,18 +3,24 @@
     <h2 class="title">
       {{ post && post.title }}
     </h2>
-    <div v-if="post.markdown">
-      <div class="md-style" v-html="$md.render(post.markdown)" />
-    </div>
+    <div class="md-style" v-html="post.html" />
   </div>
 </template>
 <script>
 export default {
   async asyncData ({ params, $strapi }) {
-    const res = await $strapi.findOne('posts', params.id)
+    const res = await $strapi.graphql({
+      query: `
+query {
+  post(id: "${params.id}") {
+    title
+    html
+  }
+}`
+    })
     return {
       id: params.id,
-      post: res
+      post: res.post
     }
   },
   data () {

@@ -63,8 +63,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     // '@nuxtjs/axios',
-    '@nuxtjs/strapi',
-    '@nuxtjs/markdownit'
+    '@nuxtjs/strapi'
   ],
   /*
   ** Axios module configuration
@@ -74,26 +73,6 @@ export default {
   strapi: {
     entities: ['posts', 'tags', 'categories'],
     url: process.env.STRAPI_URL || 'http://localhost:8710'
-  },
-  markdownit: {
-    preset: 'default',
-    linkify: true,
-    breaks: true,
-    injected: true,
-    use: [
-      'markdown-it-div',
-      'markdown-it-attrs'
-    ],
-    highlight (str, lang) {
-      const hljs = require('highlight.js')
-      if (lang && hljs.getLanguage(lang)) {
-        try {
-          return hljs.highlight(lang, str).value
-        } catch (__) {}
-      }
-
-      return '' // use external default escaping
-    }
   },
   /*
   ** Build configuration
