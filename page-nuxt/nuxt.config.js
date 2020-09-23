@@ -1,6 +1,7 @@
 export default {
   server: {
-    port: 8712
+    port: 8712,
+    host: '0.0.0.0'
   },
   /*
   ** Nuxt rendering mode
@@ -72,7 +73,7 @@ export default {
   axios: {},
   strapi: {
     entities: ['posts', 'tags', 'categories'],
-    url: process.env.STRAPI_URL || 'http://localhost:8710'
+    url: process.env.STRAPI_URL || 'http://strapi.blog.yanjd.top'
   },
   /*
   ** Build configuration
