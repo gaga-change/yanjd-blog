@@ -28,6 +28,11 @@ query {
       id: null,
       post: null
     }
+  },
+  head () {
+    return {
+      title: `${this.post.title} - 严俊东博客`
+    }
   }
 }
 </script>

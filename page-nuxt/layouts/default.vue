@@ -6,7 +6,8 @@
         <div class="title">
           <h1>
             <nuxt-link to="/">
-              title {{ navIndex }}
+              严俊东博客
+              <span class="secondary-title"> &#8211; 分享技术的小站</span>
             </nuxt-link>
           </h1>
         </div>
@@ -132,27 +133,40 @@ a:hover {
   // 头部
   .header-area {
     // overflow: hidden;
+    display: flex;
+    padding-top: 5px;
+    background: url(/header_bg.jpg) center top repeat-x;
+
     .title {
-      width: 200px;
-      float: left;
+      width: 240px;
       height: 60px;
       line-height: 60px;
 
       h1 {
         margin: 0;
-        font-size: 2rem;
         color: rgba(0, 0, 0, 0.85);
+        font-weight: 600;
+        font-size: 24px;
 
         a {
           color: inherit;
           text-decoration: none;
         }
+
+        .secondary-title {
+          color: rgba(0, 0, 0, 0.45);
+          font-size: 14px;
+
+          @media only screen and (max-width: 768px) {
+            display: none;
+          }
+        }
       }
     }
 
     .navgiation {
+      flex: 1;
       position: relative;
-      // overflow: hidden;
       text-align: right;
       height: 60px;
       line-height: 60px;

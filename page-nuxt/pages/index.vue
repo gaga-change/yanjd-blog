@@ -92,6 +92,9 @@ query {
       this.posts.push(...postsConnection.values)
       cb()
     }
+  },
+  head: {
+    title: '严俊东博客 - 首页'
   }
 }
 </script>

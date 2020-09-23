@@ -19,6 +19,9 @@ export default {
     const res = await $strapi.graphql({
       query: `
 query {
+  tag(id: "${params.id}") {
+    name
+  }
   postsConnection(limit: 10, start: 0, where: { show: true, tags: "${params.id}" }) {
     aggregate {
       count
@@ -42,18 +45,20 @@ query {
 }
       `
     })
-    const { postsConnection } = res
+    const { postsConnection, tag } = res
     return {
       posts: postsConnection.values,
       total: postsConnection.aggregate.count,
-      id: params.id
+      id: params.id,
+      tag
     }
   },
   data () {
     return {
       posts: [],
       total: 0,
-      id: ''
+      id: '',
+      tag: {}
     }
   },
   computed: {
@@ -93,6 +98,11 @@ query {
       this.total = postsConnection.aggregate.count
       this.posts.push(...postsConnection.values)
       cb()
+    }
+  },
+  head () {
+    return {
+      title: `${this.tag.name} - 标签 - 严俊东博客`
     }
   }
 }

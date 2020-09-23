@@ -16,6 +16,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  head: {
+    title: '关于我 - 严俊东博客'
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .page-detail {
   padding-top: 20px;

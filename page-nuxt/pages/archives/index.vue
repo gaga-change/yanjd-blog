@@ -43,6 +43,9 @@ query {
     return {
       posts: []
     }
+  },
+  head: {
+    title: '归档 - 严俊东博客'
   }
 }
 </script>
