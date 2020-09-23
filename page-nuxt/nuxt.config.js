@@ -73,7 +73,7 @@ export default {
   axios: {},
   strapi: {
     entities: ['posts', 'tags', 'categories'],
-    url: process.env.STRAPI_URL || 'http://strapi.blog.yanjd.top'
+    url: process.env.STRAPI_URL || 'https://www.yanjd.top'
   },
   /*
   ** Build configuration

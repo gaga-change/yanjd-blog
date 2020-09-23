@@ -19,7 +19,7 @@ export default {
     const res = await $strapi.graphql({
       query: `
 query {
-  postsConnection(limit: 10, start: 0, where: { show: true }) {
+  postsConnection(limit: 10, start: 0, where: { show: true }, sort: "releaseDate:desc") {
     aggregate {
       count
     }
@@ -64,7 +64,7 @@ query {
       const res = await this.$strapi.graphql({
         query: `
 query {
-  postsConnection(limit: 10, start: ${this.posts.length}, where: { show: true }) {
+  postsConnection(limit: 10, start: ${this.posts.length}, where: { show: true }, sort: "releaseDate:desc") {
     aggregate {
       count
     }

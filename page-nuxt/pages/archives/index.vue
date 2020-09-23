@@ -24,7 +24,7 @@ export default {
     const res = await $strapi.graphql({
       query: `
 query {
-  postsConnection(limit: 999, start: 0, where: { show: true }) {
+  postsConnection(sort: "releaseDate:desc", limit: 999, start: 0, where: { show: true }) {
     values {
       id
       title
