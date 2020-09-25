@@ -32,6 +32,11 @@
         <RightMenu />
       </div>
     </div>
+    <div class="footer">
+      Copyright © 2019<nuxt-link to="/" class="link">
+        严俊东
+      </nuxt-link> | <a class="link" rel="nofollow" target="_blank" href="//www.beian.miit.gov.cn">浙ICP备17054210号-2</a>
+    </div>
   </div>
 </template>
 
@@ -246,6 +251,23 @@ a:hover {
       .page-right {
         display: none;
         // width: 100%;
+      }
+    }
+  }
+
+  .footer {
+    padding: 15px 0;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.5;
+    color: #bfbfbf;
+
+    a.link {
+      text-decoration: none;
+      color: inherit;
+
+      &:hover {
+        color: #1890ff;
       }
     }
   }
