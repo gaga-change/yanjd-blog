@@ -22,10 +22,13 @@ module.exports = {
     const { id } = ctx.params;
 
     const entity = await strapi.services.post.findOne({ id });
+    entity.readTime = (entity.readTime || 0) + 1 // 阅读量加一
     if (!entity.mdRender) {
       entity.html = md.render(entity.markdown)
       entity.mdRender = true
-      await strapi.services.post.update({ id }, {html: entity.html, mdRender: true})
+      await strapi.services.post.update({ id }, {html: entity.html, mdRender: true, readTime: entity.readTime})
+    } else {
+      await strapi.services.post.update({ id }, {readTime: entity.readTime})
     }
     return sanitizeEntity(entity, { model: strapi.models.post });
   },
