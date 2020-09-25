@@ -15,6 +15,7 @@ query {
   post(id: "${params.id}") {
     title
     html
+    intro
   }
 }`
     })
@@ -30,8 +31,17 @@ query {
     }
   },
   head () {
+    const meta = []
+    if (this.post.intro) {
+      meta.push({
+        hid: 'description',
+        name: 'description',
+        content: this.post.intro
+      })
+    }
     return {
-      title: `${this.post.title} - 严俊东博客`
+      title: `${this.post.title} - 严俊东博客`,
+      meta
     }
   }
 }
