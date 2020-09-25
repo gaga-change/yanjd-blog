@@ -129,13 +129,13 @@ a:hover {
 .default-layout {
   .header-fa {
     border-bottom: 1px solid #e8e8e8;
+    padding-top: 5px;
+    background: url(/header_bg.jpg) center top repeat-x;
   }
   // 头部
   .header-area {
     // overflow: hidden;
     display: flex;
-    padding-top: 5px;
-    background: url(/header_bg.jpg) center top repeat-x;
 
     .title {
       width: 240px;
