@@ -15,8 +15,8 @@ export default {
     LoadMore,
     PostItem
   },
-  async asyncData ({ $strapi }) {
-    const res = await $strapi.graphql({
+  async asyncData ({ $axios }) {
+    const { data: res } = await $axios.$post('/graphql', {
       query: `
 query {
   postsConnection(limit: 10, start: 0, where: { show: true }, sort: "releaseDate:desc") {
@@ -61,7 +61,7 @@ query {
   },
   methods: {
     async handleLoadMore (cb) {
-      const res = await this.$strapi.graphql({
+      const { data: res } = await this.$axios.$post('/graphql', {
         query: `
 query {
   postsConnection(limit: 10, start: ${this.posts.length}, where: { show: true }, sort: "releaseDate:desc") {

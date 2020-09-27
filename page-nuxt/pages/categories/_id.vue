@@ -15,8 +15,8 @@ export default {
     LoadMore,
     PostItem
   },
-  async asyncData ({ $strapi, params }) {
-    const res = await $strapi.graphql({
+  async asyncData ({ $axios, params }) {
+    const { data: res } = await $axios.$post('/graphql', {
       query: `
 query {
   category(id: "${params.id}") {
@@ -68,7 +68,7 @@ query {
   },
   methods: {
     async handleLoadMore (cb) {
-      const res = await this.$strapi.graphql({
+      const { data: res } = await this.$axios.$post('/graphql', {
         query: `
 query {
   postsConnection(limit: 10, start: ${this.posts.length}, where: { show: true, category: "${this.id}" }) {

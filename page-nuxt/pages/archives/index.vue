@@ -20,8 +20,8 @@
 <script>
 // import PageButtons from '@/components/PageButtons'
 export default {
-  async asyncData ({ $strapi }) {
-    const res = await $strapi.graphql({
+  async asyncData ({ $axios }) {
+    const { data: res } = await $axios.$post('/graphql', {
       query: `
 query {
   postsConnection(sort: "releaseDate:desc", limit: 999, start: 0, where: { show: true }) {

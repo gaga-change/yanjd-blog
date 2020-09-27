@@ -64,18 +64,20 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    // '@nuxtjs/axios',
-    '@nuxtjs/strapi'
+    '@nuxtjs/axios'
+    // '@nuxtjs/strapi'
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
-  axios: {},
-  strapi: {
-    entities: ['posts', 'tags', 'categories'],
-    url: process.env.STRAPI_URL || 'https://www.yanjd.top'
+  axios: {
+    baseURL: process.env.STRAPI_URL || 'https://www.yanjd.top'
   },
+  // strapi: {
+  //   entities: ['posts', 'tags', 'categories'],
+  //   url: process.env.STRAPI_URL || 'https://www.yanjd.top'
+  // },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/

@@ -8,8 +8,8 @@
 </template>
 <script>
 export default {
-  async asyncData ({ params, $strapi }) {
-    const res = await $strapi.graphql({
+  async asyncData ({ params, $axios }) {
+    const { data: res } = await $axios.$post('/graphql', {
       query: `
 query {
   post(id: "${params.id}") {

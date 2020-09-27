@@ -1,5 +1,3 @@
-// import strapi from '@nuxtjs/strapi'
-
 export const state = () => ({
   tags: [],
   categories: [],
@@ -19,8 +17,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async nuxtServerInit ({ commit }, { $strapi }) {
-    const res = await $strapi.graphql({
+  async nuxtServerInit ({ commit }, { $axios }) {
+    const { data: res } = await $axios.$post('/graphql', {
       query: `
 query {
   categories {
