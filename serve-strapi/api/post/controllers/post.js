@@ -26,9 +26,13 @@ module.exports = {
     if (!entity.mdRender) {
       entity.html = md.render(entity.markdown)
       entity.mdRender = true
-      await strapi.services.post.update({ id }, {html: entity.html, mdRender: true, readTime: entity.readTime})
+      setTimeout(() => {
+        strapi.services.post.update({ id }, {html: entity.html, mdRender: true, readTime: entity.readTime})
+      }, 0)
     } else {
-      await strapi.services.post.update({ id }, {readTime: entity.readTime})
+      setTimeout(() => {
+        strapi.services.post.update({ id }, {readTime: entity.readTime})
+      }, 0)
     }
     return sanitizeEntity(entity, { model: strapi.models.post });
   },
