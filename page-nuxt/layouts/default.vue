@@ -89,6 +89,14 @@ export default {
       return this.$refs[`nav${i}`][0].clientWidth
     })
     this.navWidthArr = navWidthArr
+    // 百度统计
+    window._hmt = window._hmt || [];
+    (function () {
+      const hm = document.createElement('script')
+      hm.src = 'https://hm.baidu.com/hm.js?2a05138e6d22bb509329251194678b78'
+      const s = document.getElementsByTagName('script')[0]
+      s.parentNode.insertBefore(hm, s)
+    })()
   }
 }
 </script>
