@@ -17,7 +17,7 @@ export default {
   },
   async asyncData ({ $axios }) {
     const { data: res } = await $axios.$post('/graphql', {
-      query: `
+      query: `#graphql
 query {
   postsConnection(limit: 10, start: 0, where: { show: true }, sort: "releaseDate:desc") {
     aggregate {

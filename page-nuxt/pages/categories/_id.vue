@@ -17,7 +17,7 @@ export default {
   },
   async asyncData ({ $axios, params }) {
     const { data: res } = await $axios.$post('/graphql', {
-      query: `
+      query: `#graphql
 query {
   category(id: "${params.id}") {
     name
@@ -69,7 +69,7 @@ query {
   methods: {
     async handleLoadMore (cb) {
       const { data: res } = await this.$axios.$post('/graphql', {
-        query: `
+        query: `#graphql
 query {
   postsConnection(limit: 10, start: ${this.posts.length}, where: { show: true, category: "${this.id}" }) {
     aggregate {

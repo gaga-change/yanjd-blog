@@ -10,7 +10,7 @@
 export default {
   async asyncData ({ params, $axios }) {
     const { data: res } = await $axios.$post('/graphql', {
-      query: `
+      query: `#graphql
 query {
   post(id: "${params.id}") {
     title
