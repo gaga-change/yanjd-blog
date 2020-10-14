@@ -8,6 +8,18 @@ function resolve(dir) {
 
 const name = defaultSettings.title || 'vue Admin Template' // page title
 
+const cdn = {
+  css: [
+    // element-ui css
+    'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
+  ],
+  js: [
+    // vue must at first!
+    'https://unpkg.com/vue/dist/vue.js',
+    // element-ui js
+    'https://unpkg.com/element-ui/lib/index.js'
+  ]
+}
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
@@ -35,8 +47,7 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    },
-    before: require('./mock/mock-server.js')
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -46,6 +57,10 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
+    },
+    externals: {
+      vue: 'Vue',
+      'element-ui': 'ELEMENT'
     }
   },
   chainWebpack(config) {
@@ -59,6 +74,11 @@ module.exports = {
         include: 'initial'
       }
     ])
+
+    config.plugin('html').tap(args => {
+      args[0].cdn = cdn
+      return args
+    })
 
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')

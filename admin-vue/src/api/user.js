@@ -1,18 +1,18 @@
 import request from '@/utils/request'
+import strapi from '@/utils/strapi'
 
 export function login(data) {
-  return request({
-    url: '/vue-admin-template/user/login',
+  return strapi({
+    url: '/auth/local',
     method: 'post',
     data
   })
 }
 
 export function getInfo(token) {
-  return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
+  return strapi({
+    url: '/users/me',
+    method: 'get'
   })
 }
 
