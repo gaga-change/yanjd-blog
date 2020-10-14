@@ -1251,6 +1251,10 @@
               }
             }
           },
+          "avatar": {
+            "type": "string",
+            "default": "https://cdn.yanjd.top/01.jpg"
+          },
           "created_by": {
             "required": [
               "id",
@@ -1375,6 +1379,10 @@
           },
           "role": {
             "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "default": "https://cdn.yanjd.top/01.jpg"
           },
           "created_by": {
             "type": "string"

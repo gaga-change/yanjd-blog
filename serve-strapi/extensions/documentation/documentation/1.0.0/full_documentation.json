@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "09/15/2020 5:11:30 PM"
+    "x-generation-date": "10/14/2020 10:21:55 AM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -4227,6 +4227,9 @@
                 "role": {
                   "type": "string"
                 },
+                "avatar": {
+                  "type": "string"
+                },
                 "created_by": {
                   "type": "string"
                 },
@@ -4428,6 +4431,10 @@
               }
             }
           },
+          "avatar": {
+            "type": "string",
+            "default": "https://cdn.yanjd.top/01.jpg"
+          },
           "created_by": {
             "required": [
               "id",
@@ -4552,6 +4559,10 @@
           },
           "role": {
             "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "default": "https://cdn.yanjd.top/01.jpg"
           },
           "created_by": {
             "type": "string"
