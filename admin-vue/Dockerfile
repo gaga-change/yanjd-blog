@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 COPY ["package.json", ".npmrc", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 RUN npm install
 COPY . .
-RUN npm run build
+RUN npm run build:prod
 FROM nginx:1.15-alpine
 COPY --from=yanjd-blog-admin-vue /usr/src/app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
