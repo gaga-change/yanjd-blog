@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -6,7 +6,8 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    email: ''
   }
 }
 
@@ -22,6 +23,9 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
   },
+  SET_EMAIL: (state, email) => {
+    state.email = email
+  },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   }
@@ -36,6 +40,7 @@ const actions = {
         const { jwt, user } = response
         commit('SET_TOKEN', jwt)
         commit('SET_NAME', user.username)
+        commit('SET_EMAIL', user.email)
         commit('SET_AVATAR', user.avatar)
         setToken(jwt)
         resolve()
@@ -49,13 +54,14 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { username, avatar } = response
+        const { username, avatar, email } = response
 
         if (!username) {
           return reject('Verification failed, please Login again.')
         }
 
         commit('SET_NAME', username)
+        commit('SET_EMAIL', email)
         commit('SET_AVATAR', avatar)
         resolve(response)
       }).catch(error => {
@@ -67,14 +73,10 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      removeToken() // must remove  token  first
+      resetRouter()
+      commit('RESET_STATE')
+      resolve()
     })
   },
 

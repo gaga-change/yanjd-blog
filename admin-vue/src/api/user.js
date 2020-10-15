@@ -1,6 +1,5 @@
-import request from '@/utils/request'
 import strapi from '@/utils/strapi'
-
+import store from '@/store'
 export function login(data) {
   return strapi({
     url: '/auth/local',
@@ -16,9 +15,19 @@ export function getInfo(token) {
   })
 }
 
-export function logout() {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+export function sendRestPwdEmail() {
+  return strapi({
+    url: '/auth/forgot-password',
+    method: 'post',
+    data: {
+      email: store.state.user.email
+    }
   })
 }
+
+export const resetPwd = (code, newPassword) => strapi
+  .post('/auth/reset-password', {
+    code: code,
+    password: newPassword,
+    passwordConfirmation: newPassword
+  })

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import errMsg from './errMsg'
 
 // create an axios instance
 const service = axios.create({
@@ -74,14 +75,24 @@ service.interceptors.response.use(
     }
   },
   error => {
-    const { statusCode } = error.response.data
-    console.log('err' + error) // for debug
+    const { statusCode, message } = error.response.data
     if (statusCode === 403) {
       Message({
         message: '该操作权限未获取，无法操作',
         type: 'error',
         duration: 5 * 1000
       })
+    } else if (statusCode === 400) {
+      if (Array.isArray(message)) {
+        const msg = message[0].messages[0].message
+        Message({
+          message: errMsg[msg] || msg,
+          type: 'error',
+          duration: 5 * 1000
+        })
+      } else {
+        return Promise.reject(error)
+      }
     } else if (statusCode !== 11000) {
       Message({
         message: error.message,
