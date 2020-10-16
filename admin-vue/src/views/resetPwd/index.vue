@@ -14,7 +14,6 @@
   </div>
 </template>
 <script>
-import { removeToken } from '@/utils/auth'
 import { resetPwd } from '@/api/user'
 export default {
   data() {
@@ -38,9 +37,9 @@ export default {
       console.log(this.$route.params.code)
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          resetPwd(this.$route.params.code, this.formData.pwd).then(res => {
+          resetPwd(this.$route.params.code, this.formData.pwd).then(async res => {
             this.$message.success('密码修改成功')
-            removeToken()
+            await this.$store.dispatch('user/logout')
             this.$router.replace('/login')
           })
         }
