@@ -34,12 +34,14 @@ export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true
+    hidden: true,
+    meta: { title: '登录' }
   },
   {
     path: '/resetPwd/:code',
     component: () => import('@/views/resetPwd/index'),
-    hidden: true
+    hidden: true,
+    meta: { title: '重置密码' }
   },
   {
     path: '/404',
@@ -59,12 +61,12 @@ export const constantRoutes = [
     }]
   },
   {
-    path: 'external-link',
+    path: '严俊东博客',
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'http://www.yanjd.top/',
+        meta: { title: '博客首页', icon: 'link' }
       }
     ]
   },
