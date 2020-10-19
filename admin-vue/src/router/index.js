@@ -61,6 +61,17 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/tag',
+    component: Layout,
+    redirect: '/tagList',
+    children: [{
+      path: 'tagList',
+      name: 'tagList',
+      component: () => import('@/views/tag/tagList'),
+      meta: { title: '标签', icon: 'dashboard' }
+    }]
+  },
+  {
     path: '严俊东博客',
     component: Layout,
     children: [
