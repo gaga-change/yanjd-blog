@@ -68,7 +68,18 @@ export const constantRoutes = [
       path: 'tagList',
       name: 'tagList',
       component: () => import('@/views/tag/tagList'),
-      meta: { title: '标签', icon: 'dashboard' }
+      meta: { title: '标签', icon: 'el-icon-collection-tag' }
+    }]
+  },
+  {
+    path: '/category',
+    component: Layout,
+    redirect: '/categoryList',
+    children: [{
+      path: 'categoryList',
+      name: 'categoryList',
+      component: () => import('@/views/category/categoryList'),
+      meta: { title: '分类', icon: 'el-icon-folder' }
     }]
   },
   {
