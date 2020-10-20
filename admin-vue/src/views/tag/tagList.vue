@@ -48,7 +48,6 @@ const searchConfig = [
   { label: '名称', prop: 'name' }
 ]
 export default {
-  name: 'GradeIndex',
   components: { TagCreateFromDialog },
   data() {
     return {

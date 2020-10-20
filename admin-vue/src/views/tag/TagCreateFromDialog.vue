@@ -16,7 +16,6 @@
 <script>
 import { tagCreate, tagUpdate } from '@/api/tags'
 export default {
-  name: 'GradeCreateFromDialog',
   components: {},
   inheritAttrs: false,
   props: [],
