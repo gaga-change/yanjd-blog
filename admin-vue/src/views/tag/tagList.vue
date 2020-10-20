@@ -6,6 +6,7 @@
       :search-config="searchConfig"
       :api="listApi"
       :show-control="true"
+      :btn-inline="true"
       :control-width="160"
     >
       <template slot-scope="scope">
@@ -20,13 +21,15 @@
         >修改</el-link>
       </template>
       <template slot="btns">
-        <el-button
-          type="primary"
-          size="mini"
-          @click="handleCreate"
-        >
-          新建
-        </el-button>
+        <div class="text-right">
+          <el-button
+            type="primary"
+            size="mini"
+            @click="handleCreate"
+          >
+            新建
+          </el-button>
+        </div>
       </template>
     </base-list>
     <TagCreateFromDialog ref="TagCreateFromDialog" :visible.sync="TagCreateFromDialogVisible" @submited="getTableData" />
@@ -89,11 +92,6 @@ export default {
         this.$message.success('操作成功！')
         this.getTableData()
       }).catch(() => {})
-    },
-    activated() {
-      if (!this.$store.state.tagsView.isNew) {
-        this.getTableData()
-      }
     }
   }
 }

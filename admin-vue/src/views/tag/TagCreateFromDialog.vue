@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog v-bind="$attrs" title="新增年级" v-on="$listeners" @open="onOpen" @close="onClose">
+    <el-dialog v-bind="$attrs" title="新增年级" v-on="$listeners" @open="onOpen" @closed="onClose">
       <el-form ref="elForm" :model="formData" :rules="rules" size="mini" label-width="100px">
         <el-form-item label="名称" prop="name">
           <el-input v-model="formData.name" placeholder="请输入名称" clearable :style="{width: '100%'}" />
