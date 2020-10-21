@@ -15,36 +15,8 @@ export default {
     LoadMore,
     PostItem
   },
-  async asyncData ({ $axios, params }) {
-    const { data: res } = await $axios.$post('/graphql', {
-      query: `#graphql
-query {
-  category(id: "${params.id}") {
-    name
-  }
-  postsConnection(limit: 10, start: 0, where: { show: true, category: "${params.id}" }) {
-    aggregate {
-      count
-    }
-    values {
-      id
-      title
-      releaseDate
-      readTime
-      intro
-      tags(start: 0) {
-        id
-        name
-      }
-      category {
-        id
-        name
-      }
-    }
-  }
-}
-      `
-    })
+  async asyncData ({ params, $api }) {
+    const { data: res } = await $api.postList(0, 10, { category: params.id }, { fetchCategory: true })
     const { postsConnection, category } = res
     return {
       posts: postsConnection.values,
@@ -68,32 +40,7 @@ query {
   },
   methods: {
     async handleLoadMore (cb) {
-      const { data: res } = await this.$axios.$post('/graphql', {
-        query: `#graphql
-query {
-  postsConnection(limit: 10, start: ${this.posts.length}, where: { show: true, category: "${this.id}" }) {
-    aggregate {
-      count
-    }
-    values {
-      id
-      title
-      releaseDate
-      readTime
-      intro
-      tags(start: 0) {
-        id
-        name
-      }
-      category {
-        id
-        name
-      }
-    }
-  }
-}
-      `
-      })
+      const { data: res } = await this.$api.postList(0, 10, { category: this.id }, { fetchCategory: true })
       const { postsConnection } = res
       this.total = postsConnection.aggregate.count
       this.posts.push(...postsConnection.values)

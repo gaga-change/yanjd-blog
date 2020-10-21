@@ -8,17 +8,8 @@
 </template>
 <script>
 export default {
-  async asyncData ({ params, $axios }) {
-    const { data: res } = await $axios.$post('/graphql', {
-      query: `#graphql
-query {
-  post(id: "${params.id}") {
-    title
-    html
-    intro
-  }
-}`
-    })
+  async asyncData ({ params, $api }) {
+    const { data: res } = await $api.postDetail(params.id)
     return {
       id: params.id,
       post: res.post

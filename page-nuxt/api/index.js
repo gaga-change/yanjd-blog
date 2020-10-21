@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+
 const toStr = obj => JSON.stringify(obj).replace(/"/g, '')
 const defFilter = { show: true }
 
@@ -36,6 +37,60 @@ export default {
             title
           }
         }`.loc.source.body
+    })
+  },
+  // 文章详情
+  postDetail (postId) {
+    return this.ctx.$axios.$post('/graphql', {
+      query: gql`
+        query {
+          post(id: "${postId}") {
+            title
+            html
+            intro
+          }
+        }`.loc.source.body
+    })
+  },
+  // 文章列表
+  postList (start = 0, limit = 10, filter = {}, options = {
+    fetchTag: false,
+    fetchCategory: false
+  }) {
+    return this.ctx.$axios.$post('/graphql', {
+      variables: { filter: { ...filter, ...defFilter } },
+      query: gql`
+        query ($filter: JSON){
+          ${options.fetchTag ? `
+          tag(id: "${filter.tags}") {
+            name
+          }` : ''}
+          ${options.fetchCategory ? `
+          category(id: "${filter.category}") {
+            name
+          }` : ''}
+          postsConnection(limit: ${limit}, start: ${start}, where: $filter, sort: "releaseDate:desc") {
+            aggregate {
+              count
+            }
+            values {
+              id
+              title
+              releaseDate
+              readTime
+              intro
+              tags(start: 0) {
+                id
+                name
+              }
+              category {
+                id
+                name
+              }
+            }
+          }
+        }
+      `.loc.source.body
     })
   }
 }
