@@ -43,7 +43,8 @@ export default {
   */
   plugins: [
     // '@/plugins/element-ui'
-    '@/plugins/parseTime'
+    '@/plugins/parseTime',
+    '@/plugins/api'
   ],
   /*
   ** Auto import components

@@ -18,22 +18,10 @@
 </template>
 
 <script>
-// import PageButtons from '@/components/PageButtons'
+
 export default {
-  async asyncData ({ $axios }) {
-    const { data: res } = await $axios.$post('/graphql', {
-      query: `#graphql
-query {
-  postsConnection(sort: "releaseDate:desc", limit: 999, start: 0, where: { show: true }) {
-    values {
-      id
-      title
-      releaseDate
-    }
-  }
-}
-      `
-    })
+  async asyncData ({ $api }) {
+    const { data: res } = await $api.archivesTotal()
     const { postsConnection } = res
     return {
       posts: postsConnection.values

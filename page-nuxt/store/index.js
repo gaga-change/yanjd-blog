@@ -17,25 +17,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async nuxtServerInit ({ commit }, { $axios }) {
-    const { data: res } = await $axios.$post('/graphql', {
-      query: `
-query {
-  categories {
-    name
-    id
-  }
-  tags {
-    name
-    id
-  }
-  posts(start: 0, limit: 10, sort: "readTime:desc", where: { show: true }) {
-    id
-    title
-  }
-}
-      `
-    })
+  async nuxtServerInit ({ commit }, { $api }) {
+    const { data: res } = await $api.initDataGql()
     commit('setTags', res.tags)
     commit('setCategories', res.categories)
     commit('setnotPosts', res.posts)
