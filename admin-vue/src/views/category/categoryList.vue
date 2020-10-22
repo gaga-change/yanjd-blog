@@ -41,11 +41,12 @@ import TagCreateFromDialog from './CategoryCreateFromDialog'
 import { categoryIndex, categoryDelete } from '@/api/categories'
 const tableConfig = [
   { label: '名称', prop: 'name' },
+  { label: '文章数量', prop: 'postsNum', width: 140 },
   { label: '创建时间', prop: 'createdAt', type: 'time', width: 140 },
   { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140 }
 ]
 const searchConfig = [
-  { label: '名称', prop: 'name' }
+  { label: '名称', prop: 'name_contains' }
 ]
 export default {
   components: { TagCreateFromDialog },
@@ -87,7 +88,7 @@ export default {
     },
     /** 删除 */
     handleDelete(row) {
-      this.$apiConfirm(`是否确定删除【${row.name}】？`, () => categoryDelete(row.id)).then(res => {
+      this.$apiConfirm(`是否确定删除【${row.name}】？`, () => categoryDelete(row.id)).then(_ => {
         this.$message.success('操作成功！')
         this.getTableData()
       }).catch(() => {})
