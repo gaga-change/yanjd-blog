@@ -7,7 +7,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click" size="middle">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img alt="avatar" :src="avatarPath" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -42,7 +42,10 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar'
-    ])
+    ]),
+    avatarPath() {
+      return this.avatar + '?imageView2/1/w/80/h/80'
+    }
   },
   methods: {
     toggleSideBar() {
@@ -54,7 +57,12 @@ export default {
     },
     handleRestPwd() {
       sendRestPwdEmail().then(res => {
-        this.$message.success('重置密码链接已发至邮箱')
+        const { ok } = res.data['forgotPassword']
+        if (ok) {
+          this.$message.success('重置密码链接已发至邮箱')
+        } else {
+          this.$message.error('邮箱发送失败')
+        }
       })
     }
   }

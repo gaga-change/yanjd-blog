@@ -37,7 +37,7 @@ export default {
       console.log(this.$route.params.code)
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          resetPwd(this.$route.params.code, this.formData.pwd).then(async res => {
+          resetPwd(this.$route.params.code, this.formData.pwd).then(async _ => {
             this.$message.success('密码修改成功')
             await this.$store.dispatch('user/logout')
             this.$router.replace('/login')
