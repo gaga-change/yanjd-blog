@@ -59,6 +59,11 @@ export async function tagIndex(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
+        posts(start: 0, limit: 999) {
+          tags {
+            id
+          }
+        }
         tagsConnection(start: $start, limit: $limit, sort: $sort where: $filter ) {
           values {
             id
@@ -73,10 +78,18 @@ export async function tagIndex(params) {
       }
     `.loc.source.body
   }).then(res => {
-    console.log()
     const { values, aggregate } = res.data['tagsConnection']
+    const posts = res.data['posts']
+    const tagPostNum = {}
+    posts.forEach(post => {
+      post.tags.forEach(tag => {
+        const tagId = tag.id
+        tagPostNum[tagId] = tagPostNum[tagId] || 0
+        tagPostNum[tagId]++
+      })
+    })
     return {
-      list: values,
+      list: values.map(v => ({ ...v, postsNum: tagPostNum[v.id] || 0 })),
       total: aggregate['totalCount']
     }
   })
