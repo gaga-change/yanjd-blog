@@ -45,7 +45,7 @@ const tableConfig = [
   { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140 }
 ]
 const searchConfig = [
-  { label: '名称', prop: 'name' }
+  { label: '名称', prop: 'name_contains' }
 ]
 export default {
   components: { TagCreateFromDialog },
@@ -87,7 +87,7 @@ export default {
     },
     /** 删除 */
     handleDelete(row) {
-      this.$apiConfirm(`是否确定删除【${row.name}】？`, () => tagDelete(row.id)).then(res => {
+      this.$apiConfirm(`是否确定删除【${row.name}】？`, () => tagDelete(row.id)).then(_ => {
         this.$message.success('操作成功！')
         this.getTableData()
       }).catch(() => {})
