@@ -58,10 +58,8 @@ export async function categoryIndex(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        posts(start: 0, limit: 999) {
-          category {
-            id
-          }
+        postRelation {
+          category
         }
         categoriesConnection(start: $start, limit: $limit, sort: $sort where: $filter ) {
           values {
@@ -78,12 +76,12 @@ export async function categoryIndex(params) {
     `.loc.source.body
   }).then(res => {
     const { values, aggregate } = res.data['categoriesConnection']
-    const posts = res.data['posts']
+    const posts = res.data['postRelation']
     const categoryPostNum = {}
     posts.forEach(post => {
       if (!post.category) return
-      categoryPostNum[post.category.id] = categoryPostNum[post.category.id] || 0
-      categoryPostNum[post.category.id]++
+      categoryPostNum[post.category] = categoryPostNum[post.category] || 0
+      categoryPostNum[post.category]++
     })
     return {
       list: values.map(v => ({ ...v, postsNum: categoryPostNum[v.id] || 0 })),
