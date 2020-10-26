@@ -8,7 +8,7 @@ var md = require('markdown-it')({
         return hljs.highlight(lang, str).value;
       } catch (__) {}
     }
- 
+
     return ''; // use external default escaping
   }
 });
@@ -18,6 +18,9 @@ var md = require('markdown-it')({
  */
 
 module.exports = {
+  async postRelation(ctx) {
+    return await strapi.services.post.postRelation()
+  },
   async findOne(ctx) {
     const { id } = ctx.params;
 

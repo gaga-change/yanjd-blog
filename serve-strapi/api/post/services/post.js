@@ -5,4 +5,8 @@
  * to customize this service
  */
 
-module.exports = {};
+module.exports = {
+  async postRelation() {
+    return await strapi.query('post').model.find().select('id tags category')
+  }
+};
