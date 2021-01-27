@@ -72,6 +72,17 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/tag2',
+    component: Layout,
+    redirect: '/tagList2',
+    children: [{
+      path: 'tagList2',
+      name: 'tagList2',
+      component: () => import('@/views/tag2/tagList'),
+      meta: { title: '标签', icon: 'el-icon-collection-tag' }
+    }]
+  },
+  {
     path: '/category',
     component: Layout,
     redirect: '/categoryList',
