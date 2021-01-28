@@ -53,6 +53,33 @@ export function tagUpdate(id, data) {
   })
 }
 
+export async function tagList(params) {
+  const { _limit: limit, _start: start, _sort: sort, ...filter } = params
+  return strapi.post('/graphql', {
+    variables: { start, limit, sort, filter },
+    query: gql`
+      query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
+        tagsConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          values {
+            id
+            name
+            createdAt
+            updatedAt
+          },
+          aggregate {
+            count
+          }
+        }
+      }
+    `.loc.source.body
+  }).then(res => {
+    const { values, aggregate } = res.data['tagsConnection']
+    return {
+      list: values,
+      total: aggregate.count
+    }
+  })
+}
 export async function tagIndex(params) {
   const { _limit: limit, _start: start, _sort: sort, ...filter } = params
   return strapi.post('/graphql', {

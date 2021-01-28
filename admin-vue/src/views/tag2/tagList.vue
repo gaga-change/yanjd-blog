@@ -4,14 +4,14 @@
       :table-config="tableConfig"
       :search-config="searchConfig"
       md-name=""
-      :fetch-list="tagIndex"
+      :fetch-list="tagList"
     />
   </div>
 </template>
 <script>
 
 import BaseTablePro from '@/components/Base2/BaseTablePro'
-import { tagIndex } from '@/api/tags'
+import { tagList } from '@/api/tags'
 
 export default {
   components: { BaseTablePro },
@@ -27,7 +27,7 @@ export default {
     return {
       tableConfig,
       searchConfig,
-      tagIndex
+      tagList
     }
   }
 }
