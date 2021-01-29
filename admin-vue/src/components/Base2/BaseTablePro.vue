@@ -167,7 +167,7 @@ export default {
       // this.tableLoading = false
       this.fetchList({
         _limit: limit,
-        _start: page,
+        _start: (page - 1) * limit,
         ...query
       }).then(res => {
         this.list = res.list

@@ -65,6 +65,12 @@ export async function tagList(params) {
             name
             createdAt
             updatedAt
+            creator {
+              name
+            }
+            modifier {
+              name
+            }
           },
           aggregate {
             count

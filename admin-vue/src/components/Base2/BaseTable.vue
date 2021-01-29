@@ -47,7 +47,7 @@
                 <span v-html="column.formatter(scope.row, column)" />
               </template>
               <template v-else>
-                <span>{{ scope.row[column.prop] }}</span>
+                <span>{{ scope.row | showValue(column.prop) }}</span>
               </template>
             </template>
             <template v-else>
@@ -148,6 +148,29 @@ export default {
         if (ctx.props.column) params.column = ctx.props.column
         return ctx.props.render(h, params)
       }
+    }
+  },
+  filters: {
+    showValue(row, prop) {
+      if (!prop) return ''
+      if (~prop.indexOf('.')) {
+        const keyArr = prop.split('.')
+        let temp = row
+        let i = 0
+        while (keyArr.length) {
+          i++
+          const key = keyArr.splice(0, 1)
+          temp = temp[key]
+          if (!temp) return ''
+          // 超过100次循环直接返回空
+          if (i > 100) {
+            console.error('解析异常')
+            return ''
+          }
+        }
+        return temp
+      }
+      return row[prop]
     }
   },
   props: {
