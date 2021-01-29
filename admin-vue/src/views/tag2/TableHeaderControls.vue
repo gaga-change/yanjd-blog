@@ -1,8 +1,8 @@
 <template>
   <div class="text-right mb15">
-    <component :is="formDialogCom" v-bind="$attrs" :get-list="getList" :select-row="selectRow" :md-name="mdName" :visible.sync="dialogFormVisible" :modify-row="modifyRow" />
+    <component :is="formDialogCom" v-bind="$attrs" :get-list="getList" :select-row="selectRow" :md-name="mdName" :modify-row="modifyRow" v-on="$listeners" />
     <el-button type="primary" plain @click="handleCreate()">新增</el-button>
-    <el-button type="info" plain @click="handleUpdate">编辑</el-button>
+    <!--    <el-button type="info" plain @click="handleUpdate">编辑</el-button>-->
     <el-button type="success" plain :loading="activeBtnLoading" @click="handleActive()">生效</el-button>
     <el-button type="warning" plain :loading="unActiveBtnLoading" @click="handleUnActive()">失效</el-button>
     <el-button type="danger" plain @click="handleDel">删除</el-button>
@@ -17,6 +17,10 @@ export default {
     selectRow: {
       type: Array,
       default: () => []
+    },
+    modifyRow: {
+      type: Object,
+      default: null
     },
     mdName: {
       type: [String, Object],
@@ -33,8 +37,6 @@ export default {
   },
   data() {
     return {
-      modifyRow: null,
-      dialogFormVisible: false,
       activeBtnLoading: false,
       unActiveBtnLoading: false,
       delBtnLoading: false
@@ -43,19 +45,9 @@ export default {
   methods: {
     // 新增
     handleCreate() {
-      this.modifyRow = null
+      this.$emit('update:modifyRow', null)
       this.$nextTick(() => {
-        this.dialogFormVisible = true
-      })
-    },
-    // 修改
-    handleUpdate(row) {
-      if (this.selectRow.length !== 1) {
-        return this.$message.warning('请勾选列表中的一条')
-      }
-      this.modifyRow = this.selectRow[0]
-      this.$nextTick(() => {
-        this.dialogFormVisible = true
+        this.$emit('update:visible', true)
       })
     },
     // 生效

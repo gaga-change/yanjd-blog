@@ -40,7 +40,7 @@
           <template slot-scope="scope">
             <template v-if="column.type === 'dom'">
               <!--              <component :is="column.dom" :prop="column.prop" :a-enum="column.aEnum" v-bind="column" :row="scope.row" :index="scope.$index" v-on="$listeners" />-->
-              <component :is="column.dom" v-bind="column" :row="scope.row" :index="scope.$index" v-on="$listeners" />
+              <component :is="column.dom" v-bind="column" :get-list="getList" :row="scope.row" :index="scope.$index" v-on="$listeners" />
             </template>
             <template v-else-if="!column.render">
               <template v-if="column.formatter">
@@ -202,6 +202,9 @@ export default {
     highlight: {
       type: Boolean,
       default: false
+    },
+    getList: {
+      type: Function
     }
   },
   // 数据

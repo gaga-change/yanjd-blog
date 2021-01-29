@@ -5,6 +5,8 @@
       :search-config="searchConfig"
       md-name=""
       :fetch-list="tagList"
+      @handleModify="handleModify"
+      @handleDelete="handleDelete"
     >
       <TableHeaderControls
         slot="header"
@@ -15,7 +17,9 @@
         :form-options="formOptions"
         :create-api="tagCreate"
         :update-api="tagUpdate"
+        :visible.sync="dialogFormVisible"
         v-bind="scope"
+        :modify-row.sync="modifyRow"
       />
     </BaseTablePro>
   </div>
@@ -26,6 +30,7 @@ import BaseTablePro from '@/components/Base2/BaseTablePro'
 import { tagList, tagCreate, tagUpdate } from '@/api/tags'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/views/tag2/TableHeaderControls'
+import TagListControl from '@/views/tag2/TagListControl'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },
@@ -34,7 +39,9 @@ export default {
       { label: '名称', prop: 'name' },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140 },
       { label: '创建人', prop: 'creator.name' },
-      { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140 }
+      { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140 },
+      { label: '修改人', prop: 'modifier.name' },
+      { label: '操作', prop: 'control', type: 'dom', dom: TagListControl }
     ]
     const searchConfig = [
       { label: '名称', prop: 'name_contains' }
@@ -67,7 +74,21 @@ export default {
       formConfig,
       formRulesFun,
       tagCreate,
-      tagUpdate
+      tagUpdate,
+      dialogFormVisible: false,
+      modifyRow: null
+    }
+  },
+  methods: {
+    handleModify(row) {
+      console.log(row)
+      this.modifyRow = row
+      this.dialogFormVisible = true
+      console.log('修改按钮点击')
+    },
+    handleDelete(row) {
+      // this.modifyRow = row
+      console.log('删除')
     }
   }
 }

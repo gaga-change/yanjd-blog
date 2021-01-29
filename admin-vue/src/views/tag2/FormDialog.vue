@@ -32,6 +32,7 @@
 import { isEmptyString } from '@/utils/validateUtil'
 import { deepClone } from '@/utils'
 import BaseForm from '@/components/Base2/BaseForm'
+import { pick } from 'lodash'
 export default {
   components: { BaseForm },
   inheritAttrs: false,
@@ -136,7 +137,7 @@ export default {
       this.$refs['formPanel'].$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = deepClone(this.temp)
-          this.updateApi && this.updateApi(tempData.id, tempData).then(() => {
+          this.updateApi && this.updateApi(tempData.id, pick(tempData, 'name')).then(() => {
             this.getList()
             this.close()
             this.$notify({

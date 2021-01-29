@@ -158,7 +158,7 @@ export default {
       this.getList()
     },
     changePagination() {},
-    async  getList() {
+    getList() {
       this.tableLoading = true
       const { page, limit, ...query } = omit(this.listQuery, ['total'])
       // this.list = []
