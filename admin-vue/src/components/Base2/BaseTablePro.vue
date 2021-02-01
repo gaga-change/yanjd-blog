@@ -36,7 +36,7 @@
 <script>
 import BaseTable from './BaseTable' // 表单组件
 import FilpFilterPanel from './FilpFilterPanel'
-import { omit } from 'lodash'
+import { omit, cloneDeepWith, omitBy, isNil } from 'lodash'
 // import { apiListFactory } from '@/api/baseApi'
 
 /**
@@ -189,7 +189,7 @@ export default {
         _limit: limit,
         _start: (page - 1) * limit,
         _sort: this.sortStr,
-        ...query
+        ...cloneDeepWith(query, v => omitBy(v, val => isNil(val) || val === ''))
       }).then(res => {
         this.list = res.list
         this.listQuery.total = res.total
