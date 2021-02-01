@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <BaseTablePro
+      ref="baseTablePro"
       :table-config="tableConfig"
       :search-config="searchConfig"
       md-name=""
@@ -27,7 +28,7 @@
 <script>
 
 import BaseTablePro from '@/components/Base2/BaseTablePro'
-import { tagList, tagCreate, tagUpdate } from '@/api/tags'
+import { tagList, tagCreate, tagUpdate, tagDelete } from '@/api/tags'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/views/tag2/TableHeaderControls'
 import TagListControl from '@/views/tag2/TagListControl'
@@ -87,8 +88,10 @@ export default {
       console.log('修改按钮点击')
     },
     handleDelete(row) {
-      // this.modifyRow = row
-      console.log('删除')
+      this.$apiConfirm(`是否确定删除【${row.name}】？`, () => tagDelete(row.id)).then(_ => {
+        this.$message.success('操作成功！')
+        this.$refs['baseTablePro'].getList()
+      }).catch(() => {})
     }
   }
 }
