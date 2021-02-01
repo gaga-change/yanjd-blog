@@ -8,8 +8,10 @@
       :cell-style="options.cellStyle"
       :stripe="options.stripe"
       :highlight-current-row="highlight"
+      :default-sort="{prop: 'createdAt', order: 'descending'}"
       @row-click="handleRowClick"
       @selection-change="handleSelectionChange"
+      @sort-change="handleSortChange"
     >
       <el-table-column v-if="options.showIndex" label="序号" width="55px" :align="align">
         <template slot-scope="scope">
@@ -36,6 +38,7 @@
           :align="column.align?column.align:align"
           :width="column.width"
           :fixed="column.fixed"
+          :sortable="column.sortable"
         >
           <template slot-scope="scope">
             <template v-if="column.type === 'dom'">
@@ -262,6 +265,10 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
       this.$emit('handleSelectionChange', val)
+    },
+    // 排序方式修改
+    handleSortChange(val) {
+      this.$emit('handleSortChange', val)
     },
     handleRowClick(val) {
       this.$emit('handleRowClick', val)

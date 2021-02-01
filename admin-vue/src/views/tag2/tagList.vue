@@ -37,9 +37,9 @@ export default {
   data() {
     const tableConfig = [
       { label: '名称', prop: 'name' },
-      { label: '创建时间', prop: 'createdAt', type: 'time', width: 140 },
+      { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'creator.name' },
-      { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140 },
+      { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '修改人', prop: 'modifier.name' },
       { label: '操作', prop: 'control', type: 'dom', dom: TagListControl }
     ]

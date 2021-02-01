@@ -25,6 +25,7 @@
       :pagination="listQuery"
       v-bind="{...$attrs,tableConfig}"
       v-on="$listeners"
+      @handleSortChange="handleSortChange"
       @handleSelectionChange="handleSelectionChange"
       @handleSizeChange="handleSizeChange"
       @handleIndexChange="handleIndexChange"
@@ -124,10 +125,26 @@ export default {
       tableLoading: false,
       selectRow: [],
       list: [],
+      sortRule: {
+        createdAt: 'descending'
+      },
       listQuery: {
         ...this.pagination,
         ...searchKeyValueDef
       }
+    }
+  },
+  computed: {
+    sortStr() {
+      const res = []
+      const orderSmall = { ascending: 'asc', descending: 'desc' }
+      Object.keys(this.sortRule).forEach(key => {
+        if (this.sortRule[key]) {
+          const order = this.sortRule[key]
+          res.push(`${key}:${orderSmall[order]}`)
+        }
+      })
+      return res.join(',')
     }
   },
   activated() {
@@ -157,17 +174,21 @@ export default {
       this.listQuery.page = page
       this.getList()
     },
+    // 排序方式修改
+    handleSortChange(val) {
+      this.$set(this.sortRule, val.prop, val.order)
+      this.$nextTick(() => {
+        this.getList()
+      })
+    },
     changePagination() {},
     getList() {
       this.tableLoading = true
       const { page, limit, ...query } = omit(this.listQuery, ['total'])
-      // this.list = []
-      // this.listQuery.total = 0
-      // this.$emit('tableDataChange')
-      // this.tableLoading = false
       this.fetchList({
         _limit: limit,
         _start: (page - 1) * limit,
+        _sort: this.sortStr,
         ...query
       }).then(res => {
         this.list = res.list
@@ -176,14 +197,6 @@ export default {
       }).finally(_ => {
         this.tableLoading = false
       })
-      // this.fetchList(page, limit, { ...query, ...this.defaultSearchFilter }).then(async(response) => {
-      //   const { list, total } = await this.listDataFilter(response)
-      //   this.list = list
-      //   this.listQuery.total = total
-      //   this.$emit('tableDataChange')
-      // }).finally(() => {
-      //   this.tableLoading = false
-      // })
     },
     handleReset() {
       this.listQuery = {
