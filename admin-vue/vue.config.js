@@ -11,13 +11,13 @@ const name = defaultSettings.title || '严俊东博客后台管理' // page titl
 const cdn = {
   css: [
     // element-ui css
-    'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
+    'https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/theme-chalk/index.min.css'
   ],
   js: [
     // vue must at first!
-    'https://unpkg.com/vue/dist/vue.js',
+    'https://cdn.bootcdn.net/ajax/libs/vue/2.6.10/vue.min.js',
     // element-ui js
-    'https://unpkg.com/element-ui/lib/index.js'
+    'https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/index.min.js'
   ]
 }
 // If your port is set to 80,
