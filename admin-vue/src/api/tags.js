@@ -19,17 +19,20 @@ export function tagCreate(data) {
 }
 
 export function tagDelete(id) {
+  const idArr = Array.isArray(id) ? id : [id]
   return strapi.post('/graphql', {
-    variables: { id },
+    variables: { },
     query: gql`
-      mutation ($id: ID! ) {
-        deleteTag(input: {
-          where: { id: $id}
+      mutation {
+        ${
+  idArr.map((id, i) => `delTag${i}: deleteTag(input: {
+          where: { id: "${id}"}
         }) {
           tag {
             id
           }
-        }
+        }`)
+}
       }
     `.loc.source.body
   })

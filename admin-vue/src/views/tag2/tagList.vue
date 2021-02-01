@@ -4,6 +4,7 @@
       ref="baseTablePro"
       :table-config="tableConfig"
       :search-config="searchConfig"
+      :table-options="tableOptions"
       md-name=""
       :fetch-list="tagList"
       @handleModify="handleModify"
@@ -72,6 +73,7 @@ export default {
       tagList,
       textMap,
       formOptions: { labelWidth: '120px' },
+      tableOptions: { mutiSelect: true },
       formConfig,
       formRulesFun,
       tagCreate,
