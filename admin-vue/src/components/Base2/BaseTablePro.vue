@@ -176,6 +176,8 @@ export default {
     },
     // 排序方式修改
     handleSortChange(val) {
+      // element-ui 只支持单个排序条件
+      this.sortRule = {}
       this.$set(this.sortRule, val.prop, val.order)
       this.$nextTick(() => {
         this.getList()
@@ -185,6 +187,7 @@ export default {
     getList() {
       this.tableLoading = true
       const { page, limit, ...query } = omit(this.listQuery, ['total'])
+      // console.log('排序： ', this.sortStr)
       this.fetchList({
         _limit: limit,
         _start: (page - 1) * limit,
