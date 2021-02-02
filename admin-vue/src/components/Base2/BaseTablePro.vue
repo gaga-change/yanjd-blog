@@ -189,7 +189,20 @@ export default {
         _limit: limit,
         _start: (page - 1) * limit,
         _sort: this.sortStr,
-        ...cloneDeepWith(query, v => omitBy(v, val => isNil(val) || val === ''))
+        ...cloneDeepWith(query, obj => {
+          const v = { ...obj }
+          Object.keys(v).forEach(key => {
+            // 对 _between解析 解析为大于小于
+            if (~key.indexOf('_between')) {
+              const valArr = v[key]
+              const prop = key.split('_between')[0]
+              v[prop + '_gte'] = valArr && valArr[0]
+              v[prop + '_lte'] = valArr && valArr[1]
+              delete v[key]
+            }
+          })
+          return omitBy(v, val => isNil(val) || val === '')
+        })
       }).then(res => {
         this.list = res.list
         this.listQuery.total = res.total

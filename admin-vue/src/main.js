@@ -17,12 +17,12 @@ import '@/permission' // permission control
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale, size: 'mini' })
-
 Vue.use(Base)
-// 如果想要中文版 element-ui，按如下方式声明
-// Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+if (process.env.NODE_ENV === 'development') {
+  Vue.config.devtools = true
+}
 
 new Vue({
   el: '#app',

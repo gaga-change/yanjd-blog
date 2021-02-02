@@ -33,8 +33,7 @@ import { tagList, tagCreate, tagUpdate, tagDelete } from '@/api/tags'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/views/tag2/TableHeaderControls'
 import TagListControl from '@/views/tag2/TagListControl'
-import DateTimeStart from '@/components/Base2/Input/DateTimeStart'
-import DateTimeEnd from '@/components/Base2/Input/DateTimeEnd'
+import DateArea from '@/components/Base2/Input/DateArea'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },
@@ -49,8 +48,8 @@ export default {
     ]
     const searchConfig = [
       { label: '名称', prop: 'name_contains' },
-      { label: '创建日期从', type: 'dom', dom: DateTimeStart, prop: 'createdAt_gte' },
-      { label: '到', type: 'dom', dom: DateTimeEnd, prop: 'createdAt_lte' }
+      { label: '创建时间', type: 'dom', dom: DateArea, prop: 'createdAt_between' },
+      { label: '修改时间', type: 'dom', dom: DateArea, prop: 'updatedAt_between' }
     ]
     const textMap = {
       update: '编辑标签',
