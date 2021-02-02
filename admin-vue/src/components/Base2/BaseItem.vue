@@ -1,5 +1,5 @@
 <template>
-  <el-form-item v-show="!item.hidden" :label-width="item.labelWidth" :label="localLabel" :prop="item.prop">
+  <el-form-item v-show="!item.hidden" class="BaseItemComponent" :label-width="item.labelWidth" :label="localLabel" :prop="item.prop">
     <component
       :is="dom"
       v-model="faNode[nodeKey]"
@@ -72,3 +72,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .BaseItemComponent {
+    ::v-deep .el-input.el-input--mini {
+      height: 28px;
+    }
+  }
+</style>

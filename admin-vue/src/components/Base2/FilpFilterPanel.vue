@@ -29,7 +29,7 @@
 
   </div>
 </template>
-<script lang="jsx">
+<script>
 import BaseItem from '@/components/Base2/BaseItem'
 import { deepClone } from '@/utils'
 

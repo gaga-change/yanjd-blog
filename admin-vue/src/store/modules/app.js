@@ -1,14 +1,19 @@
 import Cookies from 'js-cookie'
 
+const getClientWidth = () => document.documentElement.clientWidth || document.body.clientWidth
 const state = {
   sidebar: {
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false
   },
-  device: 'desktop'
+  device: 'desktop',
+  clientWidth: getClientWidth()
 }
 
 const mutations = {
+  REFRESH_CLIENT_WIDTH: (state) => {
+    state.clientWidth = getClientWidth()
+  },
   TOGGLE_SIDEBAR: state => {
     state.sidebar.opened = !state.sidebar.opened
     state.sidebar.withoutAnimation = false

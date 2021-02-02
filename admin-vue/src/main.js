@@ -24,6 +24,20 @@ if (process.env.NODE_ENV === 'development') {
   Vue.config.devtools = true
 }
 
+{
+  let tick
+  const setSize = () => {
+    store.commit('app/REFRESH_CLIENT_WIDTH')
+  }
+  // 存储更新 当前窗口的宽度
+  window.onresize = function() {
+    if (tick) {
+      clearTimeout(tick)
+    }
+    tick = setTimeout(setSize, 1000)
+  }
+}
+
 new Vue({
   el: '#app',
   router,
