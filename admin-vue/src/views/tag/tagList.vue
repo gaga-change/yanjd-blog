@@ -1,96 +1,101 @@
 <template>
   <div class="app-container">
-    <base-list
-      ref="baseList"
+    <BaseTablePro
+      ref="baseTablePro"
       :table-config="tableConfig"
       :search-config="searchConfig"
-      :api="listApi"
-      :show-control="true"
-      :btn-inline="true"
-      :control-width="160"
+      :table-options="tableOptions"
+      md-name=""
+      :fetch-list="tagList"
+      @handleModify="handleModify"
+      @handleDelete="handleDelete"
     >
-      <template slot-scope="scope">
-        <el-link
-          type="warning"
-          @click="handleDelete(scope.row)"
-        >删除</el-link>
-        <el-divider direction="vertical" />
-        <el-link
-          type="primary"
-          @click="handleUpdate(scope.row)"
-        >修改</el-link>
-      </template>
-      <template slot="btns">
-        <div class="text-right">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleCreate"
-          >
-            新建
-          </el-button>
-        </div>
-      </template>
-    </base-list>
-    <TagCreateFromDialog ref="TagCreateFromDialog" :visible.sync="TagCreateFromDialogVisible" @submited="getTableData" />
+      <TableHeaderControls
+        slot="header"
+        slot-scope="scope"
+        :form-config="formConfig"
+        :form-rules-fun="formRulesFun"
+        :text-map="textMap"
+        :form-options="formOptions"
+        :create-api="tagCreate"
+        :update-api="tagUpdate"
+        :visible.sync="dialogFormVisible"
+        v-bind="scope"
+        :modify-row.sync="modifyRow"
+      />
+    </BaseTablePro>
   </div>
 </template>
-
 <script>
-import TagCreateFromDialog from './TagCreateFromDialog'
-import { tagIndex, tagDelete } from '@/api/tags'
-const tableConfig = [
-  { label: '名称', prop: 'name' },
-  { label: '文章数量', prop: 'postsNum', width: 140 },
-  { label: '创建时间', prop: 'createdAt', type: 'time', width: 140 },
-  { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140 }
-]
-const searchConfig = [
-  { label: '名称', prop: 'name_contains' }
-]
+
+import BaseTablePro from '@/components/Base2/BaseTablePro'
+import { tagList, tagCreate, tagUpdate, tagDelete } from '@/api/tags'
+import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
+import TableHeaderControls from '@/views/tag/TableHeaderControls'
+import TagListControl from '@/views/tag/TagListControl'
+import DateArea from '@/components/Base2/Input/DateArea'
+
 export default {
-  components: { TagCreateFromDialog },
+  components: { BaseTablePro, TableHeaderControls },
   data() {
+    const tableConfig = [
+      { label: '名称', prop: 'name' },
+      { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
+      { label: '创建人', prop: 'createdBy.name' },
+      { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
+      { label: '修改人', prop: 'updatedBy.name' },
+      { label: '操作', prop: 'control', type: 'dom', dom: TagListControl }
+    ]
+    const searchConfig = [
+      { label: '名称', prop: 'name_contains' },
+      { label: '创建时间', type: 'dom', dom: DateArea, prop: 'createdAt_between' },
+      { label: '修改时间', type: 'dom', dom: DateArea, prop: 'updatedAt_between' }
+    ]
+    const textMap = {
+      update: '编辑标签',
+      create: '新增标签'
+    }
+    const mdName = 'createTag'
+    const temp = new FormConfigFactory()
+
+    temp.add({ label: '标签名称', prop: 'name' })
+      .valid({ req: true, len: 10 })
+    // temp.add({ label: '国家中文名称', prop: 'countryNameCn' })
+    //   .valid({ req: true, len: 20 }).unique()
+    // temp.add({ label: '国家英文名称', prop: 'countryNameEn' })
+    //   .valid({ req: false, len: 50 }).unique()
+    // temp.add({ label: '备注', prop: 'remark', type: 'textarea', autosize: { minRows: 2, maxRows: 4 }})
+    //   .valid({ req: false, len: 500 })
+    // temp.add({ label: '有效性', prop: 'isValid', type: 'aEnum', aEnum: isValidEnum, hidden: true, default: true })
+
+    const formConfig = temp.getFormConfig()
+    const formRulesFun = self => temp.getFormRules({ mdName, self })
     return {
-      TagCreateFromDialogVisible: false,
       tableConfig,
       searchConfig,
-      listApi: tagIndex,
-      // 可选 附加查询条件
-      appendSearchParams: {}
+      tagList,
+      textMap,
+      formOptions: { labelWidth: '120px' },
+      tableOptions: { mutiSelect: true },
+      formConfig,
+      formRulesFun,
+      tagCreate,
+      tagUpdate,
+      dialogFormVisible: false,
+      modifyRow: null
     }
   },
   methods: {
-    /** 刷新列表 */
-    getTableData() {
-      this.$refs['baseList'].fetchData()
+    handleModify(row) {
+      console.log(row)
+      this.modifyRow = row
+      this.dialogFormVisible = true
+      console.log('修改按钮点击')
     },
-    /** 可选 返回列表添加字段 */
-    parseData(res) {
-      const data = res.data.list || []
-      const total = res.data.total
-      data.forEach(v => {
-        v.updateLockStatusOutLoading = false
-        v.updateLockStatusInLoading = false
-      })
-      return { data, total }
-    },
-    /** 新建 */
-    handleCreate() {
-      this.TagCreateFromDialogVisible = true
-    },
-    /** 修改 */
-    handleUpdate(row) {
-      this.TagCreateFromDialogVisible = true
-      this.$nextTick(() => {
-        this.$refs['TagCreateFromDialog'].setDefault(row)
-      })
-    },
-    /** 删除 */
     handleDelete(row) {
       this.$apiConfirm(`是否确定删除【${row.name}】？`, () => tagDelete(row.id)).then(_ => {
         this.$message.success('操作成功！')
-        this.getTableData()
+        this.$refs['baseTablePro'].getList()
       }).catch(() => {})
     }
   }
