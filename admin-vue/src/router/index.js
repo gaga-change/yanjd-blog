@@ -83,6 +83,17 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/permission',
+    component: Layout,
+    redirect: '/permissionList',
+    children: [{
+      path: 'permissionList',
+      name: 'permissionList',
+      component: () => import('@/views/permission/permissionList'),
+      meta: { title: '权限', icon: 'el-icon-folder' }
+    }]
+  },
+  {
     path: '严俊东博客',
     component: Layout,
     children: [
