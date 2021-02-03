@@ -94,6 +94,17 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/user',
+    component: Layout,
+    redirect: '/userList',
+    children: [{
+      path: 'userList',
+      name: 'userList',
+      component: () => import('@/views/user/userList'),
+      meta: { title: '用户', icon: 'el-icon-folder' }
+    }]
+  },
+  {
     path: '严俊东博客',
     component: Layout,
     children: [
