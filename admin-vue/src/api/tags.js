@@ -68,10 +68,10 @@ export async function tagList(params) {
             name
             createdAt
             updatedAt
-            creator {
+            createdBy {
               name
             }
-            modifier {
+            updatedBy {
               name
             }
           },
