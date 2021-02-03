@@ -61,6 +61,17 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/post',
+    component: Layout,
+    redirect: '/postList',
+    children: [{
+      path: 'postList',
+      name: 'postList',
+      component: () => import('@/views/post/postList'),
+      meta: { title: '文章', icon: 'el-icon-folder' }
+    }]
+  },
+  {
     path: '/tag',
     component: Layout,
     redirect: '/tagList',
