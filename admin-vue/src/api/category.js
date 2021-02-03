@@ -3,11 +3,11 @@ import gql from 'graphql-tag'
 
 export function categoryCreate(data) {
   return strapi.post('/graphql', {
-    variables: { data: data },
+    variables: { category: data },
     query: gql`
-      mutation ($data: CategoryInput) {
+      mutation ($category: CategoryInput) {
         createCategory(input: {
-          data: $data
+          data: $category
         }) {
           category {
             id
@@ -19,12 +19,33 @@ export function categoryCreate(data) {
 }
 
 export function categoryDelete(id) {
+  const idArr = Array.isArray(id) ? id : [id]
   return strapi.post('/graphql', {
-    variables: { id },
+    variables: { },
     query: gql`
-      mutation ($id: ID! ) {
-        deleteCategory(input: {
-          where: { id: $id}
+      mutation {
+        ${
+  idArr.map((id, i) => `delCategory${i}: deleteCategory(input: {
+          where: { id: "${id}"}
+        }) {
+          category {
+            id
+          }
+        }`)
+}
+      }
+    `.loc.source.body
+  })
+}
+
+export function categoryUpdate(id, data) {
+  return strapi.post('/graphql', {
+    variables: { id, category: data },
+    query: gql`
+      mutation ($id: ID!, $category: editCategoryInput ) {
+        updateCategory(input: {
+          where: { id: $id},
+          data: $category
         }) {
           category {
             id
@@ -35,57 +56,36 @@ export function categoryDelete(id) {
   })
 }
 
-export function categoryUpdate(id, data) {
-  return strapi.post('/graphql', {
-    variables: { id, data },
-    query: gql`
-      mutation ($id: ID!, $data: editCategoryInput ) {
-        updateCategory(input: {
-          where: { id: $id},
-          data: $data
-        }) {
-          category {
-            id
-          }
-        }
-      }
-    `.loc.source.body
-  })
-}
-export async function categoryIndex(params) {
+export async function categoryList(params) {
   const { _limit: limit, _start: start, _sort: sort, ...filter } = params
   return strapi.post('/graphql', {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        postRelation {
-          category
-        }
-        categoriesConnection(start: $start, limit: $limit, sort: $sort where: $filter ) {
+        categoriesConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
           values {
             id
             name
             createdAt
             updatedAt
+            createdBy {
+              name
+            }
+            updatedBy {
+              name
+            }
           },
           aggregate {
-            totalCount
+            count
           }
         }
       }
     `.loc.source.body
   }).then(res => {
     const { values, aggregate } = res.data['categoriesConnection']
-    const posts = res.data['postRelation']
-    const categoryPostNum = {}
-    posts.forEach(post => {
-      if (!post.category) return
-      categoryPostNum[post.category] = categoryPostNum[post.category] || 0
-      categoryPostNum[post.category]++
-    })
     return {
-      list: values.map(v => ({ ...v, postsNum: categoryPostNum[v.id] || 0 })),
-      total: aggregate['totalCount']
+      list: values,
+      total: aggregate.count
     }
   })
 }

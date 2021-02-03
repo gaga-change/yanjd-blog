@@ -30,7 +30,7 @@
 <script>
 
 import BaseTablePro from '@/components/Base2/BaseTablePro'
-import { tagList, tagCreate, tagUpdate, tagDelete } from '@/api/tags'
+import { tagList, tagCreate, tagUpdate, tagDelete } from '@/api/tag'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import TagListControl from '@/components/ColModifyAndDel'
