@@ -19,6 +19,7 @@
         :form-options="formOptions"
         :create-api="tagCreate"
         :update-api="tagUpdate"
+        :delete-api="handleDelete"
         :visible.sync="dialogFormVisible"
         v-bind="scope"
         :modify-row.sync="modifyRow"
@@ -31,8 +32,8 @@
 import BaseTablePro from '@/components/Base2/BaseTablePro'
 import { tagList, tagCreate, tagUpdate, tagDelete } from '@/api/tags'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
-import TableHeaderControls from '@/views/tag/TableHeaderControls'
-import TagListControl from '@/views/tag/TagListControl'
+import TableHeaderControls from '@/components/TableHeaderControls'
+import TagListControl from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base2/Input/DateArea'
 
 export default {
@@ -60,13 +61,6 @@ export default {
 
     temp.add({ label: '标签名称', prop: 'name' })
       .valid({ req: true, len: 10 })
-    // temp.add({ label: '国家中文名称', prop: 'countryNameCn' })
-    //   .valid({ req: true, len: 20 }).unique()
-    // temp.add({ label: '国家英文名称', prop: 'countryNameEn' })
-    //   .valid({ req: false, len: 50 }).unique()
-    // temp.add({ label: '备注', prop: 'remark', type: 'textarea', autosize: { minRows: 2, maxRows: 4 }})
-    //   .valid({ req: false, len: 500 })
-    // temp.add({ label: '有效性', prop: 'isValid', type: 'aEnum', aEnum: isValidEnum, hidden: true, default: true })
 
     const formConfig = temp.getFormConfig()
     const formRulesFun = self => temp.getFormRules({ mdName, self })
@@ -87,13 +81,13 @@ export default {
   },
   methods: {
     handleModify(row) {
-      console.log(row)
       this.modifyRow = row
       this.dialogFormVisible = true
-      console.log('修改按钮点击')
     },
-    handleDelete(row) {
-      this.$apiConfirm(`是否确定删除【${row.name}】？`, () => tagDelete(row.id)).then(_ => {
+    // 删除
+    handleDelete(data) {
+      const temp = Array.isArray(data) ? data : [data]
+      this.$apiConfirm(`是否确定删除【${temp.map(v => v.name).join('，')}】？`, () => tagDelete(temp.map(v => v.id))).then(_ => {
         this.$message.success('操作成功！')
         this.$refs['baseTablePro'].getList()
       }).catch(() => {})
