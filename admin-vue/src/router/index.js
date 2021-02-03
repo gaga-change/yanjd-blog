@@ -105,6 +105,17 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/role',
+    component: Layout,
+    redirect: '/roleList',
+    children: [{
+      path: 'roleList',
+      name: 'roleList',
+      component: () => import('@/views/role/roleList'),
+      meta: { title: '角色', icon: 'el-icon-folder' }
+    }]
+  },
+  {
     path: '/user',
     component: Layout,
     redirect: '/userList',
