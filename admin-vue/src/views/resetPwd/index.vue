@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import { resetPwd } from '@/api/user'
+import { resetPwd } from '@/api/auth'
 export default {
   data() {
     return {

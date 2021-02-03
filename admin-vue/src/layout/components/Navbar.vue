@@ -32,7 +32,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import { sendRestPwdEmail } from '@/api/user'
+import { sendRestPwdEmail } from '@/api/auth'
 export default {
   components: {
     Breadcrumb,
