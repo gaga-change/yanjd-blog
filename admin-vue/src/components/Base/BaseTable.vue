@@ -1,471 +1,290 @@
 <template>
-  <div class="ctabel TableIndexCom">
+  <div class="">
     <el-table
-      ref="table"
-      v-loading="api ? selfLoading: loading"
-      :class="{'radio-table': highlightCurrentRow}"
-      :element-loading-text="elementLoadingText"
-      :element-loading-background="elementLoadingBackground"
+      :height="options.height"
       :data="data"
-      :highlight-current-row="highlightCurrentRow"
-      :summary-method="summaryMethod"
-      :border="border"
-      :show-summary="showSummary"
-      size="mini"
-      :style="tableStyle"
-      @current-change="handleCurrentRadioChange"
+      tooltip-effect="dark"
+      :border="options.border"
+      :cell-style="options.cellStyle"
+      :stripe="options.stripe"
+      :highlight-current-row="highlight"
+      :default-sort="{prop: 'createdAt', order: 'descending'}"
+      @row-click="handleRowClick"
       @selection-change="handleSelectionChange"
-      @expand-change="handleExpandChange"
+      @sort-change="handleSortChange"
     >
-      <template v-if="expand">
-        <el-table-column type="expand">
-          <template slot-scope="scope">
-            <slot
-              name="expand"
-              :row="scope.row"
-              :index="scope.$index"
-            />
-          </template>
-        </el-table-column>
-      </template>
-      <el-table-column
-        v-if="select"
-        type="selection"
-        width="55"
-        :selectable="selectable"
-      />
-      <el-table-column
-        v-if="showIndex"
-        type="index"
-        label="序号"
-        :index="1"
-      />
-      <template v-for="item in tableConfig">
-        <el-table-column
-          v-if="item.edit"
-          :key="item.lable"
-          :formatter="item.formatter"
-          :fixed="item.fixed"
-          :type="item.columnType"
-          :width="item.width"
-          :prop="item.prop"
-          :label="item.label"
-        >
-          <template slot-scope="scope">
-            <el-input-number
-              v-if="item.inputType==='number'"
-              v-model="scope.row[item.prop]"
-              size="mini"
-              controls-position="right"
-              :disabled="scope.row['inputTypeNumberDisabled']"
-              :precision="item.precision || 0"
-              :min="item.min || 0"
-              :max="item.max || 99999999"
-              @change="val => handleInputNumberChange(scope.row, scope.$index, item, val)"
-            />
-            <el-input-number
-              v-if="item.inputType==='number2'"
-              v-model="scope.row[item.prop]"
-              size="mini"
-              controls-position="right"
-              :disabled="scope.row['inputTypeNumberDisabled']"
-              :precision="item.precision || 0"
-              :min="item.min || 0"
-              :max="Number(scope.row[item.maxKey])"
-              @change="val => handleInputNumberChange(scope.row, scope.$index, item, val)"
-            />
-            <el-input
-              v-if="item.inputType==='input'"
-              v-model="scope.row[item.prop]"
-              :maxlength="item.max || 50"
-            />
-            <el-select
-              v-if="item.inputType==='select'"
-              v-model="scope.row[item.prop]"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="(v, i) in mapConfig[item.enum] || []"
-                :key="i"
-                :label="v.name"
-                :value="v.value"
-              />
-            </el-select>
-            <el-switch
-              v-if="item.inputType==='switch'"
-              v-model="scope.row[item.prop]"
-              :active-value="item.activeValue"
-              :inactive-value="item.inactiveValue"
-              :disabled="item.disabled"
-            />
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-else
-          :key="item.lable"
-          :formatter="item.formatter"
-          :fixed="item.fixed"
-          :type="item.columnType"
-          :width="item.width"
-          :prop="item.prop"
-          :label="item.label"
-          show-overflow-tooltip
-        />
-      </template>
-      <el-table-column
-        v-if="showControl"
-        :width="controlWidth"
-        :fixed="showControlFixed ?'right' : false"
-        :label="controlName"
-      >
+      <el-table-column v-if="options.showIndex" label="序号" width="55px" :align="align">
         <template slot-scope="scope">
-          <div class="f12">
-            <slot
-              :row="scope.row"
-              :index="scope.$index"
-            />
-            <slot
-              name="edit"
-              :row="scope.row"
-              :index="scope.$index"
-            />
-          </div>
+          {{ (pagination.page - 1) * pagination.limit + scope.$index + 1 }}
         </template>
       </el-table-column>
+      <!--region 选择框-->
+      <el-table-column v-if="options.mutiSelect" type="selection" width="48px" :align="align" />
+      <el-table-column v-if="options.radioSelect" key="radio" label="选择" width="48px" :align="align">
+        <template slot-scope="scope">
+          <el-radio v-model="radioRow" :label="scope.row[idKey]">
+            <span />
+          </el-radio>
+        </template>
+      </el-table-column>
+      <!--endregion-->
+      <!--region 数据列-->
+      <template v-for="(column, index) in columnsComputed">
+        <el-table-column
+          :key="index"
+          show-overflow-tooltip
+          :prop="column.prop"
+          :label="column.label"
+          :align="column.align?column.align:align"
+          :width="column.width"
+          :fixed="column.fixed"
+          :sortable="column.sortable"
+        >
+          <template slot-scope="scope">
+            <template v-if="column.type === 'dom'">
+              <!--              <component :is="column.dom" :prop="column.prop" :a-enum="column.aEnum" v-bind="column" :row="scope.row" :index="scope.$index" v-on="$listeners" />-->
+              <component :is="column.dom" v-bind="column" :get-list="getList" :row="scope.row" :index="scope.$index" v-on="$listeners" />
+            </template>
+            <template v-else-if="!column.render">
+              <template v-if="column.formatter">
+                <span v-html="column.formatter(scope.row, column)" />
+              </template>
+              <template v-else>
+                <span>{{ scope.row | showValue(column.prop) }}</span>
+              </template>
+            </template>
+            <template v-else>
+              <expand-dom :column="column" :row="scope.row" :render="column.render" :index="index" />
+            </template>
+          </template>
+        </el-table-column>
+      </template>
+      <!--endregion-->
+      <!--region 按钮操作组-->
+      <el-table-column
+        v-if="operates.list.filter(_x=>_x.show === true).length > 0"
+        ref="fixedColumn"
+        label="操作"
+        align="center"
+        :width="operates.width"
+        :fixed="operates.fixed"
+      >
+        <template slot-scope="scope">
+          <span v-for="(btn, key) in operates.list" :key="key">
+            <el-button
+              v-if="(typeof btn.show == 'function')?btn.show(key,scope.row):btn.show"
+              style="margin: 0 4px;"
+              :type="btn.type"
+              size="mini"
+              :disabled="(typeof btn.disabled == 'function')?btn.disabled(key,scope.row):btn.disabled"
+              :plain="btn.plain"
+              @click.native.prevent="btn.method(key,scope.row)"
+            >{{ btn.label }}
+            </el-button>
+          </span>
+        </template>
+      </el-table-column>
+      <!--endregion-->
     </el-table>
-    <template>
-      <el-pagination
-        v-if="api"
-        :style="paginationStyle"
-        :current-page.sync="selfCurrentPage"
-        :page-sizes="pageSizes"
-        size="mini"
-        :page-size="selfPageSize"
-        :layout="layout"
-        :total="selfTotal"
-        @size-change="handleSelfSizeChange"
-        @current-change="handleSelfCurrentChange"
-      />
-    </template>
+
+    <el-pagination
+      v-if="options.pagination"
+      :total="pagination.total"
+      :page-sizes="[10, 20, 50]"
+      :page-size.sync="pagination.limit"
+      :current-page.sync="pagination.page"
+      layout="total, sizes, prev, pager, next, jumper"
+      prev-text="上一页"
+      next-text="下一页"
+      style="margin-top: 15px;text-align: center"
+      @size-change="handleSizeChange"
+      @current-change="handleIndexChange"
+    />
   </div>
 </template>
-
+<!--endregion-->
 <script>
+import { deepClone, parseTime } from '@/utils'
 
-import { mapGetters } from 'vuex'
-import { parseTime } from '@/utils'
+/**
+ * 组件说明
+ * prop:
+ *  data: Array 数据
+ *  idKey: String 数据主键，单选时需要
+ *  tableOptions
+ *  tableConfig
+ *  pagination: {total, limit, page}
+ */
 
+/**
+ * 参数
+ * @type {{border: boolean, showIndex: boolean, pagination: boolean, stripe: boolean, highlightCurrentRow: boolean, radioSelect: boolean, mutiSelect: boolean}}
+ */
+const optionsDef = {
+  showIndex: true,
+  mutiSelect: false, // 多选
+  radioSelect: false, // 单选
+  border: true,
+  stripe: true, // 是否为斑马纹 table
+  highlightCurrentRow: true, // 是否支持当前行高亮显示
+  pagination: true
+}
 export default {
-  name: 'BaseTable',
+  // 组件
+  components: {
+    expandDom: {
+      functional: true,
+      props: {
+        row: Object,
+        render: Function,
+        index: Number,
+        column: {
+          type: Object,
+          default: null
+        }
+      },
+      render: (h, ctx) => { // 作用渲染视图，相当于template
+        const params = {
+          row: ctx.props.row,
+          index: ctx.props.index
+        }
+        if (ctx.props.column) params.column = ctx.props.column
+        return ctx.props.render(h, params)
+      }
+    }
+  },
+  filters: {
+    showValue(row, prop) {
+      if (!prop) return ''
+      if (~prop.indexOf('.')) {
+        const keyArr = prop.split('.')
+        let temp = row
+        let i = 0
+        while (keyArr.length) {
+          i++
+          const key = keyArr.splice(0, 1)
+          temp = temp[key]
+          if (!temp) return ''
+          // 超过100次循环直接返回空
+          if (i > 100) {
+            console.error('解析异常')
+            return ''
+          }
+        }
+        return temp
+      }
+      return row[prop]
+    }
+  },
   props: {
-    /** 是否扩展 */
-    expand: {
-      type: Boolean,
-      default: false
-    },
-    /** 表格api接口 */
-    api: {
-      type: Function,
-      default: null
-    },
-    /** 表格api接口 -  解析接口返回的数据。 */
-    parseData: {
-      type: Function,
-      default: null
-    },
-    /** 表格api接口 - 搜索条件 */
-    searchParams: {
-      type: Object,
-      default: () => {
-      }
-    },
-    /** 是否可多选 */
-    select: {
-      type: Boolean,
-      default: false
-    },
-    /** 多选框 可选条件 */
-    selectable: {
-      type: Function,
-      default: () => true
-    },
-    /** 是否展示序号 */
-    showIndex: {
-      type: Boolean,
-      default: false
-    },
-    /** 显示 【操作】 */
-    showControl: {
-      type: Boolean,
-      default: false
-    },
-    /** 操作栏 是否固定右侧 */
-    showControlFixed: {
-      type: Boolean,
-      default: true
-    },
-    /** 显示 【操作】 - 更改名称 */
-    controlName: {
-      type: String,
-      default: '操作'
-    },
-    /** 显示 【操作】 - 宽度 */
-    controlWidth: {
-      type: Number,
-      default: 160
-    },
-    loading: {
-      type: Boolean,
-      default: false
-    },
-    highlightCurrentRow: {
-      type: Boolean,
-      default: false
-    },
-    showSummary: {
-      type: Boolean,
-      defalut: false
-    },
-    summaryMethod: {
-      type: Function,
-      default: () => {
-      }
-    },
     data: {
       type: Array,
       default: () => []
-    },
-    config: {
+    }, // 数据列表
+    tableConfig: {
       type: Array,
       default: () => []
-    },
-    pageSizes: {
-      type: Array,
-      default: () => [10, 20, 30, 50]
-    },
-    layout: {
+    }, // 需要展示的列 === prop：列数据对应的属性，label：列名，align：对齐方式，width：列宽
+    tableOptions: {
+      type: Object,
+      default: () => (deepClone(optionsDef))
+    }, // table 表格的控制参数
+    pagination: {
+      type: Object,
+      default: () => {}
+    }, // 分页
+    align: {
       type: String,
-      default: 'total, sizes, prev, pager, next, jumper'
+      default: 'left'
     },
-    elementLoadingText: {
+    idKey: {
       type: String,
-      default: '加载中'
+      default: ''
     },
-    elementLoadingBackground: {
-      type: String,
-      default: 'rgba(255, 255, 255, 0.5)'
-    },
-    border: {
+    // 选中行是否高亮显示
+    highlight: {
       type: Boolean,
-      default: true
+      default: false
     },
-    tableStyle: {
-      type: String,
-      default: 'width: 100%'
-    },
-    paginationStyle: {
-      type: String,
-      default: 'marginTop:16px'
+    getList: {
+      type: Function
     }
   },
+  // 数据
   data() {
     return {
-      tableConfig: [],
-      selfTotal: 0,
-      selfPageSize: 10,
-      selfCurrentPage: 1,
-      selfLoading: true
+      operates: { list: [] },
+      radioRow: null,
+      pageIndex: 1,
+      multipleSelection: [] // 多行选中
     }
   },
   computed: {
-    ...mapGetters([
-      'mapConfig'
-    ])
+    options() {
+      return {
+        ...deepClone(optionsDef),
+        ...this.tableOptions
+      }
+    },
+    columnsComputed() {
+      const columns = deepClone(this.tableConfig)
+      return columns.filter(v => v.label).map(item => {
+        const { type, prop, aEnum: enums, format } = item
+        if (type === 'aEnum') {
+          item.formatter = (row, column, cellValue) => {
+            const item = enums.find(v => v.value === row[prop])
+            return item ? item.label : ''
+          }
+        } else if (type === 'time' || type === 'datetime') {
+          item.formatter = (row, column, cellValue) => parseTime(
+            row[prop],
+            format || '{y}-{m}-{d} {h}:{i}:{s}'
+          )
+        }
+        return item
+      })
+    }
   },
   watch: {
-    config() {
-      this.turnConfig()
+    radioRow(val) {
+      let row
+      if (val) {
+        row = this.data.find(v => v[this.idKey] === val)
+      }
+      this.$emit('handleRadioChange', row)
     }
+  },
+  created() {
+
   },
   mounted() {
-    if (this.api) {
-      this.fetchData()
-    }
-  },
-  beforeMount() {
-    this.turnConfig()
+
   },
   methods: {
-    turnConfig() {
-      const tableConfig = this.$copy(this.config)
-      tableConfig.forEach(configItem => {
-        if (configItem.type) {
-          switch (configItem.type) {
-            // eslint-disable-next-line no-lone-blocks
-            case 'enum': {
-              if (typeof configItem.enum === 'string') {
-                configItem.formatter = (row, column, cellValue) => {
-                  let res = cellValue
-                  if (!configItem.enum) {
-                    console.error(`列【${configItem.label} : ${configItem.prop}】,需要 【enum】字段`)
-                  } else {
-                    const enumArr = this.mapConfig[configItem.enum] || []
-                    if (!enumArr.length && Object.keys(this.mapConfig).length) {
-                      console.error(`枚举异常, 【${configItem.enum}】未配置`)
-                    }
-                    const temp = enumArr.find(v => v.value === this.$turnNumber(cellValue))
-                    if (temp) {
-                      res = temp.name
-                    } else {
-                      // console.error(`枚举异常, 在【${configItem.type}】下未找到相应枚举值【${cellValue}】`)
-                      res = ''
-                    }
-                  }
-                  return res
-                }
-              } else {
-                configItem.formatter = (row, column, cellValue) => {
-                  let res = cellValue
-                  if (!configItem.enum) {
-                    console.error(`列【${configItem.label} : ${configItem.prop}】,需要 【enum】字段`)
-                  } else {
-                    const temp = configItem.enum.find(v => v.value === this.$turnNumber(cellValue))
-                    if (temp) {
-                      res = temp.name
-                    } else {
-                      // console.error(`枚举异常, 在【${configItem.type}】下未找到相应枚举值【${cellValue}】`)
-                      res = ''
-                    }
-                  }
-                  return res
-                }
-              }
-            }
-              break
-            case 'enums':
-              configItem.formatter = (row, column, cellValue) => {
-                const enumArr = this.mapConfig[configItem.enum] || []
-                return cellValue.map(id => {
-                  const temp = enumArr.find(v => v.value === id)
-                  return temp && temp.name
-                }).filter(v => v).join('，')
-              }
-              break
-            case 'time':
-              configItem.formatter = (row, column, cellValue) => cellValue ? parseTime(new Date(cellValue), configItem.format || '{y}-{m}-{d} {h}:{i}') : ''
-              break
-            case 'Boolean':
-              configItem.formatter = (row, column, cellValue) => cellValue ? '是' : '否'
-              break
-            case 'index':
-              configItem.formatter = (row, column, cellValue, index) => (this.selfPageSize) * (this.selfCurrentPage - 1) + index + 1
-              break
-            case 'toFixed':
-              configItem.formatter = (row, column, cellValue) => cellValue && Number(Number(cellValue).toFixed(2))
-              break
-          }
-        } else if (configItem.dom) {
-          configItem.formatter = configItem.dom
-        } else {
-          configItem.formatter = (row, column, cellValue) => cellValue !== undefined && cellValue !== null && cellValue !== '' ? cellValue : ''
-        }
-      })
-      this.tableConfig = tableConfig
-    },
-    /** 展开或收拢 所有子表 */
-    toggleRowExpansionAll(expanded) {
-      this.data.forEach(item => {
-        this.$refs['table'].toggleRowExpansion(item, expanded)
-      })
-    },
-    /** 清除选中 */
-    clearSelection() {
-      this.$refs.table.clearSelection()
-    },
-    /** 输入框内容改变 */
-    handleInputNumberChange(row, index, item, value) {
-      this.$emit('inputNumberChange', { row, index, item, value })
-    },
-    /** 展开 行 */
-    handleExpandChange(row) {
-      this.$emit('expandChange', row)
-    },
-    fetchData() {
-      this.selfLoading = true
-      const temp = this.$copy(this.searchParams)
-      Object.keys(temp).forEach(key => {
-        if (temp[key] === undefined || temp[key] === '') {
-          delete temp[key]
-        }
-      })
-      return this.api({
-        _limit: this.selfPageSize,
-        _start: (this.selfCurrentPage - 1) * this.selfPageSize,
-        _sort: '_id:DESC',
-        ...temp
-      }).then(res => {
-        this.selfLoading = false
-        if (!res) return
-        let data
-        let total
-        if (this.parseData) {
-          const obj = this.parseData(res)
-          data = obj.data
-          total = obj.total
-        } else {
-          data = res.list || []
-          total = res.total
-        }
-        data.forEach(item => {
-          item._batchNoDetailLoading = false
-          item._batchNoDetail = null
-        })
-        this.$emit('update:data', data)
-        this.$emit('updateList')
-        this.selfTotal = total
-      })
-    },
-    handleSelfSizeChange(val) {
-      this.selfPageSize = val
-      this.fetchData()
-    },
-    handleSelfCurrentChange(val) {
-      this.selfCurrentPage = val
-      this.fetchData()
-    },
-    /** 单选 */
-    handleCurrentRadioChange(currentRow, oldCurrentRow) {
-      this.$emit('currentChange', currentRow, oldCurrentRow)
-    },
-    /** 多选 */
+    // 多行选中
     handleSelectionChange(val) {
-      this.$emit('selectionChange', val)
+      this.multipleSelection = val
+      this.$emit('handleSelectionChange', val)
+    },
+    // 排序方式修改
+    handleSortChange(val) {
+      this.$emit('handleSortChange', val)
+    },
+    handleRowClick(val) {
+      this.$emit('handleRowClick', val)
+      if (this.highlight) {
+        this.$store.dispatch('baseData/setHighlight', val)
+      }
+    },
+    handleSizeChange(size) {
+      this.radioRow = null
+      this.$emit('handleSizeChange', size)
+    },
+    /* 切换页码*/
+    handleIndexChange(current) {
+      this.radioRow = null
+      this.$emit('handleIndexChange', current)
     }
   }
 }
 </script>
-
-<style rel="stylesheet/scss" lang="scss">
-  .TableIndexCom {
-    td {
-      word-break: break-word;
-    }
-
-    .radio-table {
-      tbody {
-        tr {
-          cursor: pointer;
-        }
-      }
-    }
-  }
-
-  .ctabel {
-    width: 100%;
-
-    .el-radio__label {
-      display: none;
-    }
-  }
-</style>
-

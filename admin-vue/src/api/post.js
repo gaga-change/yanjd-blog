@@ -68,6 +68,10 @@ export async function postList(params) {
             title
             createdAt
             updatedAt
+            tags {
+              id
+              name
+            }
             createdBy {
               name
             }

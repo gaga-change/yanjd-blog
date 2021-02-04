@@ -29,18 +29,19 @@
 </template>
 <script>
 
-import BaseTablePro from '@/components/Base2/BaseTablePro'
+import BaseTablePro from '@/components/Base/BaseTablePro'
 import { postList, postCreate, postUpdate, postDelete } from '@/api/post'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import PostListControl from '@/components/ColModifyAndDel'
-import DateArea from '@/components/Base2/Input/DateArea'
+import DateArea from '@/components/Base/Input/DateArea'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },
   data() {
     const tableConfig = [
       { label: '标题', prop: 'title' },
+      { label: '标签', prop: 'tags' },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },

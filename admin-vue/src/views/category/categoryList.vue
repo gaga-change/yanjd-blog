@@ -29,12 +29,12 @@
 </template>
 <script>
 
-import BaseTablePro from '@/components/Base2/BaseTablePro'
+import BaseTablePro from '@/components/Base/BaseTablePro'
 import { categoryList, categoryCreate, categoryUpdate, categoryDelete } from '@/api/category'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import CategoryListControl from '@/components/ColModifyAndDel'
-import DateArea from '@/components/Base2/Input/DateArea'
+import DateArea from '@/components/Base/Input/DateArea'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },

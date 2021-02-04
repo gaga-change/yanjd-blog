@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-import BaseItem from '@/components/Base2/BaseItem'
+import BaseItem from '@/components/Base/BaseItem'
 import { deepClone } from '@/utils'
 
 const optionsDef = () => ({

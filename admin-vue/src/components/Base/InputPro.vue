@@ -4,12 +4,12 @@
 
 <script>
 import { DatePicker } from 'element-ui'
-import SelectEnum from '@/components/Base2/Input/SelectEnum'
-import DateTimeEnd from '@/components/Base2/Input/DateTimeEnd'
-import DateTimeStart from '@/components/Base2/Input/DateTimeStart'
-import RadioGroup from '@/components/Base2/Input/RadioGroup'
+import SelectEnum from '@/components/Base/Input/SelectEnum'
+import DateTimeEnd from '@/components/Base/Input/DateTimeEnd'
+import DateTimeStart from '@/components/Base/Input/DateTimeStart'
+import RadioGroup from '@/components/Base/Input/RadioGroup'
 import GlInput from '@/components/input/src/GlInput'
-import InputNumber from '@/components/Base2/Input/InputNumber'
+import InputNumber from '@/components/Base/Input/InputNumber'
 
 export default {
   props: {

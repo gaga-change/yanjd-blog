@@ -31,7 +31,7 @@
 <script>
 import { isEmptyString } from '@/utils/validateUtil'
 import { deepClone } from '@/utils'
-import BaseForm from '@/components/Base2/BaseForm'
+import BaseForm from '@/components/Base/BaseForm'
 import { pick } from 'lodash'
 export default {
   components: { BaseForm },

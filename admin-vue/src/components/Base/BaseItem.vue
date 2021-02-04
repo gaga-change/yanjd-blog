@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import InputPro from '@/components/Base2/InputPro'
+import InputPro from '@/components/Base/InputPro'
 
 export default {
   props: {
