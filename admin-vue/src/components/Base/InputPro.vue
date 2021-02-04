@@ -3,12 +3,11 @@
 </template>
 
 <script>
-import { DatePicker } from 'element-ui'
+import { DatePicker, Input } from 'element-ui'
 import SelectEnum from '@/components/Base/Input/SelectEnum'
 import DateTimeEnd from '@/components/Base/Input/DateTimeEnd'
 import DateTimeStart from '@/components/Base/Input/DateTimeStart'
 import RadioGroup from '@/components/Base/Input/RadioGroup'
-import GlInput from '@/components/input/src/GlInput'
 import InputNumber from '@/components/Base/Input/InputNumber'
 
 export default {
@@ -44,7 +43,7 @@ export default {
       const { type, dom } = this
       switch (type) {
         case 'input':
-          return GlInput
+          return Input
         case 'datetime':
           return DatePicker
         case 'date':
