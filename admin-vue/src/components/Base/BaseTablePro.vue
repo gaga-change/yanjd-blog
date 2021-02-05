@@ -80,7 +80,7 @@ export default {
     // 列表数据过滤器
     listDataFilter: {
       type: Function,
-      default: (res) => ({ list: res.data.items, total: res.data.total })
+      default: (res) => ({ list: res.list, total: res.total })
     },
     // 分页
     pagination: {
@@ -187,7 +187,6 @@ export default {
     getList() {
       this.tableLoading = true
       const { page, limit, ...query } = omit(this.listQuery, ['total'])
-      // console.log('排序： ', this.sortStr)
       this.fetchList({
         _limit: limit,
         _start: (page - 1) * limit,
@@ -207,8 +206,9 @@ export default {
           return omitBy(v, val => isNil(val) || val === '')
         })
       }).then(res => {
-        this.list = res.list
-        this.listQuery.total = res.total
+        const { list, total } = this.listDataFilter(res)
+        this.list = list
+        this.listQuery.total = total
         this.$emit('tableDataChange')
       }).finally(_ => {
         this.tableLoading = false

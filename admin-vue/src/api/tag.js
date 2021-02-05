@@ -89,3 +89,20 @@ export async function tagList(params) {
     }
   })
 }
+
+export async function tagListAll(params = {}) {
+  const { _start: start = 0, _sort: sort, ...filter } = params
+  return strapi.post('/graphql', {
+    variables: { start, sort, filter },
+    query: gql`
+      query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
+        tags(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          id
+          name
+        }
+      }
+    `.loc.source.body
+  }).then(res => {
+    return res.data['tags']
+  })
+}

@@ -5,6 +5,7 @@
       :table-config="tableConfig"
       :search-config="searchConfig"
       :table-options="tableOptions"
+      :list-data-filter="listDataFilter"
       md-name=""
       :fetch-list="postList"
       @handleModify="handleModify"
@@ -35,13 +36,15 @@ import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import PostListControl from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
+import SelectEnum from '@/components/Base/Input/SelectEnum'
+import CellTags from '@/components/Cell/CellTags'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },
   data() {
     const tableConfig = [
       { label: '标题', prop: 'title' },
-      { label: '标签', prop: 'tags' },
+      { label: '标签', prop: 'tags', type: 'dom', dom: CellTags },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
@@ -62,6 +65,7 @@ export default {
 
     temp.add({ label: '文章标题', prop: 'title' })
       .valid({ req: true, len: 10 })
+    temp.add({ label: '标签', prop: 'tags', type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true })
 
     const formConfig = temp.getFormConfig()
     const formRulesFun = self => temp.getFormRules({ mdName, self })
@@ -92,6 +96,16 @@ export default {
         this.$message.success('操作成功！')
         this.$refs['baseTablePro'].getList()
       }).catch(() => {})
+    },
+    listDataFilter(res) {
+      const { list, total } = res
+      return {
+        list: list.map(v => {
+          const tagArr = [...(v.tags || [])]
+          return { ...v, tagArr, tags: tagArr.map(v => v.id) }
+        }),
+        total
+      }
     }
   }
 }

@@ -2,6 +2,8 @@
   <el-select
     v-bind="$attrs"
     :clearable="true"
+    :loading="loading"
+    :multiple="multiple"
     v-on="$listeners"
   >
     <el-option
@@ -15,6 +17,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     aEnum: {
@@ -24,18 +27,38 @@ export default {
     enumKey: {
       type: String,
       default: ''
+    },
+    // 是否多选
+    multiple: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      loading: false
     }
   },
   computed: {
-    localEnum() {
+    enumOptions() {
       if (this.enumKey) {
-        return this.$store.state.aEnum[this.enumKey]
+        return this.$store.state.enumMap.enumMap[this.enumKey]
       } else {
         return this.aEnum
       }
-    },
-    enumOptions() {
-      return this.localEnum
+    }
+  },
+  created() {
+    this.init()
+  },
+  methods: {
+    init() {
+      if (this.enumKey) {
+        this.loading = true
+        this.$store.dispatch('enumMap/setEnum', { key: this.enumKey, init: true }).finally(_ => {
+          this.loading = false
+        })
+      }
     }
   }
 }
