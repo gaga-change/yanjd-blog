@@ -30,7 +30,7 @@
 <script>
 
 import BaseTablePro from '@/components/Base/BaseTablePro'
-import { tagList, tagCreate, tagUpdate, tagDelete } from '@/api/tag'
+import { tagProList as tagList, tagCreate, tagUpdate, tagDelete } from '@/api/tag'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import TagListControl from '@/components/ColModifyAndDel'
@@ -41,6 +41,7 @@ export default {
   data() {
     const tableConfig = [
       { label: '名称', prop: 'name' },
+      { label: '文章数量', prop: 'postCount' },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },

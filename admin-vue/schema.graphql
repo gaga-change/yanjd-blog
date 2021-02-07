@@ -10,6 +10,7 @@ type Category {
   createdBy: User
   id: String
   name: String
+  remark: String
   updatedAt: Float
   updatedBy: User
 }
@@ -67,6 +68,7 @@ type Permission {
   createdBy: User
   id: String
   name: String
+  remark: String
   roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
   type: Int
   updatedAt: Float
@@ -126,6 +128,7 @@ type Query {
   tag(id: ID!): Tag
   tags(limit: Int, sort: String, start: Int, where: JSON): [Tag]
   tagsConnection(limit: Int, sort: String, start: Int, where: JSON): TagConnection
+  tagsProConnection(limit: Int, sort: String, start: Int, where: JSON): TagProConnection
   user(id: ID!): User
   users(limit: Int, sort: String, start: Int, where: JSON): [User]
   usersConnection(limit: Int, sort: String, start: Int, where: JSON): UserConnection
@@ -137,6 +140,7 @@ type Role {
   id: String
   name: String
   permissions(limit: Int, sort: String, start: Int, where: JSON): [Permission]
+  remark: String
   updatedAt: Float
   updatedBy: User
   users(limit: Int, sort: String, start: Int, where: JSON): [User]
@@ -157,6 +161,7 @@ type Tag {
   id: String
   name: String
   posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
+  remark: String
   updatedAt: Float
   updatedBy: User
 }
@@ -170,6 +175,23 @@ type TagConnection {
   values: [Tag]
 }
 
+type TagPro {
+  createdAt: Float
+  createdBy: User
+  id: String
+  name: String
+  postCount: Int
+  posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
+  remark: String
+  updatedAt: Float
+  updatedBy: User
+}
+
+type TagProConnection {
+  aggregate: TagAggregator
+  values: [TagPro]
+}
+
 type User {
   createdAt: Float
   createdBy: User
@@ -177,6 +199,7 @@ type User {
   id: String
   name: String
   password: String
+  remark: String
   roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
   salt: String
   updatedAt: Float
@@ -293,6 +316,7 @@ input CategoryInput {
   createdAt: Float
   createdBy: String
   name: String
+  remark: String
   updatedAt: Float
   updatedBy: String
 }
@@ -305,6 +329,7 @@ input PermissionInput {
   createdAt: Float
   createdBy: String
   name: String
+  remark: String
   roles: [String]
   type: Int
   updatedAt: Float
@@ -333,6 +358,7 @@ input RoleInput {
   createdBy: String
   name: String
   permissions: [String]
+  remark: String
   updatedAt: Float
   updatedBy: String
   users: [String]
@@ -343,6 +369,7 @@ input TagInput {
   createdBy: String
   name: String
   posts: [String]
+  remark: String
   updatedAt: Float
   updatedBy: String
 }
@@ -353,6 +380,7 @@ input UserInput {
   email: String
   name: String
   password: String
+  remark: String
   roles: [String]
   salt: String
   updatedAt: Float
@@ -416,6 +444,7 @@ input editCategoryInput {
   createdAt: Float
   createdBy: String
   name: String
+  remark: String
   updatedAt: Float
   updatedBy: String
 }
@@ -424,6 +453,7 @@ input editPermissionInput {
   createdAt: Float
   createdBy: String
   name: String
+  remark: String
   roles: [String]
   type: Int
   updatedAt: Float
@@ -452,6 +482,7 @@ input editRoleInput {
   createdBy: String
   name: String
   permissions: [String]
+  remark: String
   updatedAt: Float
   updatedBy: String
   users: [String]
@@ -462,6 +493,7 @@ input editTagInput {
   createdBy: String
   name: String
   posts: [String]
+  remark: String
   updatedAt: Float
   updatedBy: String
 }
@@ -472,6 +504,7 @@ input editUserInput {
   email: String
   name: String
   password: String
+  remark: String
   roles: [String]
   salt: String
   updatedAt: Float
