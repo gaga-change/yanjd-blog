@@ -1,32 +1,40 @@
 <template>
   <div class="app-container">
-    <BaseTablePro
-      ref="baseTablePro"
-      :table-config="tableConfig"
-      :search-config="searchConfig"
-      :table-options="tableOptions"
-      :list-data-filter="listDataFilter"
-      :query-filter="queryFilter"
-      md-name=""
-      :fetch-list="postList"
-      @handleModify="handleModify"
-      @handleDelete="handleDelete"
-    >
-      <TableHeaderControls
-        slot="header"
-        slot-scope="scope"
-        :form-config="formConfig"
-        :form-rules-fun="formRulesFun"
-        :text-map="textMap"
-        :form-options="formOptions"
-        :create-api="postCreate"
-        :update-api="postUpdate"
-        :delete-api="handleDelete"
-        :visible.sync="dialogFormVisible"
-        v-bind="scope"
-        :modify-row.sync="modifyRow"
-      />
-    </BaseTablePro>
+    <template v-if="loading">
+      <div class="text-center">
+        <i class="el-icon-loading" />
+      </div>
+    </template>
+    <template v-else>
+      <BaseTablePro
+        ref="baseTablePro"
+        :table-config="tableConfig"
+        :search-config="searchConfig"
+        :table-options="tableOptions"
+        :list-data-filter="listDataFilter"
+        :query-filter="queryFilter"
+        md-name=""
+        :fetch-list="postList"
+        @handleModify="handleModify"
+        @handleDelete="handleDelete"
+      >
+        <TableHeaderControls
+          slot="header"
+          slot-scope="scope"
+          :form-config="formConfig"
+          :form-rules-fun="formRulesFun"
+          :text-map="textMap"
+          :form-options="formOptions"
+          :create-api="postCreate"
+          :update-api="postUpdate"
+          :delete-api="handleDelete"
+          :visible.sync="dialogFormVisible"
+          v-bind="scope"
+          :modify-row.sync="modifyRow"
+        />
+      </BaseTablePro>
+    </template>
+
   </div>
 </template>
 <script>
@@ -44,51 +52,75 @@ const tagIdFindQueryKey = 'TAG_FIND_ID_ARR'
 export default {
   components: { BaseTablePro, TableHeaderControls },
   data() {
-    const tableConfig = [
-      { label: '标题', prop: 'title' },
-      { label: '标签', prop: 'tags', type: 'dom', dom: CellTagsById },
-      // { label: '标签', prop: 'tagIds' },
-      { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
-      { label: '创建人', prop: 'createdBy.name' },
-      { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
-      { label: '修改人', prop: 'updatedBy.name' },
-      { label: '操作', prop: 'control', type: 'dom', dom: PostListControl }
-    ]
-    const searchConfig = [
-      { label: '名称', prop: 'name_contains' },
-      { label: '标签', prop: tagIdFindQueryKey, type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true },
-      { label: '创建时间', type: 'dom', dom: DateArea, prop: 'createdAt_between' },
-      { label: '修改时间', type: 'dom', dom: DateArea, prop: 'updatedAt_between' }
-    ]
-    const textMap = {
-      update: '编辑文章',
-      create: '新增文章'
-    }
-    const mdName = 'createPost'
-    const temp = new FormConfigFactory()
-
-    temp.add({ label: '文章标题', prop: 'title' })
-      .valid({ req: true, len: 10 })
-    temp.add({ label: '标签', prop: 'tags', type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true })
-
-    const formConfig = temp.getFormConfig()
-    const formRulesFun = self => temp.getFormRules({ mdName, self })
     return {
-      tableConfig,
-      searchConfig,
-      postList,
-      textMap,
+      loading: true,
+      tableConfig: null,
+      searchConfig: null,
+      textMap: null,
       formOptions: { labelWidth: '120px' },
       tableOptions: { mutiSelect: true },
-      formConfig,
-      formRulesFun,
+      formConfig: null,
+      formRulesFun: null,
+      postList,
       postCreate,
       postUpdate,
       dialogFormVisible: false,
       modifyRow: null
     }
   },
+  created() {
+    this.enumInit()
+  },
   methods: {
+    listInit() {
+      const query = this.$route.query
+      let tagsDef = query.tags || []
+      if (!Array.isArray(tagsDef)) {
+        tagsDef = [tagsDef]
+      }
+      // 过滤无效id
+      tagsDef = tagsDef.filter(id => this.$store.state.enumMap.enumMap.tags.find(v => v.value === id))
+      const tableConfig = [
+        { label: '标题', prop: 'title' },
+        { label: '标签', prop: 'tags', type: 'dom', dom: CellTagsById },
+        { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
+        { label: '创建人', prop: 'createdBy.name' },
+        { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
+        { label: '修改人', prop: 'updatedBy.name' },
+        { label: '操作', prop: 'control', type: 'dom', dom: PostListControl }
+      ]
+      const searchConfig = [
+        { label: '名称', prop: 'name_contains' },
+        { label: '标签', prop: tagIdFindQueryKey, type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true, default: tagsDef },
+        { label: '创建时间', type: 'dom', dom: DateArea, prop: 'createdAt_between' },
+        { label: '修改时间', type: 'dom', dom: DateArea, prop: 'updatedAt_between' }
+      ]
+      const textMap = {
+        update: '编辑文章',
+        create: '新增文章'
+      }
+      const mdName = 'createPost'
+      const temp = new FormConfigFactory()
+
+      temp.add({ label: '文章标题', prop: 'title' })
+        .valid({ req: true, len: 10 })
+      temp.add({ label: '标签', prop: 'tags', type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true })
+
+      const formConfig = temp.getFormConfig()
+      const formRulesFun = self => temp.getFormRules({ mdName, self })
+      this.tableConfig = tableConfig
+      this.searchConfig = searchConfig
+      this.textMap = textMap
+      this.formConfig = formConfig
+      this.formRulesFun = formRulesFun
+    },
+    enumInit() {
+      this.loading = true
+      return this.$store.dispatch('enumMap/setEnum', { key: this.enumKey, init: true }).finally(_ => {
+        this.listInit()
+        this.loading = false
+      })
+    },
     handleModify(row) {
       this.modifyRow = row
       this.dialogFormVisible = true
