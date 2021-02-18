@@ -104,6 +104,10 @@ export default {
     fetchList: {
       type: Function,
       default: () => ({ list: [], total: 0 })
+    },
+    queryFilter: {
+      type: Function,
+      default: () => null
     }
   },
   data() {
@@ -187,11 +191,13 @@ export default {
     getList() {
       this.tableLoading = true
       const { page, limit, ...query } = omit(this.listQuery, ['total'])
+      // 支持自定义修改查询条件
+      const newQuery = this.queryFilter(query)
       this.fetchList({
         _limit: limit,
         _start: (page - 1) * limit,
         _sort: this.sortStr,
-        ...cloneDeepWith(query, obj => {
+        ...cloneDeepWith(newQuery || query, obj => {
           const v = { ...obj }
           Object.keys(v).forEach(key => {
             // 对 _between解析 解析为大于小于

@@ -93,3 +93,38 @@ export async function postList(params) {
     }
   })
 }
+
+export async function postProList(params) {
+  const { _limit: limit, _start: start, _sort: sort, ...filter } = params
+  return strapi.post('/graphql', {
+    variables: { start, limit, sort, filter },
+    query: gql`
+      query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
+        postsProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          values {
+            id
+            title
+            createdAt
+            updatedAt
+            tagIds
+            createdBy {
+              name
+            }
+            updatedBy {
+              name
+            }
+          },
+          aggregate {
+            count
+          }
+        }
+      }
+    `.loc.source.body
+  }).then(res => {
+    const { values, aggregate } = res.data['postsProConnection']
+    return {
+      list: values,
+      total: aggregate.count
+    }
+  })
+}

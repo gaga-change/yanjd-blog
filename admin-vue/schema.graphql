@@ -111,6 +111,33 @@ type PostConnection {
   values: [Post]
 }
 
+type PostPro {
+  category: Category
+  createdAt: Float
+  createdBy: User
+  html: String
+  id: String
+  intro: String
+  markdown: String
+  mdRender: Int
+  readTime: Int
+  releaseDate: Float
+  show: Int
+  tagIds: String
+  title: String
+  updatedAt: Float
+  updatedBy: User
+}
+
+type PostProAggregator {
+  count: Int
+}
+
+type PostProConnection {
+  aggregate: PostProAggregator
+  values: [PostPro]
+}
+
 type Query {
   categories(limit: Int, sort: String, start: Int, where: JSON): [Category]
   categoriesConnection(limit: Int, sort: String, start: Int, where: JSON): CategoryConnection
@@ -122,6 +149,7 @@ type Query {
   post(id: ID!): Post
   posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
   postsConnection(limit: Int, sort: String, start: Int, where: JSON): PostConnection
+  postsProConnection(limit: Int, sort: String, start: Int, where: JSON): PostProConnection
   role(id: ID!): Role
   roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
   rolesConnection(limit: Int, sort: String, start: Int, where: JSON): RoleConnection

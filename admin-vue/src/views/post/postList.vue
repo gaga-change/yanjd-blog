@@ -6,6 +6,7 @@
       :search-config="searchConfig"
       :table-options="tableOptions"
       :list-data-filter="listDataFilter"
+      :query-filter="queryFilter"
       md-name=""
       :fetch-list="postList"
       @handleModify="handleModify"
@@ -31,20 +32,22 @@
 <script>
 
 import BaseTablePro from '@/components/Base/BaseTablePro'
-import { postList, postCreate, postUpdate, postDelete } from '@/api/post'
+import { postProList as postList, postCreate, postUpdate, postDelete } from '@/api/post'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import PostListControl from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
 import SelectEnum from '@/components/Base/Input/SelectEnum'
-import CellTags from '@/components/Cell/CellTags'
+import CellTagsById from '@/components/Cell/CellTagsById'
 
+const tagIdFindQueryKey = 'TAG_FIND_ID_ARR'
 export default {
   components: { BaseTablePro, TableHeaderControls },
   data() {
     const tableConfig = [
       { label: '标题', prop: 'title' },
-      { label: '标签', prop: 'tags', type: 'dom', dom: CellTags },
+      { label: '标签', prop: 'tags', type: 'dom', dom: CellTagsById },
+      // { label: '标签', prop: 'tagIds' },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
@@ -53,6 +56,7 @@ export default {
     ]
     const searchConfig = [
       { label: '名称', prop: 'name_contains' },
+      { label: '标签', prop: tagIdFindQueryKey, type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true },
       { label: '创建时间', type: 'dom', dom: DateArea, prop: 'createdAt_between' },
       { label: '修改时间', type: 'dom', dom: DateArea, prop: 'updatedAt_between' }
     ]
@@ -96,6 +100,19 @@ export default {
         this.$message.success('操作成功！')
         this.$refs['baseTablePro'].getList()
       }).catch(() => {})
+    },
+    queryFilter(query) {
+      // 标签多选查询条件处理
+      const tagIds = query[tagIdFindQueryKey]
+      if (tagIds && tagIds.length > 1) {
+        query['and'] = tagIds.map(id => {
+          return { tagIds_contains: id }
+        })
+      } else if (tagIds && tagIds.length === 1) {
+        query['tagIds_contains'] = tagIds[0]
+      }
+      delete query[tagIdFindQueryKey]
+      return query
     },
     listDataFilter(res) {
       const { list, total } = res
