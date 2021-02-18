@@ -137,7 +137,7 @@ export default {
       this.$refs['formPanel'].$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = deepClone(this.temp)
-          this.updateApi && this.updateApi(tempData.id, pick(tempData, ['title', 'tags'])).then(() => {
+          this.updateApi && this.updateApi(tempData.id, pick(tempData, this.formConfig.map(v => v.prop))).then(() => {
             this.getList()
             this.close()
             this.$notify({
