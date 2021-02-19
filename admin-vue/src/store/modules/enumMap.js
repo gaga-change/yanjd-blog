@@ -9,25 +9,26 @@ const fetchEnumFun = {
 }
 
 const state = {
-  enumMap: {
-    tags: []
-  }
+  tags: []
 }
 
 const mutations = {
   SET_ENUM: (state, options) => {
     const { key, values } = options
-    state.enumMap[key] = values
+    state[key] = values
   }
 }
 
 const actions = {
+  /**
+   *  设置全局字典
+   */
   async setEnum({ commit, state }, { key, values = [], init = false } = {}) {
     if (!key) return
     if (values && values.length) {
       commit('SET_ENUM', { key, values })
     }
-    if (init && state.enumMap[key] && state.enumMap[key].length) { // 初始化，如果有值 不做处理
+    if (init && state[key] && state[key].length) { // 初始化，如果有值 不做处理
       return
     }
     // 如果有异步获取枚举方法，则调用

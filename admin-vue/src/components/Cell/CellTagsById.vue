@@ -51,7 +51,7 @@ export default {
       }
     },
     tagsEnum() {
-      return this.$store.state.enumMap.enumMap.tags || []
+      return this.$store.state.enumMap.tags || []
     }
   },
   created() {

@@ -42,7 +42,7 @@ export default {
   computed: {
     enumOptions() {
       if (this.enumKey) {
-        return this.$store.state.enumMap.enumMap[this.enumKey]
+        return this.$store.state.enumMap[this.enumKey]
       } else {
         return this.aEnum
       }

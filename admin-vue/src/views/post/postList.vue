@@ -79,7 +79,7 @@ export default {
         tagsDef = [tagsDef]
       }
       // 过滤无效id
-      tagsDef = tagsDef.filter(id => this.$store.state.enumMap.enumMap.tags.find(v => v.value === id))
+      tagsDef = tagsDef.filter(id => this.$store.state.enumMap.tags.find(v => v.value === id))
       const tableConfig = [
         { label: '标题', prop: 'title' },
         { label: '标签', prop: 'tags', type: 'dom', dom: CellTagsById },

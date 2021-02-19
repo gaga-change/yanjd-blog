@@ -1,6 +1,6 @@
 import strapi from '@/utils/strapi'
 import gql from 'graphql-tag'
-
+import store from '@/store'
 export function tagCreate(data) {
   return strapi.post('/graphql', {
     variables: { tag: data },
@@ -15,6 +15,9 @@ export function tagCreate(data) {
         }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'tags' })
+    return res
   })
 }
 
@@ -35,6 +38,9 @@ export function tagDelete(id) {
 }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'tags' })
+    return res
   })
 }
 
@@ -53,6 +59,9 @@ export function tagUpdate(id, data) {
         }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'tags' })
+    return res
   })
 }
 
