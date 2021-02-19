@@ -33,7 +33,7 @@ import BaseTablePro from '@/components/Base/BaseTablePro'
 import { permissionList, permissionCreate, permissionUpdate, permissionDelete } from '@/api/permission'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
-import PermissionListControl from '@/components/ColModifyAndDel'
+import ColModifyAndDel from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
 
 export default {
@@ -45,7 +45,7 @@ export default {
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '修改人', prop: 'updatedBy.name' },
-      { label: '操作', prop: 'control', type: 'dom', dom: PermissionListControl }
+      { label: '操作', prop: 'control', type: 'dom', dom: ColModifyAndDel, fixed: 'right' }
     ]
     const searchConfig = [
       { label: '名称', prop: 'name_contains' },
