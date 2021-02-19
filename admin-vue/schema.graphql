@@ -112,7 +112,7 @@ type PostConnection {
 }
 
 type PostPro {
-  category: Category
+  category: String
   createdAt: Float
   createdBy: User
   html: String

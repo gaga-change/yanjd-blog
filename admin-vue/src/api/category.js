@@ -1,5 +1,6 @@
 import strapi from '@/utils/strapi'
 import gql from 'graphql-tag'
+import store from '@/store'
 
 export function categoryCreate(data) {
   return strapi.post('/graphql', {
@@ -15,6 +16,9 @@ export function categoryCreate(data) {
         }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'categories' })
+    return res
   })
 }
 
@@ -35,6 +39,9 @@ export function categoryDelete(id) {
 }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'categories' })
+    return res
   })
 }
 
@@ -53,6 +60,9 @@ export function categoryUpdate(id, data) {
         }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'categories' })
+    return res
   })
 }
 
@@ -87,5 +97,22 @@ export async function categoryList(params) {
       list: values,
       total: aggregate.count
     }
+  })
+}
+
+export async function categoryListAll(params = {}) {
+  const { _start: start = 0, _sort: sort, ...filter } = params
+  return strapi.post('/graphql', {
+    variables: { start, sort, filter },
+    query: gql`
+      query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
+        categories(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          id
+          name
+        }
+      }
+    `.loc.source.body
+  }).then(res => {
+    return res.data['categories']
   })
 }

@@ -47,6 +47,7 @@ import ColModifyAndDel from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
 import SelectEnum from '@/components/Base/Input/SelectEnum'
 import CellTagsById from '@/components/Cell/CellTagsById'
+import CellEnum from '@/components/Cell/CellEnum'
 
 const tagIdFindQueryKey = 'TAG_FIND_ID_ARR'
 export default {
@@ -82,6 +83,7 @@ export default {
       tagsDef = tagsDef.filter(id => this.$store.state.enumMap.tags.find(v => v.value === id))
       const tableConfig = [
         { label: '标题', prop: 'title' },
+        { label: '分类', prop: 'category', type: 'dom', dom: CellEnum, enumKey: 'categories' },
         { label: '标签', prop: 'tags', type: 'dom', dom: CellTagsById },
         { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
         { label: '创建人', prop: 'createdBy.name' },
@@ -105,6 +107,7 @@ export default {
       temp.add({ label: '文章标题', prop: 'title' })
         .valid({ req: true, len: 10 })
       temp.add({ label: '标签', prop: 'tags', type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true })
+      temp.add({ label: '分类', prop: 'category', type: 'dom', dom: SelectEnum, enumKey: 'categories' })
 
       const formConfig = temp.getFormConfig()
       const formRulesFun = self => temp.getFormRules({ mdName, self })
