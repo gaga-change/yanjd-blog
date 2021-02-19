@@ -93,6 +93,7 @@ export default {
       ]
       const searchConfig = [
         { label: '名称', prop: 'name_contains' },
+        { label: '分类', prop: 'category', type: 'dom', dom: SelectEnum, enumKey: 'categories', multiple: false, default: null },
         { label: '标签', prop: tagIdFindQueryKey, type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true, default: tagsDef },
         { label: '创建时间', type: 'dom', dom: DateArea, prop: 'createdAt_between' },
         { label: '修改时间', type: 'dom', dom: DateArea, prop: 'updatedAt_between' }
