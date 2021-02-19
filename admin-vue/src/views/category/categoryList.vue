@@ -30,17 +30,19 @@
 <script>
 
 import BaseTablePro from '@/components/Base/BaseTablePro'
-import { categoryList, categoryCreate, categoryUpdate, categoryDelete } from '@/api/category'
+import { categoryProList as categoryList, categoryCreate, categoryUpdate, categoryDelete } from '@/api/category'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import ColModifyAndDel from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
+import ColPostLink from '@/views/category/components/ColPostLink'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },
   data() {
     const tableConfig = [
       { label: '名称', prop: 'name' },
+      { label: '文章数量', prop: 'postCount', type: 'dom', dom: ColPostLink },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },

@@ -79,6 +79,9 @@ export default {
       if (!Array.isArray(tagsDef)) {
         tagsDef = [tagsDef]
       }
+      // 设置默认分类搜索条件
+      const category = this.$store.state.enumMap.categories.find(v => v.value === query.category)
+      const categoryId = category ? category.value : undefined
       // 过滤无效id
       tagsDef = tagsDef.filter(id => this.$store.state.enumMap.tags.find(v => v.value === id))
       const tableConfig = [
@@ -93,7 +96,7 @@ export default {
       ]
       const searchConfig = [
         { label: '名称', prop: 'name_contains' },
-        { label: '分类', prop: 'category', type: 'dom', dom: SelectEnum, enumKey: 'categories', multiple: false, default: null },
+        { label: '分类', prop: 'category', type: 'dom', dom: SelectEnum, enumKey: 'categories', multiple: false, default: categoryId },
         { label: '标签', prop: tagIdFindQueryKey, type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true, default: tagsDef },
         { label: '创建时间', type: 'dom', dom: DateArea, prop: 'createdAt_between' },
         { label: '修改时间', type: 'dom', dom: DateArea, prop: 'updatedAt_between' }
@@ -120,9 +123,11 @@ export default {
     },
     enumInit() {
       this.loading = true
-      return this.$store.dispatch('enumMap/setEnum', { key: this.enumKey, init: true }).finally(_ => {
-        this.listInit()
-        this.loading = false
+      return this.$store.dispatch('enumMap/setEnum', { key: 'tags', init: true }).finally(_ => {
+        this.$store.dispatch('enumMap/setEnum', { key: 'categories', init: true }).finally(_ => {
+          this.listInit()
+          this.loading = false
+        })
       })
     },
     handleModify(row) {

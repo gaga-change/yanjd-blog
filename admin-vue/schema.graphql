@@ -24,6 +24,26 @@ type CategoryConnection {
   values: [Category]
 }
 
+type CategoryPro {
+  createdAt: Float
+  createdBy: User
+  id: String
+  name: String
+  postCount: Int
+  remark: String
+  updatedAt: Float
+  updatedBy: User
+}
+
+type CategoryProAggregator {
+  count: Int
+}
+
+type CategoryProConnection {
+  aggregate: CategoryProAggregator
+  values: [CategoryPro]
+}
+
 type Me {
   avatar: String
   email: String
@@ -142,6 +162,7 @@ type Query {
   categories(limit: Int, sort: String, start: Int, where: JSON): [Category]
   categoriesConnection(limit: Int, sort: String, start: Int, where: JSON): CategoryConnection
   category(id: ID!): Category
+  categoryProConnection(limit: Int, sort: String, start: Int, where: JSON): CategoryProConnection
   me: Me
   permission(id: ID!): Permission
   permissions(limit: Int, sort: String, start: Int, where: JSON): [Permission]
