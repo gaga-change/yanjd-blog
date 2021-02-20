@@ -98,7 +98,6 @@ export async function tagList(params) {
     }
   })
 }
-
 export async function tagProList(params) {
   const { _limit: limit, _start: start, _sort: sort, ...filter } = params
   return strapi.post('/graphql', {
@@ -130,6 +129,29 @@ export async function tagProList(params) {
     return {
       list: values,
       total: aggregate.count
+    }
+  })
+}
+
+export async function tagProCharData(params) {
+  const { _limit: limit, _start: start, _sort: sort, ...filter } = params
+  return strapi.post('/graphql', {
+    variables: { start, limit, sort, filter },
+    query: gql`
+      query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
+        tagsProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          values {
+            id
+            name
+            postCount
+          }
+        }
+      }
+    `.loc.source.body
+  }).then(res => {
+    const { values } = res.data['tagsProConnection']
+    return {
+      list: values
     }
   })
 }

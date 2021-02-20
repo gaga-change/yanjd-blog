@@ -136,6 +136,29 @@ export async function categoryProList(params) {
   })
 }
 
+export async function categoryProChartData(params) {
+  const { _limit: limit, _start: start, _sort: sort, ...filter } = params
+  return strapi.post('/graphql', {
+    variables: { start, limit, sort, filter },
+    query: gql`
+      query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
+        categoryProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          values {
+            id
+            name
+            postCount
+          }
+        }
+      }
+    `.loc.source.body
+  }).then(res => {
+    const { values } = res.data['categoryProConnection']
+    return {
+      list: values
+    }
+  })
+}
+
 export async function categoryListAll(params = {}) {
   const { _start: start = 0, _sort: sort, ...filter } = params
   return strapi.post('/graphql', {
