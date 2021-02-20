@@ -66,6 +66,7 @@ export async function userList(params) {
           values {
             id
             name
+            avatar
             createdAt
             updatedAt
             createdBy {

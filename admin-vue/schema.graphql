@@ -242,6 +242,7 @@ type TagProConnection {
 }
 
 type User {
+  avatar: String
   createdAt: Float
   createdBy: User
   email: String
@@ -424,6 +425,7 @@ input TagInput {
 }
 
 input UserInput {
+  avatar: String
   createdAt: Float
   createdBy: String
   email: String
@@ -548,6 +550,7 @@ input editTagInput {
 }
 
 input editUserInput {
+  avatar: String
   createdAt: Float
   createdBy: String
   email: String

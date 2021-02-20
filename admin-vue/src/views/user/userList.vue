@@ -35,12 +35,15 @@ import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import ColModifyAndDel from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
+import AvatarUpload from '@/views/user/components/AvatarUpload'
+import ColAvatar from '@/views/user/components/ColAvatar'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },
   data() {
     const tableConfig = [
       { label: '名称', prop: 'name' },
+      { label: '头像', prop: 'avatar', type: 'dom', dom: ColAvatar },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
@@ -61,6 +64,7 @@ export default {
 
     temp.add({ label: '用户名称', prop: 'name' })
       .valid({ req: true, len: 10 })
+    temp.add({ label: '头像', prop: 'avatar', type: 'dom', dom: AvatarUpload })
 
     const formConfig = temp.getFormConfig()
     const formRulesFun = self => temp.getFormRules({ mdName, self })

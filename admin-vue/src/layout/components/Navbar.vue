@@ -1,13 +1,11 @@
 <template>
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
     <breadcrumb class="breadcrumb-container" />
-
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click" size="middle">
         <div class="avatar-wrapper">
-          <img alt="avatar" :src="avatarPath" class="user-avatar">
+          <img :alt="name" :src="avatarPath" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -33,6 +31,8 @@ import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import { sendRestPwdEmail } from '@/api/auth'
+import defImg from '@/assets/img/avatar_default.png'
+
 export default {
   components: {
     Breadcrumb,
@@ -41,10 +41,11 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'name'
     ]),
     avatarPath() {
-      return this.avatar + '?imageView2/1/w/80/h/80'
+      return this.avatar || defImg
     }
   },
   methods: {
