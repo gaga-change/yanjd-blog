@@ -42,7 +42,7 @@ export default {
   data() {
     const tableConfig = [
       { label: '名称', prop: 'name' },
-      { label: '文章数量', prop: 'postCount', type: 'dom', dom: ColPostLink },
+      { label: '文章数量', prop: 'postCount', type: 'dom', dom: ColPostLink, sortable: 'custom' },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
