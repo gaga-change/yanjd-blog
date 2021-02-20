@@ -3,6 +3,7 @@
     <input ref="file" class="file" type="file" accept="image/*" @change="handleFileChange">
     <img v-if="value" :src="value" alt="">
     <i v-else class="el-icon-plus" />
+    <i v-if="value" class="el-icon-close close" @click="clear" />
   </div>
 </template>
 <script>
@@ -50,6 +51,9 @@ export default {
       const ctx = canvas.getContext('2d')
       ctx.drawImage(img, 0, 0, 60, 60)
       return canvas.toDataURL('image/png')
+    },
+    clear() {
+      this.$emit('input', '')
     }
   }
 }
@@ -67,6 +71,22 @@ export default {
     i {
       font-size: 24px;
       color: #999;
+    }
+    .close {
+      $w: 18px;
+      text-align: center;
+      position: absolute;
+      top: -$w / 2;
+      right: -$w /2;
+      color: #F56C6C;
+      width: $w;
+      height: $w;
+      font-size: 15px;
+      border: 1px solid #F56C6C;
+      border-radius: $w/2;
+      z-index: 6;
+      line-height: $w;
+      cursor: pointer;
     }
   }
 
