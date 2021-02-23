@@ -9,6 +9,7 @@
       :stripe="options.stripe"
       :highlight-current-row="highlight"
       :default-sort="{prop: 'createdAt', order: 'descending'}"
+      @cell-click="handleCellClick"
       @row-click="handleRowClick"
       @selection-change="handleSelectionChange"
       @sort-change="handleSortChange"
@@ -269,6 +270,9 @@ export default {
     // 排序方式修改
     handleSortChange(val) {
       this.$emit('handleSortChange', val)
+    },
+    handleCellClick(...args) {
+      this.$emit('handleCellClick', args)
     },
     handleRowClick(val) {
       this.$emit('handleRowClick', val)

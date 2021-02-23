@@ -7,8 +7,10 @@
       :table-options="tableOptions"
       md-name=""
       :fetch-list="permissionList"
+      @handleCellClick="handleCellClick	"
       @handleModify="handleModify"
       @handleDelete="handleDelete"
+      @handleEditCell="handleEditCell"
     >
       <TableHeaderControls
         slot="header"
@@ -35,13 +37,14 @@ import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import ColModifyAndDel from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
+import CellInput from '@/components/Cell/CellInput'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },
   data() {
     const tableConfig = [
       { label: '名称', prop: 'name' },
-      { label: '描述', prop: 'remark' },
+      { label: '描述', prop: 'remark', type: 'dom', dom: CellInput, width: 200 },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
@@ -50,6 +53,7 @@ export default {
     ]
     const searchConfig = [
       { label: '名称', prop: 'name_contains' },
+      { label: '描述', prop: 'remark_contains' },
       { label: '创建时间', type: 'dom', dom: DateArea, prop: 'createdAt_between' },
       { label: '修改时间', type: 'dom', dom: DateArea, prop: 'updatedAt_between' }
     ]
@@ -93,6 +97,17 @@ export default {
         this.$message.success('操作成功！')
         this.$refs['baseTablePro'].getList()
       }).catch(() => {})
+    },
+    // 修改单元格
+    handleEditCell({ prop, value, row }) {
+      console.log(prop, value)
+      permissionUpdate(row.id, { [prop]: value })
+      this.$refs['baseTablePro'].getList()
+    },
+    handleCellClick(args) {
+      // 手动触发可编辑单元格组件的点击事件
+      const dom = args[2].querySelector('.CellInput')
+      dom && dom.click()
     }
   }
 }
