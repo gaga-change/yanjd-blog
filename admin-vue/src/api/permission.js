@@ -68,6 +68,7 @@ export async function permissionList(params) {
             name
             createdAt
             updatedAt
+            remark
             createdBy {
               name
             }
