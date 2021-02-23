@@ -39,6 +39,7 @@ import DateArea from '@/components/Base/Input/DateArea'
 import AvatarUpload from '@/views/user/components/AvatarUpload'
 import ColAvatar from '@/views/user/components/ColAvatar'
 import CellEnums from '@/components/Cell/CellEnums'
+import SelectEnum from '@/components/Base/Input/SelectEnum'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },
@@ -67,6 +68,7 @@ export default {
 
     temp.add({ label: '用户名称', prop: 'name' })
       .valid({ req: true, len: 10 })
+    temp.add({ label: '角色', prop: 'roles', type: 'dom', dom: SelectEnum, enumKey: 'roles', multiple: true })
     temp.add({ label: '头像', prop: 'avatar', type: 'dom', dom: AvatarUpload })
 
     const formConfig = temp.getFormConfig()
