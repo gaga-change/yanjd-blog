@@ -41,6 +41,7 @@ export default {
   data() {
     const tableConfig = [
       { label: '名称', prop: 'name' },
+      { label: '备注', prop: 'remark' },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
@@ -61,6 +62,7 @@ export default {
 
     temp.add({ label: '角色名称', prop: 'name' })
       .valid({ req: true, len: 10 })
+    temp.add({ label: '备注', prop: 'remark' })
 
     const formConfig = temp.getFormConfig()
     const formRulesFun = self => temp.getFormRules({ mdName, self })

@@ -276,7 +276,7 @@ type UserPro {
   name: String
   password: String
   remark: String
-  roleIds: String
+  roles: [String]
   salt: String
   updatedAt: Float
   updatedBy: User

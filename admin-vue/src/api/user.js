@@ -72,6 +72,42 @@ export function userResetPassword(id) {
   })
 }
 
+export async function userProList(params) {
+  const { _limit: limit, _start: start, _sort: sort, ...filter } = params
+  return strapi.post('/graphql', {
+    variables: { start, limit, sort, filter },
+    query: gql`
+      query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
+        userProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          values {
+            id
+            name
+            avatar
+            createdAt
+            updatedAt
+            createdBy {
+              name
+            }
+            updatedBy {
+              name
+            }
+            roles
+          },
+          aggregate {
+            count
+          }
+        }
+      }
+    `.loc.source.body
+  }).then(res => {
+    const { values, aggregate } = res.data['userProConnection']
+    return {
+      list: values,
+      total: aggregate.count
+    }
+  })
+}
+
 export async function userList(params) {
   const { _limit: limit, _start: start, _sort: sort, ...filter } = params
   return strapi.post('/graphql', {

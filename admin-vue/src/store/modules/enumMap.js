@@ -1,5 +1,6 @@
 import { tagListAll } from '@/api/tag'
 import { categoryListAll } from '@/api/category'
+import { roleListAll } from '@/api/role'
 
 const fetchEnumFun = {
   tags({ commit }) {
@@ -11,12 +12,18 @@ const fetchEnumFun = {
     return categoryListAll().then(data => {
       commit('SET_ENUM', { key: 'categories', values: data.map(v => ({ label: v.name, value: v.id })) })
     })
+  },
+  roles({ commit }) {
+    return roleListAll().then(data => {
+      commit('SET_ENUM', { key: 'roles', values: data.map(v => ({ label: v.name, value: v.id })) })
+    })
   }
 }
 
 const state = {
   tags: [],
-  categories: []
+  categories: [],
+  roles: []
 }
 
 const mutations = {

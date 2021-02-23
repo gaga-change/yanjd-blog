@@ -38,7 +38,6 @@ export default {
         return []
       } else {
         const ids = this.row[this.prop]
-        console.log(this.prop, JSON.stringify(this.row))
         if (ids && ids.length) {
           return ids.map(id => {
             const temp = this.enumArr.find(v => id === v.value)

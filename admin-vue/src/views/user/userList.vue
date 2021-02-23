@@ -31,13 +31,14 @@
 <script>
 
 import BaseTablePro from '@/components/Base/BaseTablePro'
-import { userList, userCreate, userUpdate, userDelete, userResetPassword } from '@/api/user'
+import { userProList as userList, userCreate, userUpdate, userDelete, userResetPassword } from '@/api/user'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import ColModifyAndDel from './components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
 import AvatarUpload from '@/views/user/components/AvatarUpload'
 import ColAvatar from '@/views/user/components/ColAvatar'
+import CellEnums from '@/components/Cell/CellEnums'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },
@@ -45,6 +46,7 @@ export default {
     const tableConfig = [
       { label: '名称', prop: 'name' },
       { label: '头像', prop: 'avatar', type: 'dom', dom: ColAvatar },
+      { label: '角色', prop: 'roles', type: 'dom', dom: CellEnums, enumKey: 'roles' },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
