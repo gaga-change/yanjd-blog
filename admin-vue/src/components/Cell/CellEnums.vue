@@ -1,7 +1,7 @@
 <template>
   <span>
     <template v-if="!loading">
-      <el-tag v-for="temp in tagArr || []" :key="temp.id" type="primary" class="mr5">
+      <el-tag v-for="temp in objArr || []" :key="temp.id" type="primary" class="mr5">
         {{ temp.name }}
       </el-tag>
     </template>
@@ -17,6 +17,14 @@ export default {
     row: {
       type: Object,
       required: true
+    },
+    enumKey: {
+      type: String,
+      required: true
+    },
+    prop: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -25,14 +33,15 @@ export default {
     }
   },
   computed: {
-    tagArr() {
+    objArr() {
       if (this.loading) {
         return []
       } else {
-        const tagIds = this.row.tagIds
-        if (tagIds) {
-          return tagIds.split(',').map(id => {
-            const temp = this.tagsEnum.find(v => id === v.value)
+        const ids = this.row[this.prop]
+        console.log(this.prop, JSON.stringify(this.row))
+        if (ids && ids.length) {
+          return ids.map(id => {
+            const temp = this.enumArr.find(v => id === v.value)
             if (temp) {
               return {
                 name: temp.label,
@@ -50,8 +59,8 @@ export default {
         }
       }
     },
-    tagsEnum() {
-      return this.$store.state.enumMap.tags || []
+    enumArr() {
+      return this.$store.state.enumMap[this.enumKey] || []
     }
   },
   created() {
@@ -60,7 +69,7 @@ export default {
   methods: {
     init() {
       this.loading = true
-      this.$store.dispatch('enumMap/setEnum', { key: 'tags', init: true }).finally(_ => {
+      this.$store.dispatch('enumMap/setEnum', { key: this.enumKey, init: true }).finally(_ => {
         this.loading = false
       })
     }

@@ -106,7 +106,7 @@ export async function postProList(params) {
             title
             createdAt
             updatedAt
-            tagIds
+            tags
             category
             createdBy {
               name

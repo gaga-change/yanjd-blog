@@ -11,7 +11,6 @@
         :table-config="tableConfig"
         :search-config="searchConfig"
         :table-options="tableOptions"
-        :list-data-filter="listDataFilter"
         :query-filter="queryFilter"
         md-name=""
         :fetch-list="postList"
@@ -46,7 +45,7 @@ import TableHeaderControls from '@/components/TableHeaderControls'
 import ColModifyAndDel from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
 import SelectEnum from '@/components/Base/Input/SelectEnum'
-import CellTagsById from '@/components/Cell/CellTagsById'
+import CellEnums from '@/components/Cell/CellEnums'
 import CellEnum from '@/components/Cell/CellEnum'
 
 const tagIdFindQueryKey = 'TAG_FIND_ID_ARR'
@@ -87,7 +86,7 @@ export default {
       const tableConfig = [
         { label: '标题', prop: 'title' },
         { label: '分类', prop: 'category', type: 'dom', dom: CellEnum, enumKey: 'categories' },
-        { label: '标签', prop: 'tags', type: 'dom', dom: CellTagsById },
+        { label: '标签', prop: 'tags', type: 'dom', dom: CellEnums, enumKey: 'tags' },
         { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
         { label: '创建人', prop: 'createdBy.name' },
         { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
@@ -154,16 +153,6 @@ export default {
       }
       delete query[tagIdFindQueryKey]
       return query
-    },
-    listDataFilter(res) {
-      const { list, total } = res
-      return {
-        list: list.map(v => {
-          const tagArr = [...(v.tags || [])]
-          return { ...v, tagArr, tags: tagArr.map(v => v.id) }
-        }),
-        total
-      }
     }
   }
 }

@@ -144,7 +144,7 @@ type PostPro {
   readTime: Int
   releaseDate: Float
   show: Int
-  tagIds: String
+  tags: [String]
   title: String
   updatedAt: Float
   updatedBy: User
@@ -180,6 +180,7 @@ type Query {
   tagsConnection(limit: Int, sort: String, start: Int, where: JSON): TagConnection
   tagsProConnection(limit: Int, sort: String, start: Int, where: JSON): TagProConnection
   user(id: ID!): User
+  userProConnection(limit: Int, sort: String, start: Int, where: JSON): UserProConnection
   users(limit: Int, sort: String, start: Int, where: JSON): [User]
   usersConnection(limit: Int, sort: String, start: Int, where: JSON): UserConnection
 }
@@ -264,6 +265,30 @@ type UserAggregator {
 type UserConnection {
   aggregate: UserAggregator
   values: [User]
+}
+
+type UserPro {
+  avatar: String
+  createdAt: Float
+  createdBy: User
+  email: String
+  id: String
+  name: String
+  password: String
+  remark: String
+  roleIds: String
+  salt: String
+  updatedAt: Float
+  updatedBy: User
+}
+
+type UserProAggregator {
+  count: Int
+}
+
+type UserProConnection {
+  aggregate: UserProAggregator
+  values: [UserPro]
 }
 
 type createCategoryPayload {
