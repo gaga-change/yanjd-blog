@@ -30,11 +30,12 @@
 <script>
 
 import BaseTablePro from '@/components/Base/BaseTablePro'
-import { roleList, roleCreate, roleUpdate, roleDelete } from '@/api/role'
+import { roleProList as roleList, roleCreate, roleUpdate, roleDelete } from '@/api/role'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
 import ColModifyAndDel from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
+import CheckEnums from '@/components/Base/Input/CheckEnums'
 
 export default {
   components: { BaseTablePro, TableHeaderControls },
@@ -63,6 +64,7 @@ export default {
     temp.add({ label: '角色名称', prop: 'name' })
       .valid({ req: true, len: 10 })
     temp.add({ label: '描述', prop: 'remark' })
+    temp.add({ label: '权限', prop: 'permissions', type: 'dom', dom: CheckEnums, enumKey: 'permissions' })
 
     const formConfig = temp.getFormConfig()
     const formRulesFun = self => temp.getFormRules({ mdName, self })

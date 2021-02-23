@@ -173,6 +173,7 @@ type Query {
   postsConnection(limit: Int, sort: String, start: Int, where: JSON): PostConnection
   postsProConnection(limit: Int, sort: String, start: Int, where: JSON): PostProConnection
   role(id: ID!): Role
+  roleProConnection(limit: Int, sort: String, start: Int, where: JSON): RoleProConnection
   roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
   rolesConnection(limit: Int, sort: String, start: Int, where: JSON): RoleConnection
   tag(id: ID!): Tag
@@ -204,6 +205,26 @@ type RoleAggregator {
 type RoleConnection {
   aggregate: RoleAggregator
   values: [Role]
+}
+
+type RolePro {
+  createdAt: Float
+  createdBy: User
+  id: String
+  name: String
+  permissions: [String]
+  remark: String
+  updatedAt: Float
+  updatedBy: User
+}
+
+type RoleProAggregator {
+  count: Int
+}
+
+type RoleProConnection {
+  aggregate: RoleProAggregator
+  values: [RolePro]
 }
 
 type Tag {

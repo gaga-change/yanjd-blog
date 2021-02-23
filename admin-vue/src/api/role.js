@@ -73,6 +73,42 @@ export async function roleListAll(params = {}) {
   })
 }
 
+export async function roleProList(params) {
+  const { _limit: limit, _start: start, _sort: sort, ...filter } = params
+  return strapi.post('/graphql', {
+    variables: { start, limit, sort, filter },
+    query: gql`
+      query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
+        roleProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          values {
+            id
+            name
+            remark
+            createdAt
+            updatedAt
+            createdBy {
+              name
+            }
+            updatedBy {
+              name
+            },
+            permissions
+          },
+          aggregate {
+            count
+          }
+        }
+      }
+    `.loc.source.body
+  }).then(res => {
+    const { values, aggregate } = res.data['roleProConnection']
+    return {
+      list: values,
+      total: aggregate.count
+    }
+  })
+}
+
 export async function roleList(params) {
   const { _limit: limit, _start: start, _sort: sort, ...filter } = params
   return strapi.post('/graphql', {

@@ -56,6 +56,24 @@ export function permissionUpdate(id, data) {
   })
 }
 
+export async function permissionListAll(params = {}) {
+  const { _limit: limit, _start: start, _sort: sort, ...filter } = params
+  return strapi.post('/graphql', {
+    variables: { start, limit, sort, filter },
+    query: gql`
+        query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
+            permissions(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+              id
+              name
+              remark
+            }
+        }
+    `.loc.source.body
+  }).then(res => {
+    return res.data['permissions'].map(v => ({ ...v, name: v.remark || v.name }))
+  })
+}
+
 export async function permissionList(params) {
   const { _limit: limit, _start: start, _sort: sort, ...filter } = params
   return strapi.post('/graphql', {
