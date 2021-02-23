@@ -81,6 +81,7 @@ type Mutation {
   updateRole(input: updateRoleInput): updateRolePayload
   updateTag(input: updateTagInput): updateTagPayload
   updateUser(input: updateUserInput): updateUserPayload
+  userResetPassword(id: ID, pwd: String): Boolean
 }
 
 type Permission {

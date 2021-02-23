@@ -9,6 +9,7 @@
       :fetch-list="userList"
       @handleModify="handleModify"
       @handleDelete="handleDelete"
+      @handleResetPwd="handleResetPwd"
     >
       <TableHeaderControls
         slot="header"
@@ -30,10 +31,10 @@
 <script>
 
 import BaseTablePro from '@/components/Base/BaseTablePro'
-import { userList, userCreate, userUpdate, userDelete } from '@/api/user'
+import { userList, userCreate, userUpdate, userDelete, userResetPassword } from '@/api/user'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
-import ColModifyAndDel from '@/components/ColModifyAndDel'
+import ColModifyAndDel from './components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
 import AvatarUpload from '@/views/user/components/AvatarUpload'
 import ColAvatar from '@/views/user/components/ColAvatar'
@@ -48,7 +49,7 @@ export default {
       { label: '创建人', prop: 'createdBy.name' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
       { label: '修改人', prop: 'updatedBy.name' },
-      { label: '操作', prop: 'control', type: 'dom', dom: ColModifyAndDel, fixed: 'right' }
+      { label: '操作', prop: 'control', type: 'dom', width: 160, dom: ColModifyAndDel, fixed: 'right' }
     ]
     const searchConfig = [
       { label: '名称', prop: 'name_contains' },
@@ -95,6 +96,12 @@ export default {
         this.$message.success('操作成功！')
         this.$refs['baseTablePro'].getList()
       }).catch(() => {})
+    },
+    // 重置密码
+    handleResetPwd(row) {
+      this.$apiConfirm(`是否确定重置用户【${row.name}】密码？`, () => userResetPassword(row.id).then(_ => {
+        this.$message.success('操作成功！')
+      }).catch(() => {}))
     }
   }
 }

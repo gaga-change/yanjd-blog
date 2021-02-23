@@ -36,7 +36,7 @@ service.interceptors.response.use(
       // const msg = res.errors.map(v => v.message).join('\r\n') || 'Error'
       const msg = res.errors[0].message || 'Error'
       Message({
-        message: msg,
+        message: typeof msg === 'string' ? msg : msg.type,
         type: 'error',
         duration: 5 * 1000
       })

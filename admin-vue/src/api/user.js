@@ -56,6 +56,22 @@ export function userUpdate(id, data) {
   })
 }
 
+/**
+ * 重置密码
+ * @param id
+ * @returns {AxiosPromise<any>}
+ */
+export function userResetPassword(id) {
+  return strapi.post('/graphql', {
+    variables: { id, pwd: '123456' },
+    query: gql`
+      mutation ($id: ID!, $pwd: String ) {
+        userResetPassword(id: $id, pwd: $pwd)
+      }
+    `.loc.source.body
+  })
+}
+
 export async function userList(params) {
   const { _limit: limit, _start: start, _sort: sort, ...filter } = params
   return strapi.post('/graphql', {
@@ -90,3 +106,4 @@ export async function userList(params) {
     }
   })
 }
+

@@ -46,13 +46,12 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (!value) {
         callback(new Error('请输入用户名'))
       } else {
         callback()
@@ -71,8 +70,8 @@ export default {
         password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: ['blur', 'change'], validator: validateUsername }],
+        password: [{ required: true, trigger: ['blur', 'change'], validator: validatePassword }]
       },
       loading: false,
       passwordType: 'password',
