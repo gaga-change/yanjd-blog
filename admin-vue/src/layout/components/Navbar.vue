@@ -6,6 +6,7 @@
       <el-dropdown class="avatar-container" trigger="click" size="middle">
         <div class="avatar-wrapper">
           <img :alt="name" :src="avatarPath" class="user-avatar">
+          <span class="user-name">{{ name }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -98,42 +99,30 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
+    /*line-height: 50px;*/
 
     &:focus {
       outline: none;
     }
 
-    .right-menu-item {
-      display: inline-block;
-      padding: 0 8px;
-      height: 100%;
-      font-size: 18px;
-      color: #5a5e66;
-      vertical-align: text-bottom;
-
-      &.hover-effect {
-        cursor: pointer;
-        transition: background .3s;
-
-        &:hover {
-          background: rgba(0, 0, 0, .025)
-        }
-      }
-    }
-
     .avatar-container {
+      height: inherit;
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        height: inherit;
         position: relative;
+        cursor: pointer;
 
         .user-avatar {
-          cursor: pointer;
           width: 40px;
           height: 40px;
           border-radius: 10px;
+        }
+        .user-name {
+          margin-left: 5px
         }
 
         .el-icon-caret-bottom {
