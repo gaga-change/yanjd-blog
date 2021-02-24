@@ -136,7 +136,7 @@ export default {
     // 删除
     handleDelete(data) {
       const temp = Array.isArray(data) ? data : [data]
-      this.$apiConfirm(`是否确定删除【${temp.map(v => v.name).join('，')}】？`, () => postDelete(temp.map(v => v.id))).then(_ => {
+      this.$apiConfirm(`是否确定删除【${temp.map(v => v.title).join('，')}】？`, () => postDelete(temp.map(v => v.id))).then(_ => {
         this.$message.success('操作成功！')
         this.$refs['baseTablePro'].getList()
       }).catch(() => {})
