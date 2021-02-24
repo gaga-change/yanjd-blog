@@ -19,7 +19,7 @@ export default {
   props: {
     value: {
       type: Array,
-      required: true
+      default: Array
     },
     enumKey: {
       type: String,
@@ -33,12 +33,11 @@ export default {
   },
   computed: {
     isIndeterminate() {
-      const temp = difference(this.enumOptions.map(v => v.value), this.value)
-      console.log(temp.length, this.enumOptions.length, this.value.length)
+      const temp = difference(this.enumOptions.map(v => v.value), this.value || [])
       return temp.length > 0 && temp.length !== this.enumOptions.length
     },
     checkAll() {
-      const temp = difference(this.enumOptions.map(v => v.value), this.value)
+      const temp = difference(this.enumOptions.map(v => v.value), this.value || [])
       return temp.length === 0
     },
     enumOptions() {

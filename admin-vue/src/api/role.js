@@ -1,5 +1,6 @@
 import strapi from '@/utils/strapi'
 import gql from 'graphql-tag'
+import store from '@/store'
 
 export function roleCreate(data) {
   return strapi.post('/graphql', {
@@ -15,6 +16,9 @@ export function roleCreate(data) {
         }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'roles' })
+    return res
   })
 }
 
@@ -35,6 +39,9 @@ export function roleDelete(id) {
 }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'roles' })
+    return res
   })
 }
 
@@ -53,6 +60,9 @@ export function roleUpdate(id, data) {
         }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'roles' })
+    return res
   })
 }
 

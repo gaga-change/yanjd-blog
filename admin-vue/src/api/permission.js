@@ -1,5 +1,6 @@
 import strapi from '@/utils/strapi'
 import gql from 'graphql-tag'
+import store from '@/store'
 
 export function permissionCreate(data) {
   return strapi.post('/graphql', {
@@ -15,6 +16,9 @@ export function permissionCreate(data) {
         }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'permissions' })
+    return res
   })
 }
 
@@ -35,6 +39,9 @@ export function permissionDelete(id) {
 }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'permissions' })
+    return res
   })
 }
 
@@ -53,6 +60,9 @@ export function permissionUpdate(id, data) {
         }
       }
     `.loc.source.body
+  }).then(res => {
+    store.dispatch('enumMap/setEnum', { key: 'permissions' })
+    return res
   })
 }
 
