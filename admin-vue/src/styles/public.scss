@@ -49,6 +49,13 @@ $dirSizeList: 5 10 15 20 25 35;
     }
   }
 }
+@each $dir in $dirList {
+  @each $size in $dirSizeList {
+    .p#{$dir}#{$size} {
+      padding-#{map-get($dirMap, $dir)}: #{$size}px;
+    }
+  }
+}
 
 .text-center {
   text-align: center;

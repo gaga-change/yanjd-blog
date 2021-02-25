@@ -94,6 +94,12 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/markdown',
+    component: () => import('@/views/markdown/markdown'),
+    name: 'markdown',
+    meta: { title: 'markdown' }
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permissionList',

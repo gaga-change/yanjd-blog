@@ -14,11 +14,15 @@
     "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
+    "@toast-ui/editor-plugin-code-syntax-highlight": "^1.0.0",
+    "@toast-ui/editor-plugin-color-syntax": "^1.0.1",
+    "@toast-ui/vue-editor": "^2.5.1",
     "axios": "0.18.1",
     "core-js": "3.6.5",
     "echarts": "^5.0.2",
     "element-ui": "2.15.0",
     "graphql-tag": "^2.11.0",
+    "highlight.js": "^10.6.0",
     "js-cookie": "2.2.0",
     "lodash": "^4.17.20",
     "normalize.css": "7.0.0",

@@ -42,11 +42,11 @@ import BaseTablePro from '@/components/Base/BaseTablePro'
 import { postProList as postList, postCreate, postUpdate, postDelete } from '@/api/post'
 import { FormConfigFactory } from '@/utils/form/FormConfigFactory'
 import TableHeaderControls from '@/components/TableHeaderControls'
-import ColModifyAndDel from '@/components/ColModifyAndDel'
 import DateArea from '@/components/Base/Input/DateArea'
 import SelectEnum from '@/components/Base/Input/SelectEnum'
 import CellEnums from '@/components/Cell/CellEnums'
 import CellEnum from '@/components/Cell/CellEnum'
+import ColPostModifyAndDel from '@/views/post/components/ColPostModifyAndDel'
 
 const tagIdFindQueryKey = 'TAG_FIND_ID_ARR'
 export default {
@@ -91,7 +91,7 @@ export default {
         { label: '创建人', prop: 'createdBy.name' },
         { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
         { label: '修改人', prop: 'updatedBy.name' },
-        { label: '操作', prop: 'control', type: 'dom', dom: ColModifyAndDel, fixed: 'right' }
+        { label: '操作', prop: 'control', type: 'dom', width: 200, dom: ColPostModifyAndDel, fixed: 'right' }
       ]
       const searchConfig = [
         { label: '名称', prop: 'name_contains' },

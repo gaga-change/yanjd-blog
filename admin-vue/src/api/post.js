@@ -1,6 +1,21 @@
 import strapi from '@/utils/strapi'
 import gql from 'graphql-tag'
 
+export function postDetail(id) {
+  return strapi.post('/graphql', {
+    variables: { id },
+    query: gql`
+      query ($id: ID!) {
+        post(id: $id) {
+          id
+          title
+          markdown
+        }
+      }
+    `.loc.source.body
+  }).then(res => res.data['post'])
+}
+
 export function postCreate(data) {
   return strapi.post('/graphql', {
     variables: { post: data },
