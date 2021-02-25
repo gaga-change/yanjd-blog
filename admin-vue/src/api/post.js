@@ -123,6 +123,9 @@ export async function postProList(params) {
             updatedAt
             tags
             category
+            status
+            intro
+            releaseDate
             createdBy {
               name
             }

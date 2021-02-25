@@ -87,6 +87,8 @@ export default {
         { label: '标题', prop: 'title' },
         { label: '分类', prop: 'category', type: 'dom', dom: CellEnum, enumKey: 'categories' },
         { label: '标签', prop: 'tags', type: 'dom', dom: CellEnums, enumKey: 'tags' },
+        { label: '状态', prop: 'status', type: 'dom', dom: CellEnum, enumKey: 'postStatus' },
+        { label: '发布时间', prop: 'releaseDate', type: 'time', width: 140, sortable: 'custom' },
         { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
         { label: '创建人', prop: 'createdBy.name' },
         { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },

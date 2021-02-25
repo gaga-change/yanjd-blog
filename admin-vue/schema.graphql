@@ -113,10 +113,9 @@ type Post {
   id: String
   intro: String
   markdown: String
-  mdRender: Int
   readTime: Int
   releaseDate: Float
-  show: Int
+  status: Int
   tags(limit: Int, sort: String, start: Int, where: JSON): [Tag]
   title: String
   updatedAt: Float
@@ -140,10 +139,9 @@ type PostPro {
   id: String
   intro: String
   markdown: String
-  mdRender: Int
   readTime: Int
   releaseDate: Float
-  show: Int
+  status: Int
   tags: [String]
   title: String
   updatedAt: Float
@@ -440,10 +438,9 @@ input PostInput {
   html: String
   intro: String
   markdown: String
-  mdRender: Int
   readTime: Int
   releaseDate: Float
-  show: Int
+  status: Int
   tags: [String]
   title: String
   updatedAt: Float
@@ -565,10 +562,9 @@ input editPostInput {
   html: String
   intro: String
   markdown: String
-  mdRender: Int
   readTime: Int
   releaseDate: Float
-  show: Int
+  status: Int
   tags: [String]
   title: String
   updatedAt: Float

@@ -30,7 +30,8 @@ const state = {
   tags: [],
   categories: [],
   roles: [],
-  permissions: []
+  permissions: [],
+  postStatus: [{ label: '草稿', value: 0 }, { label: '已发布', value: 1 }]
 }
 
 const mutations = {
