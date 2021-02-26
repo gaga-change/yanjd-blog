@@ -145,13 +145,13 @@ export default {
     },
     queryFilter(query) {
       // 标签多选查询条件处理
-      const tagIds = query[tagIdFindQueryKey]
-      if (tagIds && tagIds.length > 1) {
-        query['and'] = tagIds.map(id => {
-          return { tagIds_contains: id }
+      const tags = query[tagIdFindQueryKey]
+      if (tags && tags.length > 1) {
+        query['and'] = tags.map(id => {
+          return { tags_contains: id }
         })
-      } else if (tagIds && tagIds.length === 1) {
-        query['tagIds_contains'] = tagIds[0]
+      } else if (tags && tags.length === 1) {
+        query['tags_contains'] = tags[0]
       }
       delete query[tagIdFindQueryKey]
       return query
