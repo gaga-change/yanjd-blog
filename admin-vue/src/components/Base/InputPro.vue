@@ -61,7 +61,7 @@ export default {
         case 'aEnum':
           return SelectEnum
         default:
-          return GlInput
+          return Input
       }
     }
   }

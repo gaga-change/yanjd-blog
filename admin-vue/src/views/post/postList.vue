@@ -111,8 +111,11 @@ export default {
 
       temp.add({ label: '文章标题', prop: 'title' })
         .valid({ req: true, len: 10 })
+      temp.add({ label: '状态', prop: 'status', type: 'dom', dom: SelectEnum, enumKey: 'postStatus', default: 0 })
       temp.add({ label: '标签', prop: 'tags', type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true })
       temp.add({ label: '分类', prop: 'category', type: 'dom', dom: SelectEnum, enumKey: 'categories' })
+      temp.add({ label: '发布时间', prop: 'releaseDate', type: 'datetime', 'valueFormat': 'timestamp' })
+      temp.add({ label: '描述', prop: 'intro', type: 'textarea', row: 2 })
 
       const formConfig = temp.getFormConfig()
       const formRulesFun = self => temp.getFormRules({ mdName, self })
