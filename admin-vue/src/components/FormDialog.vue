@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    width="500px"
+    :width="width"
     v-bind="$attrs"
     :title="modifyRow ? textMap.update : textMap.create"
     :append-to-body="true"
@@ -77,6 +77,10 @@ export default {
     updateApi: {
       type: Function,
       default: null
+    },
+    width: {
+      type: String,
+      default: '500px'
     }
   },
   data() {

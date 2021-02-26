@@ -13,6 +13,7 @@
       <TableHeaderControls
         slot="header"
         slot-scope="scope"
+        width="80%"
         :form-config="formConfig"
         :form-rules-fun="formRulesFun"
         :text-map="textMap"
