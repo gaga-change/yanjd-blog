@@ -46,8 +46,7 @@ export const constantRoutes = [
       component: () => import('@/views/resetPwd/index'),
       meta: { title: '修改密码' }
     }],
-    hidden: true,
-    meta: { title: '重置密码' }
+    hidden: true
   },
   {
     path: '/404',

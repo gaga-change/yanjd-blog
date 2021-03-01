@@ -49,10 +49,12 @@ authResolverResolver.Mutation.login = async function (
   let user = null;
   if (id) {
     const temp = await userService.detail(id);
-    user = {
-      ...temp,
-      username: temp.name,
-    };
+    if (temp) {
+      user = {
+        ...temp,
+        username: temp.name,
+      };
+    }
   }
   return {
     jwt,
@@ -68,10 +70,12 @@ authResolverResolver.Query.me = async function (
   const id = ctx.state.user?.id;
   if (id) {
     const user = await userService.detail(id);
-    return {
-      ...user,
-      username: user.name,
-    };
+    if (user) {
+      return {
+        ...user,
+        username: user?.name,
+      };
+    }
   } else {
     return null;
   }
