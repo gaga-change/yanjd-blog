@@ -1,7 +1,7 @@
 import {
   BaseEntity,
   Model,
-} from "https://gitee.com/yanjd/qapi/raw/0.6.8/dex_pro/mod.ts";
+} from "https://gitee.com/yanjd/qapi/raw/0.6.9/dex_pro/mod.ts";
 import { UserEntity } from "../user/user_entity.ts";
 import { PermissionEntity } from "../permission/permission_entity.ts";
 export interface RoleEntity extends BaseEntity {

@@ -15,8 +15,8 @@
               主页
             </el-dropdown-item>
           </router-link>
-          <el-dropdown-item @click.native="handleRestPwd">
-            <span style="display:block;">重置密码</span>
+          <el-dropdown-item @click.native="handleUpdatePwd">
+            <span style="display:block;">修改密码</span>
           </el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">退 出</span>
@@ -57,15 +57,8 @@ export default {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
-    handleRestPwd() {
-      sendRestPwdEmail().then(res => {
-        const { ok } = res.data['forgotPassword']
-        if (ok) {
-          this.$message.success('重置密码链接已发至邮箱')
-        } else {
-          this.$message.error('邮箱发送失败')
-        }
-      })
+    handleUpdatePwd() {
+      this.$router.push({ name: 'resetPwd' })
     }
   }
 }

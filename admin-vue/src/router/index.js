@@ -38,8 +38,14 @@ export const constantRoutes = [
     meta: { title: '登录' }
   },
   {
-    path: '/resetPwd/:code',
-    component: () => import('@/views/resetPwd/index'),
+    path: '/resetPwd',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'resetPwd',
+      component: () => import('@/views/resetPwd/index'),
+      meta: { title: '修改密码' }
+    }],
     hidden: true,
     meta: { title: '重置密码' }
   },

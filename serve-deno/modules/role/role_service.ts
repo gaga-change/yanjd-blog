@@ -3,7 +3,7 @@ import { GQLError } from "https://deno.land/x/oak_graphql@0.6.2/mod.ts";
 import {
   ListOptions,
   TableOptions,
-} from "https://gitee.com/yanjd/qapi/raw/0.6.8/dex_pro/mod.ts";
+} from "https://gitee.com/yanjd/qapi/raw/0.6.9/dex_pro/mod.ts";
 
 export class RoleService {
   private readonly roleModel: RoleModel;

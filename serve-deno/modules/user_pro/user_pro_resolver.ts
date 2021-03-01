@@ -1,9 +1,9 @@
 import { GQLError } from "https://deno.land/x/oak_graphql@0.6.2/mod.ts";
-import { cryptoPassword } from "https://gitee.com/yanjd/qapi/raw/0.6.8/password_tools/mod.ts";
+import { cryptoPassword } from "https://gitee.com/yanjd/qapi/raw/0.6.9/password_tools/mod.ts";
 import {
   findModelsSyncFactory,
   Model,
-} from "https://gitee.com/yanjd/qapi/raw/0.6.8/dex_pro/mod.ts";
+} from "https://gitee.com/yanjd/qapi/raw/0.6.9/dex_pro/mod.ts";
 import { UserService } from "../user/user_service.ts";
 import { UserEntity } from "../user/user_entity.ts";
 const userService = new UserService();

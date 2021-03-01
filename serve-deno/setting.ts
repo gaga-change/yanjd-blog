@@ -1,8 +1,8 @@
-import { OakGraphqlStartStatic } from "https://gitee.com/yanjd/qapi/raw/0.6.8/oak_graphql_start/mod.ts";
-import { pluginAuth } from "https://gitee.com/yanjd/qapi/raw/0.6.8/plugin_auth/mod.ts";
-import { pluginPermission } from "https://gitee.com/yanjd/qapi/raw/0.6.8/plugin_permission/mod.ts";
+import { OakGraphqlStartStatic } from "https://gitee.com/yanjd/qapi/raw/0.6.9/oak_graphql_start/mod.ts";
+import { pluginAuth } from "https://gitee.com/yanjd/qapi/raw/0.6.9/plugin_auth/mod.ts";
+import { pluginPermission } from "https://gitee.com/yanjd/qapi/raw/0.6.9/plugin_permission/mod.ts";
 
-import { getSqliteDB } from "https://gitee.com/yanjd/qapi/raw/0.6.8/dex_pro/mod.ts";
+import { getSqliteDB } from "https://gitee.com/yanjd/qapi/raw/0.6.9/dex_pro/mod.ts";
 import * as gqlMap from "./modules/gqls.ts";
 import * as resolverMap from "./modules/resolvers.ts";
 import { UserService } from "./modules/user/user_service.ts";

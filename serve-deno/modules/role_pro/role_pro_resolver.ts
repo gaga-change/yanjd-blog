@@ -1,7 +1,7 @@
 import {
   findModelsSyncFactory,
   Model,
-} from "https://gitee.com/yanjd/qapi/raw/0.6.8/dex_pro/mod.ts";
+} from "https://gitee.com/yanjd/qapi/raw/0.6.9/dex_pro/mod.ts";
 import { UserService } from "../user/user_service.ts";
 import { UserEntity } from "../user/user_entity.ts";
 const userService = new UserService();

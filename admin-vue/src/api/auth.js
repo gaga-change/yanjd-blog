@@ -1,5 +1,4 @@
 import strapi from '@/utils/strapi'
-import store from '@/store'
 import gql from 'graphql-tag'
 
 export function login(data) {
@@ -40,28 +39,12 @@ export function getInfo() {
   })
 }
 
-export function sendRestPwdEmail() {
-  return strapi.post('/graphql', {
-    variables: { email: store.state.user.email },
-    query: gql`
-      mutation ($email: String!){
-        forgotPassword(email: $email) {
-          ok
-        }
-      }
-    `.loc.source.body
-  })
-}
-
-export const resetPwd = (code, newPassword) => strapi.post('/graphql', {
-  variables: { code, newPassword },
+export const resetPwd = (password) => strapi.post('/graphql', {
+  variables: { input: { password }},
   query: gql`
-    mutation ($code: String!, $newPassword: String!){
-      resetPassword(code: $code, password: $newPassword, passwordConfirmation: $newPassword) {
-        jwt
-        user {
-          id
-        }
+    mutation ($input: updatePasswordInput){
+      updatePassword(input: $input) {
+        success
       }
     }
   `.loc.source.body

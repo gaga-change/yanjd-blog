@@ -1,9 +1,9 @@
 // deno run --allow-env --allow-read --allow-write --allow-net --unstable ./mod.ts
-import { setSqliteDB } from "https://gitee.com/yanjd/qapi/raw/0.6.8/dex_pro/mod.ts";
+import { setSqliteDB } from "https://gitee.com/yanjd/qapi/raw/0.6.9/dex_pro/mod.ts";
 import {
   OakGraphqlStart,
   RouterContext,
-} from "https://gitee.com/yanjd/qapi/raw/0.6.8/oak_graphql_start/mod.ts";
+} from "https://gitee.com/yanjd/qapi/raw/0.6.9/oak_graphql_start/mod.ts";
 import "./setting.ts";
 
 setSqliteDB(Deno.env.get("DB_PATH") || "C:\\yanjd\\db\\qapi-test.db");
