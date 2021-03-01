@@ -96,7 +96,7 @@ export default {
         { label: '操作', prop: 'control', type: 'dom', width: 200, dom: ColPostModifyAndDel, fixed: 'right' }
       ]
       const searchConfig = [
-        { label: '名称', prop: 'name_contains' },
+        { label: '标题', prop: 'title_contains' },
         { label: '分类', prop: 'category', type: 'dom', dom: SelectEnum, enumKey: 'categories', multiple: false, default: categoryId },
         { label: '标签', prop: tagIdFindQueryKey, type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true, default: tagsDef },
         { label: '创建时间', type: 'dom', dom: DateArea, prop: 'createdAt_between' },
@@ -110,7 +110,7 @@ export default {
       const temp = new FormConfigFactory()
 
       temp.add({ label: '文章标题', prop: 'title' })
-        .valid({ req: true, len: 10 })
+        .valid({ req: true, len: 100 })
       temp.add({ label: '状态', prop: 'status', type: 'dom', dom: SelectEnum, enumKey: 'postStatus', default: 0 })
       temp.add({ label: '标签', prop: 'tags', type: 'dom', dom: SelectEnum, enumKey: 'tags', multiple: true })
       temp.add({ label: '分类', prop: 'category', type: 'dom', dom: SelectEnum, enumKey: 'categories' })

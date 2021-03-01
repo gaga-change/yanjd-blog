@@ -54,6 +54,7 @@ export function postDelete(id) {
 }
 
 export function postUpdate(id, data) {
+  if (data.category === '') data.category = null
   return strapi.post('/graphql', {
     variables: { id, post: data },
     query: gql`
