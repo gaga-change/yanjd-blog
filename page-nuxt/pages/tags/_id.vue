@@ -1,55 +1,39 @@
 <template>
   <div class>
-    <div>
-      <PostItem :posts="posts" />
-      <LoadMore :no-more="noMore" @loadMore="handleLoadMore" />
-    </div>
+    <PostList ref="PostList" :total.sync="total" :posts.sync="posts" :filter="filter" />
   </div>
 </template>
 
 <script>
-import PostItem from '@/components/PostItem'
-import LoadMore from '@/components/LoadMore'
+import PostList from '~/components/PostList'
+import { turnPostList } from '~/utils/turnPostList'
+
 export default {
   components: {
-    LoadMore,
-    PostItem
+    PostList
   },
-  async asyncData ({ params, $api }) {
-    const { data: res } = await $api.postList(0, 10, { tags: params.id }, { fetchTag: true })
-    const { postsConnection, tag } = res
+  async asyncData ({ params, $api, store }) {
+    const filter = { tags_contains: params.id }
+    const { list, total } = await $api.postList(0, 10, filter)
+    const tagName = store.getters.tagsMap.get(params.id)
     return {
-      posts: postsConnection.values,
-      total: postsConnection.aggregate.count,
-      id: params.id,
-      tag
+      posts: turnPostList(list, store.getters.tagsMap),
+      total,
+      filter,
+      tagName
     }
   },
   data () {
     return {
       posts: [],
       total: 0,
-      id: '',
-      tag: {}
-    }
-  },
-  computed: {
-    noMore () {
-      return this.posts.length === this.total
-    }
-  },
-  methods: {
-    async handleLoadMore (cb) {
-      const { data: res } = await this.$api.postList(this.posts.length, 10, { tags: this.id }, { fetchTag: true })
-      const { postsConnection } = res
-      this.total = postsConnection.aggregate.count
-      this.posts.push(...postsConnection.values)
-      cb()
+      filter: {},
+      tagName: ''
     }
   },
   head () {
     return {
-      title: `${this.tag.name} - 标签 - 严俊东博客`
+      title: `${this.tagName} - 标签 - 严俊东博客`
     }
   }
 }

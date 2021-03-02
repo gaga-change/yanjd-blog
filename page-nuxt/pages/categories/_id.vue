@@ -1,55 +1,39 @@
 <template>
   <div class>
-    <div>
-      <PostItem :posts="posts" />
-      <LoadMore :no-more="noMore" @loadMore="handleLoadMore" />
-    </div>
+    <PostList ref="PostList" :total.sync="total" :posts.sync="posts" :filter="filter" />
   </div>
 </template>
 
 <script>
-import PostItem from '@/components/PostItem'
-import LoadMore from '@/components/LoadMore'
+import PostList from '~/components/PostList'
+import { turnPostList } from '~/utils/turnPostList'
+
 export default {
   components: {
-    LoadMore,
-    PostItem
+    PostList
   },
-  async asyncData ({ params, $api }) {
-    const { data: res } = await $api.postList(0, 10, { category: params.id }, { fetchCategory: true })
-    const { postsConnection, category } = res
+  async asyncData ({ params, $api, store }) {
+    const filter = { category: params.id }
+    const { list, total } = await $api.postList(0, 10, filter)
+    const categoryName = store.getters.categoriesMap.get(params.id)
     return {
-      posts: postsConnection.values,
-      total: postsConnection.aggregate.count,
-      id: params.id,
-      category
+      posts: turnPostList(list, store.getters.tagsMap),
+      total,
+      filter,
+      categoryName
     }
   },
   data () {
     return {
       posts: [],
       total: 0,
-      id: '',
-      category: {}
-    }
-  },
-  computed: {
-    noMore () {
-      return this.posts.length === this.total
-    }
-  },
-  methods: {
-    async handleLoadMore (cb) {
-      const { data: res } = await this.$api.postList(0, 10, { category: this.id }, { fetchCategory: true })
-      const { postsConnection } = res
-      this.total = postsConnection.aggregate.count
-      this.posts.push(...postsConnection.values)
-      cb()
+      filter: {},
+      categoryName: ''
     }
   },
   head () {
     return {
-      title: `${this.category.name} - 分类 - 严俊东博客`
+      title: `${this.categoryName} - 分类 - 严俊东博客`
     }
   }
 }

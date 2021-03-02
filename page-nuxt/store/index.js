@@ -4,6 +4,23 @@ export const state = () => ({
   notPosts: []
 })
 
+export const getters = {
+  tagsMap: (state) => {
+    const map = new Map()
+    state.tags.forEach((item) => {
+      map.set(item.id, item.name)
+    })
+    return map
+  },
+  categoriesMap: (state) => {
+    const map = new Map()
+    state.categories.forEach((item) => {
+      map.set(item.id, item.name)
+    })
+    return map
+  }
+}
+
 export const mutations = {
   setTags (state, data) {
     state.tags = data || []
@@ -22,7 +39,5 @@ export const actions = {
     commit('setTags', res.tags)
     commit('setCategories', res.categories)
     commit('setnotPosts', res.posts)
-    // const { data } = await axios.get('http://my-api/stars')
-    // commit('SET_STARS', data)
   }
 }

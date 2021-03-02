@@ -1,46 +1,31 @@
 <template>
   <div class>
-    <div>
-      <PostItem :posts="posts" />
-      <LoadMore :no-more="noMore" @loadMore="handleLoadMore" />
-    </div>
+    <PostList ref="PostList" :total.sync="total" :posts.sync="posts" :filter="filter" />
   </div>
 </template>
 
 <script>
-import PostItem from '@/components/PostItem'
-import LoadMore from '@/components/LoadMore'
+import PostList from '~/components/PostList'
+import { turnPostList } from '~/utils/turnPostList'
+
 export default {
   components: {
-    LoadMore,
-    PostItem
+    PostList
   },
-  async asyncData ({ $api }) {
-    const { data: res } = await $api.postList(0, 10)
-    const { postsConnection } = res
+  async asyncData ({ $api, store }) {
+    const filter = {}
+    const { list, total } = await $api.postList(0, 10, filter)
     return {
-      posts: postsConnection.values,
-      total: postsConnection.aggregate.count
+      posts: turnPostList(list, store.getters.tagsMap),
+      total,
+      filter
     }
   },
   data () {
     return {
       posts: [],
-      total: 0
-    }
-  },
-  computed: {
-    noMore () {
-      return this.posts.length === this.total
-    }
-  },
-  methods: {
-    async handleLoadMore (cb) {
-      const { data: res } = await this.$api.postList(this.posts.length, 10)
-      const { postsConnection } = res
-      this.total = postsConnection.aggregate.count
-      this.posts.push(...postsConnection.values)
-      cb()
+      total: 0,
+      filter: {}
     }
   },
   head: {

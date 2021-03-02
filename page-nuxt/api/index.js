@@ -53,23 +53,12 @@ export default {
     })
   },
   // 文章列表
-  postList (start = 0, limit = 10, filter = {}, options = {
-    fetchTag: false,
-    fetchCategory: false
-  }) {
+  postList (start = 0, limit = 10, filter = {}) {
     return this.ctx.$axios.$post('/graphql', {
       variables: { filter: { ...filter, ...defFilter } },
       query: gql`
         query ($filter: JSON){
-          ${options.fetchTag ? `
-          tag(id: "${filter.tags}") {
-            name
-          }` : ''}
-          ${options.fetchCategory ? `
-          category(id: "${filter.category}") {
-            name
-          }` : ''}
-          postsConnection(limit: ${limit}, start: ${start}, where: $filter, sort: "releaseDate:desc") {
+          postsProConnection(limit: ${limit}, start: ${start}, where: $filter, sort: "releaseDate:desc") {
             aggregate {
               count
             }
@@ -79,18 +68,18 @@ export default {
               releaseDate
               readTime
               intro
-              tags(start: 0) {
-                id
-                name
-              }
-              category {
-                id
-                name
-              }
+              tags
+              category
             }
           }
         }
       `.loc.source.body
+    }).then((res) => {
+      const { values, aggregate } = res.data.postsProConnection
+      return {
+        list: values,
+        total: aggregate.count
+      }
     })
   }
 }
