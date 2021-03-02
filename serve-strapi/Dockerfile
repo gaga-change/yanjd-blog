@@ -1,9 +1,0 @@
-FROM node:10-alpine
-# ENV NODE_ENV production
-WORKDIR /usr/src/app
-COPY ["package.json", ".npmrc", "./"]
-RUN npm install
-COPY . .
-EXPOSE 8710
-# RUN npm run build
-CMD npm start
