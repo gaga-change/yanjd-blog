@@ -73,7 +73,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: process.env.STRAPI_URL || 'https://www.yanjd.top'
+    baseURL: process.env.STRAPI_URL || 'http://localhost:8888'
   },
   // strapi: {
   //   entities: ['posts', 'tags', 'categories'],

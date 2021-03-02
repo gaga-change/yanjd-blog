@@ -5,773 +5,317 @@ schema {
   mutation: Mutation
 }
 
-union Morph = Category | CategoryAggregator | CategoryConnection | CategoryConnectionCreatedAt | CategoryConnectionCreated_by | CategoryConnectionId | CategoryConnectionName | CategoryConnectionRemark | CategoryConnectionUpdatedAt | CategoryConnectionUpdated_by | CategoryConnection_id | CategoryGroupBy | Post | PostAggregator | PostAggregatorAvg | PostAggregatorMax | PostAggregatorMin | PostAggregatorSum | PostConnection | PostConnectionCategory | PostConnectionCreatedAt | PostConnectionCreated_by | PostConnectionHtml | PostConnectionId | PostConnectionIntro | PostConnectionMarkdown | PostConnectionMdRender | PostConnectionReadTime | PostConnectionReleaseDate | PostConnectionShow | PostConnectionTitle | PostConnectionUpdatedAt | PostConnectionUpdated_by | PostConnection_id | PostGroupBy | Tag | TagAggregator | TagConnection | TagConnectionCreatedAt | TagConnectionCreated_by | TagConnectionId | TagConnectionName | TagConnectionRemark | TagConnectionUpdatedAt | TagConnectionUpdated_by | TagConnection_id | TagGroupBy | UploadFile | UploadFileAggregator | UploadFileAggregatorAvg | UploadFileAggregatorMax | UploadFileAggregatorMin | UploadFileAggregatorSum | UploadFileConnection | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionCreatedAt | UploadFileConnectionCreated_by | UploadFileConnectionExt | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionHeight | UploadFileConnectionId | UploadFileConnectionMime | UploadFileConnectionName | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UploadFileConnectionSize | UploadFileConnectionUpdatedAt | UploadFileConnectionUpdated_by | UploadFileConnectionUrl | UploadFileConnectionWidth | UploadFileConnection_id | UploadFileGroupBy | UserPermissionsPasswordPayload | UsersPermissionsLoginPayload | UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleAggregator | UsersPermissionsRoleConnection | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionCreated_by | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionType | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionUpdated_by | UsersPermissionsRoleConnection_id | UsersPermissionsRoleGroupBy | UsersPermissionsUser | UsersPermissionsUserAggregator | UsersPermissionsUserConnection | UsersPermissionsUserConnectionAvatar | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionCreated_by | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionRole | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUpdated_by | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnection_id | UsersPermissionsUserGroupBy | createCategoryPayload | createPostPayload | createRolePayload | createTagPayload | createUserPayload | deleteCategoryPayload | deletePostPayload | deleteRolePayload | deleteTagPayload | deleteUserPayload | updateCategoryPayload | updatePostPayload | updateRolePayload | updateTagPayload | updateUserPayload
-
-type AdminUser {
-  id: ID!
-  username: String
-}
-
 type Category {
-  _id: ID!
-  createdAt: DateTime!
-  created_by: AdminUser
-  id: ID!
+  createdAt: Float
+  createdBy: User
+  id: String
   name: String
   remark: String
-  updatedAt: DateTime!
-  updated_by: AdminUser
+  updatedAt: Float
+  updatedBy: User
 }
 
 type CategoryAggregator {
   count: Int
-  totalCount: Int
 }
 
 type CategoryConnection {
   aggregate: CategoryAggregator
-  groupBy: CategoryGroupBy
   values: [Category]
 }
 
-type CategoryConnectionCreatedAt {
-  connection: CategoryConnection
-  key: DateTime
+type CategoryPro {
+  createdAt: Float
+  createdBy: User
+  id: String
+  name: String
+  postCount: Int
+  remark: String
+  updatedAt: Float
+  updatedBy: User
 }
 
-type CategoryConnectionCreated_by {
-  connection: CategoryConnection
-  key: ID
+type CategoryProAggregator {
+  count: Int
 }
 
-type CategoryConnectionId {
-  connection: CategoryConnection
-  key: ID
+type CategoryProConnection {
+  aggregate: CategoryProAggregator
+  values: [CategoryPro]
 }
 
-type CategoryConnectionName {
-  connection: CategoryConnection
-  key: String
+type Me {
+  avatar: String
+  email: String
+  id: String
+  role: MeRole
+  username: String
 }
 
-type CategoryConnectionRemark {
-  connection: CategoryConnection
-  key: String
-}
-
-type CategoryConnectionUpdatedAt {
-  connection: CategoryConnection
-  key: DateTime
-}
-
-type CategoryConnectionUpdated_by {
-  connection: CategoryConnection
-  key: ID
-}
-
-type CategoryConnection_id {
-  connection: CategoryConnection
-  key: ID
-}
-
-type CategoryGroupBy {
-  _id: [CategoryConnection_id]
-  createdAt: [CategoryConnectionCreatedAt]
-  created_by: [CategoryConnectionCreated_by]
-  id: [CategoryConnectionId]
-  name: [CategoryConnectionName]
-  remark: [CategoryConnectionRemark]
-  updatedAt: [CategoryConnectionUpdatedAt]
-  updated_by: [CategoryConnectionUpdated_by]
+type MeRole {
+  name: String
 }
 
 type Mutation {
   createCategory(input: createCategoryInput): createCategoryPayload
+  createPermission(input: createPermissionInput): createPermissionPayload
   createPost(input: createPostInput): createPostPayload
-  "Create a new role"
   createRole(input: createRoleInput): createRolePayload
   createTag(input: createTagInput): createTagPayload
-  "Create a new user"
   createUser(input: createUserInput): createUserPayload
   deleteCategory(input: deleteCategoryInput): deleteCategoryPayload
+  deletePermission(input: deletePermissionInput): deletePermissionPayload
   deletePost(input: deletePostInput): deletePostPayload
-  "Delete an existing role"
   deleteRole(input: deleteRoleInput): deleteRolePayload
   deleteTag(input: deleteTagInput): deleteTagPayload
-  "Delete an existing user"
   deleteUser(input: deleteUserInput): deleteUserPayload
-  emailConfirmation(confirmation: String!): UsersPermissionsLoginPayload
-  forgotPassword(email: String!): UserPermissionsPasswordPayload
-  login(input: UsersPermissionsLoginInput!): UsersPermissionsLoginPayload!
-  multipleUpload(field: String, files: [Upload]!, ref: String, refId: ID, source: String): [UploadFile]!
-  register(input: UsersPermissionsRegisterInput!): UsersPermissionsLoginPayload!
-  resetPassword(code: String!, password: String!, passwordConfirmation: String!): UsersPermissionsLoginPayload
+  login(input: UsersPermissionsLoginInput): loginPayload
+  logout: logoutPayload
+  register(input: registerInput): registerPayload
   updateCategory(input: updateCategoryInput): updateCategoryPayload
+  updateEmail(input: updateEmailInput): updateEmailPayload
+  updateName(input: updateNameInput): updateNamePayload
+  updatePassword(input: updatePasswordInput): updatePasswordPayload
+  updatePermission(input: updatePermissionInput): updatePermissionPayload
   updatePost(input: updatePostInput): updatePostPayload
-  "Update an existing role"
   updateRole(input: updateRoleInput): updateRolePayload
   updateTag(input: updateTagInput): updateTagPayload
-  "Update an existing user"
   updateUser(input: updateUserInput): updateUserPayload
-  upload(field: String, file: Upload!, ref: String, refId: ID, source: String): UploadFile!
+  userResetPassword(id: ID, pwd: String): Boolean
+}
+
+type Permission {
+  createdAt: Float
+  createdBy: User
+  id: String
+  name: String
+  remark: String
+  roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
+  type: Int
+  updatedAt: Float
+  updatedBy: User
+}
+
+type PermissionAggregator {
+  count: Int
+}
+
+type PermissionConnection {
+  aggregate: PermissionAggregator
+  values: [Permission]
 }
 
 type Post {
-  _id: ID!
   category: Category
-  createdAt: DateTime!
-  created_by: AdminUser
+  createdAt: Float
+  createdBy: User
   html: String
-  id: ID!
+  id: String
   intro: String
   markdown: String
-  mdRender: Boolean
   readTime: Int
-  releaseDate: DateTime
-  show: Boolean
+  releaseDate: Float
+  status: Int
   tags(limit: Int, sort: String, start: Int, where: JSON): [Tag]
   title: String
-  updatedAt: DateTime!
-  updated_by: AdminUser
+  updatedAt: Float
+  updatedBy: User
 }
 
 type PostAggregator {
-  avg: PostAggregatorAvg
   count: Int
-  max: PostAggregatorMax
-  min: PostAggregatorMin
-  sum: PostAggregatorSum
-  totalCount: Int
-}
-
-type PostAggregatorAvg {
-  readTime: Float
-}
-
-type PostAggregatorMax {
-  readTime: Float
-}
-
-type PostAggregatorMin {
-  readTime: Float
-}
-
-type PostAggregatorSum {
-  readTime: Float
 }
 
 type PostConnection {
   aggregate: PostAggregator
-  groupBy: PostGroupBy
   values: [Post]
 }
 
-type PostConnectionCategory {
-  connection: PostConnection
-  key: ID
+type PostPro {
+  category: String
+  createdAt: Float
+  createdBy: User
+  html: String
+  id: String
+  intro: String
+  markdown: String
+  readTime: Int
+  releaseDate: Float
+  status: Int
+  tags: [String]
+  title: String
+  updatedAt: Float
+  updatedBy: User
 }
 
-type PostConnectionCreatedAt {
-  connection: PostConnection
-  key: DateTime
+type PostProAggregator {
+  count: Int
 }
 
-type PostConnectionCreated_by {
-  connection: PostConnection
-  key: ID
-}
-
-type PostConnectionHtml {
-  connection: PostConnection
-  key: String
-}
-
-type PostConnectionId {
-  connection: PostConnection
-  key: ID
-}
-
-type PostConnectionIntro {
-  connection: PostConnection
-  key: String
-}
-
-type PostConnectionMarkdown {
-  connection: PostConnection
-  key: String
-}
-
-type PostConnectionMdRender {
-  connection: PostConnection
-  key: Boolean
-}
-
-type PostConnectionReadTime {
-  connection: PostConnection
-  key: Int
-}
-
-type PostConnectionReleaseDate {
-  connection: PostConnection
-  key: DateTime
-}
-
-type PostConnectionShow {
-  connection: PostConnection
-  key: Boolean
-}
-
-type PostConnectionTitle {
-  connection: PostConnection
-  key: String
-}
-
-type PostConnectionUpdatedAt {
-  connection: PostConnection
-  key: DateTime
-}
-
-type PostConnectionUpdated_by {
-  connection: PostConnection
-  key: ID
-}
-
-type PostConnection_id {
-  connection: PostConnection
-  key: ID
-}
-
-type PostGroupBy {
-  _id: [PostConnection_id]
-  category: [PostConnectionCategory]
-  createdAt: [PostConnectionCreatedAt]
-  created_by: [PostConnectionCreated_by]
-  html: [PostConnectionHtml]
-  id: [PostConnectionId]
-  intro: [PostConnectionIntro]
-  markdown: [PostConnectionMarkdown]
-  mdRender: [PostConnectionMdRender]
-  readTime: [PostConnectionReadTime]
-  releaseDate: [PostConnectionReleaseDate]
-  show: [PostConnectionShow]
-  title: [PostConnectionTitle]
-  updatedAt: [PostConnectionUpdatedAt]
-  updated_by: [PostConnectionUpdated_by]
+type PostProConnection {
+  aggregate: PostProAggregator
+  values: [PostPro]
 }
 
 type Query {
   categories(limit: Int, sort: String, start: Int, where: JSON): [Category]
   categoriesConnection(limit: Int, sort: String, start: Int, where: JSON): CategoryConnection
   category(id: ID!): Category
-  files(limit: Int, sort: String, start: Int, where: JSON): [UploadFile]
-  filesConnection(limit: Int, sort: String, start: Int, where: JSON): UploadFileConnection
-  me: UsersPermissionsMe
+  categoryProConnection(limit: Int, sort: String, start: Int, where: JSON): CategoryProConnection
+  me: Me
+  permission(id: ID!): Permission
+  permissions(limit: Int, sort: String, start: Int, where: JSON): [Permission]
+  permissionsConnection(limit: Int, sort: String, start: Int, where: JSON): PermissionConnection
   post(id: ID!): Post
   posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
   postsConnection(limit: Int, sort: String, start: Int, where: JSON): PostConnection
-  role(id: ID!): UsersPermissionsRole
-  "Retrieve all the existing roles. You can't apply filters on this query."
-  roles(limit: Int, sort: String, start: Int, where: JSON): [UsersPermissionsRole]
-  rolesConnection(limit: Int, sort: String, start: Int, where: JSON): UsersPermissionsRoleConnection
+  postsProConnection(limit: Int, sort: String, start: Int, where: JSON): PostProConnection
+  role(id: ID!): Role
+  roleProConnection(limit: Int, sort: String, start: Int, where: JSON): RoleProConnection
+  roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
+  rolesConnection(limit: Int, sort: String, start: Int, where: JSON): RoleConnection
   tag(id: ID!): Tag
   tags(limit: Int, sort: String, start: Int, where: JSON): [Tag]
   tagsConnection(limit: Int, sort: String, start: Int, where: JSON): TagConnection
-  user(id: ID!): UsersPermissionsUser
-  users(limit: Int, sort: String, start: Int, where: JSON): [UsersPermissionsUser]
-  usersConnection(limit: Int, sort: String, start: Int, where: JSON): UsersPermissionsUserConnection
+  tagsProConnection(limit: Int, sort: String, start: Int, where: JSON): TagProConnection
+  user(id: ID!): User
+  userProConnection(limit: Int, sort: String, start: Int, where: JSON): UserProConnection
+  users(limit: Int, sort: String, start: Int, where: JSON): [User]
+  usersConnection(limit: Int, sort: String, start: Int, where: JSON): UserConnection
+}
+
+type Role {
+  createdAt: Float
+  createdBy: User
+  id: String
+  name: String
+  permissions(limit: Int, sort: String, start: Int, where: JSON): [Permission]
+  remark: String
+  updatedAt: Float
+  updatedBy: User
+  users(limit: Int, sort: String, start: Int, where: JSON): [User]
+}
+
+type RoleAggregator {
+  count: Int
+}
+
+type RoleConnection {
+  aggregate: RoleAggregator
+  values: [Role]
+}
+
+type RolePro {
+  createdAt: Float
+  createdBy: User
+  id: String
+  name: String
+  permissions: [String]
+  remark: String
+  updatedAt: Float
+  updatedBy: User
+}
+
+type RoleProAggregator {
+  count: Int
+}
+
+type RoleProConnection {
+  aggregate: RoleProAggregator
+  values: [RolePro]
 }
 
 type Tag {
-  _id: ID!
-  createdAt: DateTime!
-  created_by: AdminUser
-  id: ID!
+  createdAt: Float
+  createdBy: User
+  id: String
   name: String
+  posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
   remark: String
-  updatedAt: DateTime!
-  updated_by: AdminUser
+  updatedAt: Float
+  updatedBy: User
 }
 
 type TagAggregator {
   count: Int
-  totalCount: Int
 }
 
 type TagConnection {
   aggregate: TagAggregator
-  groupBy: TagGroupBy
   values: [Tag]
 }
 
-type TagConnectionCreatedAt {
-  connection: TagConnection
-  key: DateTime
+type TagPro {
+  createdAt: Float
+  createdBy: User
+  id: String
+  name: String
+  postCount: Int
+  posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
+  remark: String
+  updatedAt: Float
+  updatedBy: User
 }
 
-type TagConnectionCreated_by {
-  connection: TagConnection
-  key: ID
+type TagProConnection {
+  aggregate: TagAggregator
+  values: [TagPro]
 }
 
-type TagConnectionId {
-  connection: TagConnection
-  key: ID
-}
-
-type TagConnectionName {
-  connection: TagConnection
-  key: String
-}
-
-type TagConnectionRemark {
-  connection: TagConnection
-  key: String
-}
-
-type TagConnectionUpdatedAt {
-  connection: TagConnection
-  key: DateTime
-}
-
-type TagConnectionUpdated_by {
-  connection: TagConnection
-  key: ID
-}
-
-type TagConnection_id {
-  connection: TagConnection
-  key: ID
-}
-
-type TagGroupBy {
-  _id: [TagConnection_id]
-  createdAt: [TagConnectionCreatedAt]
-  created_by: [TagConnectionCreated_by]
-  id: [TagConnectionId]
-  name: [TagConnectionName]
-  remark: [TagConnectionRemark]
-  updatedAt: [TagConnectionUpdatedAt]
-  updated_by: [TagConnectionUpdated_by]
-}
-
-type UploadFile {
-  _id: ID!
-  alternativeText: String
-  caption: String
-  createdAt: DateTime!
-  created_by: AdminUser
-  ext: String
-  formats: JSON
-  hash: String!
-  height: Int
-  id: ID!
-  mime: String!
-  name: String!
-  previewUrl: String
-  provider: String!
-  provider_metadata: JSON
-  related(limit: Int, sort: String, start: Int, where: JSON): [Morph]
-  size: Float!
-  updatedAt: DateTime!
-  updated_by: AdminUser
-  url: String!
-  width: Int
-}
-
-type UploadFileAggregator {
-  avg: UploadFileAggregatorAvg
-  count: Int
-  max: UploadFileAggregatorMax
-  min: UploadFileAggregatorMin
-  sum: UploadFileAggregatorSum
-  totalCount: Int
-}
-
-type UploadFileAggregatorAvg {
-  height: Float
-  size: Float
-  width: Float
-}
-
-type UploadFileAggregatorMax {
-  height: Float
-  size: Float
-  width: Float
-}
-
-type UploadFileAggregatorMin {
-  height: Float
-  size: Float
-  width: Float
-}
-
-type UploadFileAggregatorSum {
-  height: Float
-  size: Float
-  width: Float
-}
-
-type UploadFileConnection {
-  aggregate: UploadFileAggregator
-  groupBy: UploadFileGroupBy
-  values: [UploadFile]
-}
-
-type UploadFileConnectionAlternativeText {
-  connection: UploadFileConnection
-  key: String
-}
-
-type UploadFileConnectionCaption {
-  connection: UploadFileConnection
-  key: String
-}
-
-type UploadFileConnectionCreatedAt {
-  connection: UploadFileConnection
-  key: DateTime
-}
-
-type UploadFileConnectionCreated_by {
-  connection: UploadFileConnection
-  key: ID
-}
-
-type UploadFileConnectionExt {
-  connection: UploadFileConnection
-  key: String
-}
-
-type UploadFileConnectionFormats {
-  connection: UploadFileConnection
-  key: JSON
-}
-
-type UploadFileConnectionHash {
-  connection: UploadFileConnection
-  key: String
-}
-
-type UploadFileConnectionHeight {
-  connection: UploadFileConnection
-  key: Int
-}
-
-type UploadFileConnectionId {
-  connection: UploadFileConnection
-  key: ID
-}
-
-type UploadFileConnectionMime {
-  connection: UploadFileConnection
-  key: String
-}
-
-type UploadFileConnectionName {
-  connection: UploadFileConnection
-  key: String
-}
-
-type UploadFileConnectionPreviewUrl {
-  connection: UploadFileConnection
-  key: String
-}
-
-type UploadFileConnectionProvider {
-  connection: UploadFileConnection
-  key: String
-}
-
-type UploadFileConnectionProvider_metadata {
-  connection: UploadFileConnection
-  key: JSON
-}
-
-type UploadFileConnectionSize {
-  connection: UploadFileConnection
-  key: Float
-}
-
-type UploadFileConnectionUpdatedAt {
-  connection: UploadFileConnection
-  key: DateTime
-}
-
-type UploadFileConnectionUpdated_by {
-  connection: UploadFileConnection
-  key: ID
-}
-
-type UploadFileConnectionUrl {
-  connection: UploadFileConnection
-  key: String
-}
-
-type UploadFileConnectionWidth {
-  connection: UploadFileConnection
-  key: Int
-}
-
-type UploadFileConnection_id {
-  connection: UploadFileConnection
-  key: ID
-}
-
-type UploadFileGroupBy {
-  _id: [UploadFileConnection_id]
-  alternativeText: [UploadFileConnectionAlternativeText]
-  caption: [UploadFileConnectionCaption]
-  createdAt: [UploadFileConnectionCreatedAt]
-  created_by: [UploadFileConnectionCreated_by]
-  ext: [UploadFileConnectionExt]
-  formats: [UploadFileConnectionFormats]
-  hash: [UploadFileConnectionHash]
-  height: [UploadFileConnectionHeight]
-  id: [UploadFileConnectionId]
-  mime: [UploadFileConnectionMime]
-  name: [UploadFileConnectionName]
-  previewUrl: [UploadFileConnectionPreviewUrl]
-  provider: [UploadFileConnectionProvider]
-  provider_metadata: [UploadFileConnectionProvider_metadata]
-  size: [UploadFileConnectionSize]
-  updatedAt: [UploadFileConnectionUpdatedAt]
-  updated_by: [UploadFileConnectionUpdated_by]
-  url: [UploadFileConnectionUrl]
-  width: [UploadFileConnectionWidth]
-}
-
-type UserPermissionsPasswordPayload {
-  ok: Boolean!
-}
-
-type UsersPermissionsLoginPayload {
-  jwt: String
-  user: UsersPermissionsMe!
-}
-
-type UsersPermissionsMe {
-  blocked: Boolean
-  confirmed: Boolean
-  email: String!
-  id: ID!
-  role: UsersPermissionsMeRole
-  username: String!
-}
-
-type UsersPermissionsMeRole {
-  description: String
-  id: ID!
-  name: String!
-  type: String
-}
-
-type UsersPermissionsPermission {
-  _id: ID!
-  action: String!
-  controller: String!
-  createdAt: DateTime!
-  created_by: AdminUser
-  enabled: Boolean!
-  id: ID!
-  policy: String
-  role: UsersPermissionsRole
-  type: String!
-  updatedAt: DateTime!
-  updated_by: AdminUser
-}
-
-type UsersPermissionsRole {
-  _id: ID!
-  createdAt: DateTime!
-  created_by: AdminUser
-  description: String
-  id: ID!
-  name: String!
-  permissions(limit: Int, sort: String, start: Int, where: JSON): [UsersPermissionsPermission]
-  type: String
-  updatedAt: DateTime!
-  updated_by: AdminUser
-  users(limit: Int, sort: String, start: Int, where: JSON): [UsersPermissionsUser]
-}
-
-type UsersPermissionsRoleAggregator {
-  count: Int
-  totalCount: Int
-}
-
-type UsersPermissionsRoleConnection {
-  aggregate: UsersPermissionsRoleAggregator
-  groupBy: UsersPermissionsRoleGroupBy
-  values: [UsersPermissionsRole]
-}
-
-type UsersPermissionsRoleConnectionCreatedAt {
-  connection: UsersPermissionsRoleConnection
-  key: DateTime
-}
-
-type UsersPermissionsRoleConnectionCreated_by {
-  connection: UsersPermissionsRoleConnection
-  key: ID
-}
-
-type UsersPermissionsRoleConnectionDescription {
-  connection: UsersPermissionsRoleConnection
-  key: String
-}
-
-type UsersPermissionsRoleConnectionId {
-  connection: UsersPermissionsRoleConnection
-  key: ID
-}
-
-type UsersPermissionsRoleConnectionName {
-  connection: UsersPermissionsRoleConnection
-  key: String
-}
-
-type UsersPermissionsRoleConnectionType {
-  connection: UsersPermissionsRoleConnection
-  key: String
-}
-
-type UsersPermissionsRoleConnectionUpdatedAt {
-  connection: UsersPermissionsRoleConnection
-  key: DateTime
-}
-
-type UsersPermissionsRoleConnectionUpdated_by {
-  connection: UsersPermissionsRoleConnection
-  key: ID
-}
-
-type UsersPermissionsRoleConnection_id {
-  connection: UsersPermissionsRoleConnection
-  key: ID
-}
-
-type UsersPermissionsRoleGroupBy {
-  _id: [UsersPermissionsRoleConnection_id]
-  createdAt: [UsersPermissionsRoleConnectionCreatedAt]
-  created_by: [UsersPermissionsRoleConnectionCreated_by]
-  description: [UsersPermissionsRoleConnectionDescription]
-  id: [UsersPermissionsRoleConnectionId]
-  name: [UsersPermissionsRoleConnectionName]
-  type: [UsersPermissionsRoleConnectionType]
-  updatedAt: [UsersPermissionsRoleConnectionUpdatedAt]
-  updated_by: [UsersPermissionsRoleConnectionUpdated_by]
-}
-
-type UsersPermissionsUser {
-  _id: ID!
+type User {
   avatar: String
-  blocked: Boolean
-  confirmed: Boolean
-  createdAt: DateTime!
-  created_by: AdminUser
-  email: String!
-  id: ID!
-  provider: String
-  role: UsersPermissionsRole
-  updatedAt: DateTime!
-  updated_by: AdminUser
-  username: String!
+  createdAt: Float
+  createdBy: User
+  email: String
+  id: String
+  name: String
+  password: String
+  remark: String
+  roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
+  salt: String
+  updatedAt: Float
+  updatedBy: User
 }
 
-type UsersPermissionsUserAggregator {
+type UserAggregator {
   count: Int
-  totalCount: Int
 }
 
-type UsersPermissionsUserConnection {
-  aggregate: UsersPermissionsUserAggregator
-  groupBy: UsersPermissionsUserGroupBy
-  values: [UsersPermissionsUser]
+type UserConnection {
+  aggregate: UserAggregator
+  values: [User]
 }
 
-type UsersPermissionsUserConnectionAvatar {
-  connection: UsersPermissionsUserConnection
-  key: String
+type UserPro {
+  avatar: String
+  createdAt: Float
+  createdBy: User
+  email: String
+  id: String
+  name: String
+  password: String
+  remark: String
+  roles: [String]
+  salt: String
+  updatedAt: Float
+  updatedBy: User
 }
 
-type UsersPermissionsUserConnectionBlocked {
-  connection: UsersPermissionsUserConnection
-  key: Boolean
+type UserProAggregator {
+  count: Int
 }
 
-type UsersPermissionsUserConnectionConfirmed {
-  connection: UsersPermissionsUserConnection
-  key: Boolean
-}
-
-type UsersPermissionsUserConnectionCreatedAt {
-  connection: UsersPermissionsUserConnection
-  key: DateTime
-}
-
-type UsersPermissionsUserConnectionCreated_by {
-  connection: UsersPermissionsUserConnection
-  key: ID
-}
-
-type UsersPermissionsUserConnectionEmail {
-  connection: UsersPermissionsUserConnection
-  key: String
-}
-
-type UsersPermissionsUserConnectionId {
-  connection: UsersPermissionsUserConnection
-  key: ID
-}
-
-type UsersPermissionsUserConnectionProvider {
-  connection: UsersPermissionsUserConnection
-  key: String
-}
-
-type UsersPermissionsUserConnectionRole {
-  connection: UsersPermissionsUserConnection
-  key: ID
-}
-
-type UsersPermissionsUserConnectionUpdatedAt {
-  connection: UsersPermissionsUserConnection
-  key: DateTime
-}
-
-type UsersPermissionsUserConnectionUpdated_by {
-  connection: UsersPermissionsUserConnection
-  key: ID
-}
-
-type UsersPermissionsUserConnectionUsername {
-  connection: UsersPermissionsUserConnection
-  key: String
-}
-
-type UsersPermissionsUserConnection_id {
-  connection: UsersPermissionsUserConnection
-  key: ID
-}
-
-type UsersPermissionsUserGroupBy {
-  _id: [UsersPermissionsUserConnection_id]
-  avatar: [UsersPermissionsUserConnectionAvatar]
-  blocked: [UsersPermissionsUserConnectionBlocked]
-  confirmed: [UsersPermissionsUserConnectionConfirmed]
-  createdAt: [UsersPermissionsUserConnectionCreatedAt]
-  created_by: [UsersPermissionsUserConnectionCreated_by]
-  email: [UsersPermissionsUserConnectionEmail]
-  id: [UsersPermissionsUserConnectionId]
-  provider: [UsersPermissionsUserConnectionProvider]
-  role: [UsersPermissionsUserConnectionRole]
-  updatedAt: [UsersPermissionsUserConnectionUpdatedAt]
-  updated_by: [UsersPermissionsUserConnectionUpdated_by]
-  username: [UsersPermissionsUserConnectionUsername]
+type UserProConnection {
+  aggregate: UserProAggregator
+  values: [UserPro]
 }
 
 type createCategoryPayload {
   category: Category
+}
+
+type createPermissionPayload {
+  permission: Permission
 }
 
 type createPostPayload {
@@ -779,7 +323,7 @@ type createPostPayload {
 }
 
 type createRolePayload {
-  role: UsersPermissionsRole
+  role: Role
 }
 
 type createTagPayload {
@@ -787,11 +331,15 @@ type createTagPayload {
 }
 
 type createUserPayload {
-  user: UsersPermissionsUser
+  user: User
 }
 
 type deleteCategoryPayload {
   category: Category
+}
+
+type deletePermissionPayload {
+  permission: Permission
 }
 
 type deletePostPayload {
@@ -799,7 +347,7 @@ type deletePostPayload {
 }
 
 type deleteRolePayload {
-  role: UsersPermissionsRole
+  role: Role
 }
 
 type deleteTagPayload {
@@ -807,11 +355,40 @@ type deleteTagPayload {
 }
 
 type deleteUserPayload {
-  user: UsersPermissionsUser
+  user: User
+}
+
+type loginPayload {
+  jwt: String
+  user: Me
+}
+
+type logoutPayload {
+  success: Boolean
+}
+
+type registerPayload {
+  success: Boolean
 }
 
 type updateCategoryPayload {
   category: Category
+}
+
+type updateEmailPayload {
+  success: Boolean
+}
+
+type updateNamePayload {
+  success: Boolean
+}
+
+type updatePasswordPayload {
+  success: Boolean
+}
+
+type updatePermissionPayload {
+  permission: Permission
 }
 
 type updatePostPayload {
@@ -819,7 +396,7 @@ type updatePostPayload {
 }
 
 type updateRolePayload {
-  role: UsersPermissionsRole
+  role: Role
 }
 
 type updateTagPayload {
@@ -827,105 +404,95 @@ type updateTagPayload {
 }
 
 type updateUserPayload {
-  user: UsersPermissionsUser
-}
-
-enum CacheControlScope {
-  PRIVATE
-  PUBLIC
+  user: User
 }
 
 input CategoryInput {
-  created_by: ID
+  createdAt: Float
+  createdBy: String
   name: String
   remark: String
-  updated_by: ID
-}
-
-input FileInput {
-  alternativeText: String
-  caption: String
-  created_by: ID
-  ext: String
-  formats: JSON
-  hash: String!
-  height: Int
-  mime: String!
-  name: String!
-  previewUrl: String
-  provider: String!
-  provider_metadata: JSON
-  related: [ID]
-  size: Float!
-  updated_by: ID
-  url: String!
-  width: Int
+  updatedAt: Float
+  updatedBy: String
 }
 
 input InputID {
   id: ID!
 }
 
+input PermissionInput {
+  createdAt: Float
+  createdBy: String
+  name: String
+  remark: String
+  roles: [String]
+  type: Int
+  updatedAt: Float
+  updatedBy: String
+}
+
 input PostInput {
-  category: ID
-  created_by: ID
+  category: String
+  createdAt: Float
+  createdBy: String
   html: String
   intro: String
   markdown: String
-  mdRender: Boolean
   readTime: Int
-  releaseDate: DateTime
-  show: Boolean
-  tags: [ID]
+  releaseDate: Float
+  status: Int
+  tags: [String]
   title: String
-  updated_by: ID
+  updatedAt: Float
+  updatedBy: String
 }
 
 input RoleInput {
-  created_by: ID
-  description: String
-  name: String!
-  permissions: [ID]
-  type: String
-  updated_by: ID
-  users: [ID]
+  createdAt: Float
+  createdBy: String
+  name: String
+  permissions: [String]
+  remark: String
+  updatedAt: Float
+  updatedBy: String
+  users: [String]
 }
 
 input TagInput {
-  created_by: ID
+  createdAt: Float
+  createdBy: String
   name: String
+  posts: [String]
   remark: String
-  updated_by: ID
+  updatedAt: Float
+  updatedBy: String
 }
 
 input UserInput {
   avatar: String
-  blocked: Boolean
-  confirmed: Boolean
-  created_by: ID
-  email: String!
+  createdAt: Float
+  createdBy: String
+  email: String
+  name: String
   password: String
-  provider: String
-  resetPasswordToken: String
-  role: ID
-  updated_by: ID
-  username: String!
+  remark: String
+  roles: [String]
+  salt: String
+  updatedAt: Float
+  updatedBy: String
 }
 
 input UsersPermissionsLoginInput {
-  identifier: String!
-  password: String!
-  provider: String = "local"
-}
-
-input UsersPermissionsRegisterInput {
-  email: String!
-  password: String!
-  username: String!
+  identifier: String
+  password: String
 }
 
 input createCategoryInput {
   data: CategoryInput
+}
+
+input createPermissionInput {
+  data: PermissionInput
 }
 
 input createPostInput {
@@ -948,6 +515,10 @@ input deleteCategoryInput {
   where: InputID
 }
 
+input deletePermissionInput {
+  where: InputID
+}
+
 input deletePostInput {
   where: InputID
 }
@@ -965,80 +536,106 @@ input deleteUserInput {
 }
 
 input editCategoryInput {
-  created_by: ID
+  createdAt: Float
+  createdBy: String
   name: String
   remark: String
-  updated_by: ID
+  updatedAt: Float
+  updatedBy: String
 }
 
-input editFileInput {
-  alternativeText: String
-  caption: String
-  created_by: ID
-  ext: String
-  formats: JSON
-  hash: String
-  height: Int
-  mime: String
+input editPermissionInput {
+  createdAt: Float
+  createdBy: String
   name: String
-  previewUrl: String
-  provider: String
-  provider_metadata: JSON
-  related: [ID]
-  size: Float
-  updated_by: ID
-  url: String
-  width: Int
+  remark: String
+  roles: [String]
+  type: Int
+  updatedAt: Float
+  updatedBy: String
 }
 
 input editPostInput {
-  category: ID
-  created_by: ID
+  category: String
+  createdAt: Float
+  createdBy: String
   html: String
   intro: String
   markdown: String
-  mdRender: Boolean
   readTime: Int
-  releaseDate: DateTime
-  show: Boolean
-  tags: [ID]
+  releaseDate: Float
+  status: Int
+  tags: [String]
   title: String
-  updated_by: ID
+  updatedAt: Float
+  updatedBy: String
 }
 
 input editRoleInput {
-  created_by: ID
-  description: String
+  createdAt: Float
+  createdBy: String
   name: String
-  permissions: [ID]
-  type: String
-  updated_by: ID
-  users: [ID]
+  permissions: [String]
+  remark: String
+  updatedAt: Float
+  updatedBy: String
+  users: [String]
 }
 
 input editTagInput {
-  created_by: ID
+  createdAt: Float
+  createdBy: String
   name: String
+  posts: [String]
   remark: String
-  updated_by: ID
+  updatedAt: Float
+  updatedBy: String
 }
 
 input editUserInput {
   avatar: String
-  blocked: Boolean
-  confirmed: Boolean
-  created_by: ID
+  createdAt: Float
+  createdBy: String
   email: String
+  name: String
   password: String
-  provider: String
-  resetPasswordToken: String
-  role: ID
-  updated_by: ID
-  username: String
+  remark: String
+  roles: [String]
+  salt: String
+  updatedAt: Float
+  updatedBy: String
+}
+
+input loginInput {
+  account: String
+  password: String
+}
+
+input registerInput {
+  email: String
+  name: String
+  password: String
 }
 
 input updateCategoryInput {
   data: editCategoryInput
+  where: InputID
+}
+
+input updateEmailInput {
+  email: String
+}
+
+input updateNameInput {
+  name: String
+}
+
+input updatePasswordInput {
+  password: String
+}
+
+input updatePermissionInput {
+  data: editPermissionInput
   where: InputID
 }
 
@@ -1063,20 +660,4 @@ input updateUserInput {
 }
 
 
-"A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
-scalar DateTime
-
-"The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
 scalar JSON
-
-"The `Upload` scalar type represents a file upload."
-scalar Upload
-
-"A time string with format: HH:mm:ss.SSS"
-scalar Time
-
-"A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
-scalar Date
-
-"The `Long` scalar type represents 52-bit integers"
-scalar Long

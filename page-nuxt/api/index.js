@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 const toStr = obj => JSON.stringify(obj).replace(/"/g, '')
-const defFilter = { show: true }
+const defFilter = { status: 1 }
 
 export default {
   // 归档，获取所有文章
