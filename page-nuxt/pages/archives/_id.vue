@@ -3,7 +3,7 @@
     <h2 class="title">
       {{ post && post.title }}
     </h2>
-    <div class="md-style" v-html="post.html" />
+    <div ref="html" class="md-style" v-html="post.html" />
   </div>
 </template>
 <script>
@@ -19,6 +19,17 @@ export default {
     return {
       id: null,
       post: null
+    }
+  },
+  mounted () {
+    this.renderCode()
+  },
+  methods: {
+    renderCode () {
+      const dom = this.$refs.html
+      dom.querySelectorAll('pre code').forEach((block) => {
+        window.hljs.highlightBlock(block)
+      })
     }
   },
   head () {
