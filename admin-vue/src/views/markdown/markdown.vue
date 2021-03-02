@@ -75,6 +75,14 @@ export default {
       if (!this.postId) return
       this.initLoading = true
       postDetail(this.postId).then(data => {
+        if (!data) {
+          return this.$alert('文章或被删除不存在', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.$router.replace({ name: 'postList' })
+            }
+          })
+        }
         this.detail = data
         this.editorText = data.markdown || ''
       }).finally(() => {
