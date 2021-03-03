@@ -76,7 +76,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: process.env.STRAPI_URL || 'http://localhost:8888'
+    baseURL: process.env.STRAPI_URL || 'http://localhost:8710'
   },
   // strapi: {
   //   entities: ['posts', 'tags', 'categories'],

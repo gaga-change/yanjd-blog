@@ -9,7 +9,7 @@ import { UserService } from "./modules/user/user_service.ts";
 import { authGql } from "./modules/auth/auth_gql.ts";
 
 Deno.env.set("DB_PATH", "C:\\yanjd\\db\\qapi-blog-dev.db");
-OakGraphqlStartStatic.port = Number(Deno.env.get("PORT")) || 8888;
+OakGraphqlStartStatic.port = Number(Deno.env.get("PORT")) || 8710;
 OakGraphqlStartStatic.appendGqlMap(gqlMap);
 OakGraphqlStartStatic.appendResolverMap(resolverMap);
 
