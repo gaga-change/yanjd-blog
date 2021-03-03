@@ -3,6 +3,7 @@
     v-bind="$attrs"
     size="80%"
     :with-header="false"
+    class="markdown-preview"
     v-on="$listeners"
     @opened="opened"
   >
@@ -32,3 +33,8 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+ .markdown-preview ::v-deep .el-drawer {
+    overflow: auto;
+  }
+</style>
