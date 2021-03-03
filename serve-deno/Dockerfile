@@ -1,6 +1,6 @@
 FROM hayd/alpine-deno:1.7.2
 
-EXPOSE 8710  # The port that your application listens to.
+EXPOSE 8710
 
 WORKDIR /app
 
