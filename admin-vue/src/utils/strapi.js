@@ -2,7 +2,6 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-import errMsg from './errMsg'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_STRAPI_BASE, // url = base url + request url
@@ -45,31 +44,17 @@ service.interceptors.response.use(
     return res
   },
   error => {
-    const { statusCode, message } = error.response.data
-    if (statusCode === 403) {
-      Message({
-        message: '该操作权限未获取，无法操作',
-        type: 'error',
-        duration: 5 * 1000
-      })
-    } else if (statusCode === 400) {
-      if (Array.isArray(message)) {
-        const msg = message[0].messages[0].message
-        Message({
-          message: errMsg[msg] || msg,
-          type: 'error',
-          duration: 5 * 1000
-        })
-      } else {
-        return Promise.reject(error)
-      }
-    } else if (statusCode !== 11000) {
-      Message({
-        message: error.message,
-        type: 'error',
-        duration: 5 * 1000
-      })
+    let message = error.message
+    if (message === 'Network Error') {
+      message = '网络异常，请稍后再试'
+    } else if (error.message.includes('timeout')) {
+      message = '服务器连接超时，请稍后再试'
     }
+    Message({
+      message: message,
+      type: 'error',
+      duration: 5 * 1000
+    })
     return Promise.reject(error)
   }
 )
