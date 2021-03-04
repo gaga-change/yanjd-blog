@@ -27,7 +27,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: '//at.alicdn.com/t/font_2060835_xkvcrre9dtj.css' }
+      { rel: 'stylesheet', href: '//at.alicdn.com/t/font_2060835_rigc62v5zg.css' }
     ],
     script: [
       { src: 'https://cdn.bootcdn.net/ajax/libs/highlight.js/10.5.0/highlight.min.js' }

@@ -14,9 +14,12 @@
         <div class="navgiation">
           <ul>
             <li v-for="(item, index) in navs" :key="item.url" :ref="`nav${index}`" @mouseover="navIndex=index" @mouseleave="navIndex=-1">
-              <nuxt-link :to="item.url">
+              <nuxt-link v-if="!item.blank" :to="item.url">
                 <em :class="`iconfont ${item.icon}`" /> {{ item.name }}
               </nuxt-link>
+              <a v-else :href="item.url" target="_blank">
+                <em :class="`iconfont ${item.icon}`" /> {{ item.name }}
+              </a>
             </li>
           </ul>
           <div class="bsas-line" :style="{opacity: navIndex > -1 ? 1 : 0, width: `${navIndex === -1 ? 0 : navWidthArr[navIndex]}px`,right: `${baseLineRight}px`}" />
@@ -60,6 +63,12 @@ export default {
           url: '/archives',
           name: '归档',
           icon: 'icon-guidangicon'
+        },
+        {
+          url: '/admin',
+          blank: true,
+          name: '后台管理',
+          icon: 'icon-houtaiguanli'
         },
         {
           url: '/about',

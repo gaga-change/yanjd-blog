@@ -40,7 +40,12 @@
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-      <el-button size="middle" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登 录</el-button>
+      <div>
+        <el-button class="mb15" size="middle" :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">登 录</el-button>
+      </div>
+      <div>
+        <el-button size="middle" :loading="loading" type="success" style="width:100%;" plain @click.native.prevent="handleVisitorLogin">游 客</el-button>
+      </div>
     </el-form>
   </div>
 </template>
@@ -108,9 +113,18 @@ export default {
             this.loading = false
           })
         } else {
-          console.log('error submit!!')
           return false
         }
+      })
+    },
+    // 游客登录
+    handleVisitorLogin() {
+      this.loading = true
+      this.$store.dispatch('user/login', { username: '游客', password: '123456' }).then(() => {
+        this.$router.push({ path: this.redirect || '/' })
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
     }
   }
