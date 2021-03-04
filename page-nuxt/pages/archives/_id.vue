@@ -8,8 +8,11 @@
 </template>
 <script>
 export default {
-  async asyncData ({ params, $api }) {
+  async asyncData ({ params, $api, redirect }) {
     const { data: res } = await $api.postDetail(params.id)
+    if (!res.postPro) {
+      redirect(302, '/')
+    }
     return {
       id: params.id,
       post: res.postPro
