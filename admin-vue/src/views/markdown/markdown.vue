@@ -29,17 +29,13 @@
   </div>
 </template>
 <script>
-import 'codemirror/lib/codemirror.css'
-import '@toast-ui/editor/dist/toastui-editor.css'
-import { Editor } from '@toast-ui/vue-editor'
+import Editor from '@toast-ui/vue-editor/src/Editor'
 import '@toast-ui/editor/dist/i18n/zh-cn.js'
 import { postDetail, postUpdate } from '@/api/post'
 import { defaultOptions } from '@/views/markdown/defaultOptions'
 import MarkdownPreview from '@/views/markdown/MarkdownPreview'
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight'
 import hljs from 'highlight.js'
-import 'highlight.js/styles/github.css'
-import 'tui-color-picker/dist/tui-color-picker.css'
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax'
 
 export default {

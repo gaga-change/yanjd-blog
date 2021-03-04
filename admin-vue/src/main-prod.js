@@ -1,13 +1,12 @@
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
-import 'element-ui/lib/theme-chalk/index.css'
-import 'codemirror/lib/codemirror.css'
-import '@toast-ui/editor/dist/toastui-editor.css'
-import 'highlight.js/styles/github.css'
-import 'tui-color-picker/dist/tui-color-picker.css'
+// import 'codemirror/lib/codemirror.css'
+// import 'highlight.js/styles/github.css'
+// import '@toast-ui/editor/dist/toastui-editor.css'
+// import 'tui-color-picker/dist/tui-color-picker.css'
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/zh-CN'
 import '@/styles/index.scss' // global css
+
 import App from './App'
 import store from './store'
 import router from './router'
@@ -17,9 +16,11 @@ import '@/permission' // permission control
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale, size: 'mini' })
-
-Vue.config.productionTip = false
-Vue.config.devtools = true
+console.log('prod')
+// Vue.config.productionTip = false
+// if (process.env.NODE_ENV === 'development') {
+//   Vue.config.devtools = true
+// }
 
 {
   let tick
@@ -61,7 +62,7 @@ Vue.prototype.$apiConfirm = (msg, api) => new Promise((resolve, reject) => {
   }).then(() => {
   }).catch(() => { reject() })
 })
-console.log('dev')
+
 new Vue({
   el: '#app',
   router,

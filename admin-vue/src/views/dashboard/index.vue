@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <el-row gutter="24">
+    <el-row :gutter="24">
       <el-col :xs="24" :md="12">
         <el-card class="card">
           <TagChart />

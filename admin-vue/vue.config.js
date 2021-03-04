@@ -11,15 +11,39 @@ const name = defaultSettings.title || '严俊东博客后台管理' // page titl
 const cdn = {
   css: [
     // element-ui css
-    'https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/theme-chalk/index.min.css'
+    'https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/theme-chalk/index.min.css',
+    'https://cdn.bootcdn.net/ajax/libs/normalize/7.0.0/normalize.min.css',
+    'https://uicdn.toast.com/tui-color-picker/v2.2.6/tui-color-picker.min.css',
+    'https://uicdn.toast.com/editor/2.5.1/toastui-editor.min.css',
+    'https://cdn.bootcdn.net/ajax/libs/highlight.js/10.5.0/styles/github.min.css',
+    'https://cdn.bootcdn.net/ajax/libs/codemirror/5.59.2/codemirror.css'
   ],
   js: [
     // vue must at first!
     'https://cdn.bootcdn.net/ajax/libs/vue/2.6.10/vue.min.js',
     // element-ui js
-    'https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/index.min.js'
+    'https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/index.min.js',
+    'https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.20/lodash.min.js',
+    'https://cdn.bootcdn.net/ajax/libs/echarts/5.0.1/echarts.min.js',
+    'https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js',
+    'https://cdn.bootcdn.net/ajax/libs/highlight.js/10.5.0/highlight.min.js',
+    'https://uicdn.toast.com/editor/2.5.1/toastui-editor-all.js',
+    'https://uicdn.toast.com/editor-plugin-code-syntax-highlight/1.0.0/toastui-editor-plugin-code-syntax-highlight.min.js',
+    'https://uicdn.toast.com/editor-plugin-color-syntax/1.0.1/toastui-editor-plugin-color-syntax.min.js'
   ]
 }
+const externals = {
+  vue: 'Vue',
+  'element-ui': 'ELEMENT',
+  lodash: '_',
+  echarts: 'echarts',
+  axios: 'axios',
+  'highlight.js': 'hljs',
+  '@toast-ui/editor': 'toastui.Editor',
+  '@toast-ui/editor-plugin-code-syntax-highlight': 'toastui.Editor.plugin.codeSyntaxHighlight',
+  '@toast-ui/editor-plugin-color-syntax': 'toastui.Editor.plugin.colorSyntax'
+}
+
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
@@ -61,8 +85,6 @@ module.exports = {
       }
     },
     externals: {
-      vue: 'Vue',
-      'element-ui': 'ELEMENT'
     }
   },
   chainWebpack(config) {
@@ -76,11 +98,6 @@ module.exports = {
         include: 'initial'
       }
     ])
-
-    config.plugin('html').tap(args => {
-      args[0].cdn = cdn
-      return args
-    })
 
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
@@ -101,10 +118,26 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-
+    config
+      .when(process.env.NODE_ENV === 'development',
+        config => {
+          config
+            .entry('app')
+            .clear()
+            .add('./src/main.js')
+        })
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
+          config
+            .entry('app')
+            .clear()
+            .add('./src/main-prod.js')
+          config.set('externals', externals)
+          config.plugin('html').tap(args => {
+            args[0].cdn = cdn
+            return args
+          })
           config
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
@@ -123,11 +156,11 @@ module.exports = {
                   priority: 10,
                   chunks: 'initial' // only package third parties that are initially dependent
                 },
-                elementUI: {
-                  name: 'chunk-elementUI', // split elementUI into a single package
-                  priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
-                },
+                // elementUI: {
+                //   name: 'chunk-elementUI', // split elementUI into a single package
+                //   priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+                //   test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
+                // },
                 commons: {
                   name: 'chunk-commons',
                   test: resolve('src/components'), // can customize your rules
