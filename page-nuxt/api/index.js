@@ -44,7 +44,7 @@ export default {
     return this.ctx.$axios.$post('/graphql', {
       query: gql`
         query {
-          post(id: "${postId}") {
+          postPro(id: "${postId}") {
             title
             html
             intro

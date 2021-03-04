@@ -167,6 +167,7 @@ type Query {
   permissions(limit: Int, sort: String, start: Int, where: JSON): [Permission]
   permissionsConnection(limit: Int, sort: String, start: Int, where: JSON): PermissionConnection
   post(id: ID!): Post
+  postPro: PostPro
   posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
   postsConnection(limit: Int, sort: String, start: Int, where: JSON): PostConnection
   postsProConnection(limit: Int, sort: String, start: Int, where: JSON): PostProConnection

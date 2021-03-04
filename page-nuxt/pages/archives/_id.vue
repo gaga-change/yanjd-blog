@@ -12,7 +12,7 @@ export default {
     const { data: res } = await $api.postDetail(params.id)
     return {
       id: params.id,
-      post: res.post
+      post: res.postPro
     }
   },
   data () {

@@ -6,10 +6,12 @@ import { CategoryService } from "../category/category_service.ts";
 import { CategoryEntity } from "../category/category_entity.ts";
 
 import { PostProService } from "./post_pro_service.ts";
+import {PostService} from "../post/post_service.ts";
 
 const userService = new UserService();
 const categoryService = new CategoryService();
 const postProService = new PostProService();
+const postService = new PostService();
 
 const findUserSync = findModelsSyncFactory<UserEntity>(
   userService.list.bind(userService),
@@ -20,6 +22,14 @@ const findCategorySync = findModelsSyncFactory<CategoryEntity>(
 
 export const postProResolver = {
   Query: {
+    postPro: async (parent: any, { id }: { id: string }) => {
+      const post = await postService.detail(id);
+      if (!post) return null
+      post.readTime = Number(post.readTime) || 0
+      post.readTime ++
+      await postService.update(id, {readTime: post.readTime})
+      return post
+    },
     postsProConnection: async (
       parent: any,
       options: any,

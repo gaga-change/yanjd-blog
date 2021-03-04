@@ -28,6 +28,7 @@ export const postProGql = gql`
   }
 
   extend type Query {
+    postPro(id: ID!): PostPro
     postsProConnection(sort: String, limit: Int, start: Int, where: JSON): PostProConnection
   }
 `;
