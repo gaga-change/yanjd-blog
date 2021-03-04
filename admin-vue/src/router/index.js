@@ -73,7 +73,7 @@ export const constantRoutes = [
       path: 'postList',
       name: 'postList',
       component: () => import('@/views/post/postList'),
-      meta: { title: '文章', icon: 'el-icon-folder' }
+      meta: { title: '文章', icon: 'el-icon-notebook-1' }
     }]
   },
   {
@@ -109,34 +109,31 @@ export const constantRoutes = [
     path: '/permission',
     component: Layout,
     redirect: '/permissionList',
-    children: [{
-      path: 'permissionList',
-      name: 'permissionList',
-      component: () => import('@/views/permission/permissionList'),
-      meta: { title: '权限', icon: 'el-icon-folder' }
-    }]
-  },
-  {
-    path: '/role',
-    component: Layout,
-    redirect: '/roleList',
-    children: [{
-      path: 'roleList',
-      name: 'roleList',
-      component: () => import('@/views/role/roleList'),
-      meta: { title: '角色', icon: 'el-icon-folder' }
-    }]
+    children: []
   },
   {
     path: '/user',
     component: Layout,
     redirect: '/userList',
-    children: [{
-      path: 'userList',
-      name: 'userList',
-      component: () => import('@/views/user/userList'),
-      meta: { title: '用户', icon: 'el-icon-folder' }
-    }]
+    meta: { title: '用户管理', icon: 'el-icon-setting' },
+    children: [
+      {
+        path: 'permissionList',
+        name: 'permissionList',
+        component: () => import('@/views/permission/permissionList'),
+        meta: { title: '权限', icon: 'el-icon-connection' }
+      }, {
+        path: 'roleList',
+        name: 'roleList',
+        component: () => import('@/views/role/roleList'),
+        meta: { title: '角色', icon: 'el-icon-suitcase' }
+      }, {
+        path: 'userList',
+        name: 'userList',
+        component: () => import('@/views/user/userList'),
+        meta: { title: '用户', icon: 'el-icon-user' }
+      }
+    ]
   },
   {
     path: '严俊东博客',
