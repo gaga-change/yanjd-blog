@@ -2,12 +2,18 @@
   <div class="dashboard-container">
     <el-row :gutter="24">
       <el-col :xs="24" :md="12">
-        <el-card class="card">
+        <el-card class="card mb10">
+          <div slot="header">
+            <span>标签</span>
+          </div>
           <TagChart />
         </el-card>
       </el-col>
       <el-col :xs="24" :md="12">
-        <el-card class="card">
+        <el-card class="card mb10">
+          <div slot="header">
+            <span>分类</span>
+          </div>
           <CategoryChart />
         </el-card>
       </el-col>

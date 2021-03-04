@@ -3,7 +3,6 @@
 </template>
 <script>
 import * as echarts from 'echarts'
-import { categoryProChartData } from '@/api/category'
 import { tagProCharData } from '@/api/tag'
 export default {
   data() {
@@ -38,6 +37,7 @@ export default {
           {
             type: 'category',
             data: data.map(v => v.name),
+            axisLabel: { interval: 0, rotate: 30 },
             axisTick: {
               alignWithLabel: true
             }
