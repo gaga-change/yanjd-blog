@@ -17,6 +17,7 @@ export function postDetail(id) {
 }
 
 export function postCreate(data) {
+  data.readTime = 1
   return strapi.post('/graphql', {
     variables: { post: data },
     query: gql`
