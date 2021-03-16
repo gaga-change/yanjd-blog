@@ -1,361 +1,242 @@
 # This file was generated based on ".graphqlconfig". Do not edit manually.
 
 schema {
-  query: Query
-  mutation: Mutation
+  query: rootQuery
+  mutation: rootMutation
+}
+
+type AggregateType {
+  count: Int
 }
 
 type Category {
   createdAt: Float
-  createdBy: User
-  id: String
+  createdBy: String
+  id: ID
   name: String
   remark: String
   updatedAt: Float
-  updatedBy: User
+  updatedBy: String
 }
 
-type CategoryAggregator {
-  count: Int
-}
-
-type CategoryConnection {
-  aggregate: CategoryAggregator
-  values: [Category]
+type CategoryList {
+  aggregate: AggregateType
+  list: [Category]
 }
 
 type CategoryPro {
   createdAt: Float
-  createdBy: User
-  id: String
+  createdBy: String
+  id: ID
   name: String
-  postCount: Int
+  postCount: String
   remark: String
   updatedAt: Float
-  updatedBy: User
+  updatedBy: String
 }
 
-type CategoryProAggregator {
-  count: Int
-}
-
-type CategoryProConnection {
-  aggregate: CategoryProAggregator
-  values: [CategoryPro]
+type CategoryProList {
+  aggregate: AggregateType
+  list: [CategoryPro]
 }
 
 type Me {
   avatar: String
   email: String
-  id: String
-  role: MeRole
-  username: String
-}
-
-type MeRole {
+  id: ID
   name: String
-}
-
-type Mutation {
-  createCategory(input: createCategoryInput): createCategoryPayload
-  createPermission(input: createPermissionInput): createPermissionPayload
-  createPost(input: createPostInput): createPostPayload
-  createRole(input: createRoleInput): createRolePayload
-  createTag(input: createTagInput): createTagPayload
-  createUser(input: createUserInput): createUserPayload
-  deleteCategory(input: deleteCategoryInput): deleteCategoryPayload
-  deletePermission(input: deletePermissionInput): deletePermissionPayload
-  deletePost(input: deletePostInput): deletePostPayload
-  deleteRole(input: deleteRoleInput): deleteRolePayload
-  deleteTag(input: deleteTagInput): deleteTagPayload
-  deleteUser(input: deleteUserInput): deleteUserPayload
-  login(input: UsersPermissionsLoginInput): loginPayload
-  logout: logoutPayload
-  register(input: registerInput): registerPayload
-  updateCategory(input: updateCategoryInput): updateCategoryPayload
-  updateEmail(input: updateEmailInput): updateEmailPayload
-  updateName(input: updateNameInput): updateNamePayload
-  updatePassword(input: updatePasswordInput): updatePasswordPayload
-  updatePermission(input: updatePermissionInput): updatePermissionPayload
-  updatePost(input: updatePostInput): updatePostPayload
-  updateRole(input: updateRoleInput): updateRolePayload
-  updateTag(input: updateTagInput): updateTagPayload
-  updateUser(input: updateUserInput): updateUserPayload
-  userResetPassword(id: ID, pwd: String): Boolean
 }
 
 type Permission {
   createdAt: Float
-  createdBy: User
-  id: String
+  createdBy: String
+  id: ID
   name: String
   remark: String
-  roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
   type: Int
   updatedAt: Float
-  updatedBy: User
+  updatedBy: String
 }
 
-type PermissionAggregator {
-  count: Int
+type PermissionList {
+  aggregate: AggregateType
+  list: [Permission]
 }
 
-type PermissionConnection {
-  aggregate: PermissionAggregator
-  values: [Permission]
+type PermissionPro {
+  createdAt: Float
+  createdBy: String
+  id: ID
+  name: String
+  remark: String
+  type: Int
+  updatedAt: Float
+  updatedBy: String
+}
+
+type PermissionProList {
+  aggregate: AggregateType
+  list: [PermissionPro]
 }
 
 type Post {
-  category: Category
+  category: String
   createdAt: Float
-  createdBy: User
+  createdBy: String
   html: String
-  id: String
+  id: ID
   intro: String
   markdown: String
   readTime: Int
   releaseDate: Float
   status: Int
-  tags(limit: Int, sort: String, start: Int, where: JSON): [Tag]
   title: String
   updatedAt: Float
-  updatedBy: User
+  updatedBy: String
 }
 
-type PostAggregator {
-  count: Int
-}
-
-type PostConnection {
-  aggregate: PostAggregator
-  values: [Post]
+type PostList {
+  aggregate: AggregateType
+  list: [Post]
 }
 
 type PostPro {
   category: String
   createdAt: Float
-  createdBy: User
+  createdBy: String
   html: String
-  id: String
+  id: ID
   intro: String
   markdown: String
   readTime: Int
   releaseDate: Float
   status: Int
-  tags: [String]
+  tags: String
   title: String
   updatedAt: Float
-  updatedBy: User
+  updatedBy: String
 }
 
-type PostProAggregator {
-  count: Int
-}
-
-type PostProConnection {
-  aggregate: PostProAggregator
-  values: [PostPro]
-}
-
-type Query {
-  categories(limit: Int, sort: String, start: Int, where: JSON): [Category]
-  categoriesConnection(limit: Int, sort: String, start: Int, where: JSON): CategoryConnection
-  category(id: ID!): Category
-  categoryProConnection(limit: Int, sort: String, start: Int, where: JSON): CategoryProConnection
-  me: Me
-  permission(id: ID!): Permission
-  permissions(limit: Int, sort: String, start: Int, where: JSON): [Permission]
-  permissionsConnection(limit: Int, sort: String, start: Int, where: JSON): PermissionConnection
-  post(id: ID!): Post
-  posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
-  postsConnection(limit: Int, sort: String, start: Int, where: JSON): PostConnection
-  postsProConnection(limit: Int, sort: String, start: Int, where: JSON): PostProConnection
-  role(id: ID!): Role
-  roleProConnection(limit: Int, sort: String, start: Int, where: JSON): RoleProConnection
-  roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
-  rolesConnection(limit: Int, sort: String, start: Int, where: JSON): RoleConnection
-  tag(id: ID!): Tag
-  tags(limit: Int, sort: String, start: Int, where: JSON): [Tag]
-  tagsConnection(limit: Int, sort: String, start: Int, where: JSON): TagConnection
-  tagsProConnection(limit: Int, sort: String, start: Int, where: JSON): TagProConnection
-  user(id: ID!): User
-  userProConnection(limit: Int, sort: String, start: Int, where: JSON): UserProConnection
-  users(limit: Int, sort: String, start: Int, where: JSON): [User]
-  usersConnection(limit: Int, sort: String, start: Int, where: JSON): UserConnection
+type PostProList {
+  aggregate: AggregateType
+  list: [PostPro]
 }
 
 type Role {
   createdAt: Float
-  createdBy: User
-  id: String
+  createdBy: String
+  id: ID
   name: String
-  permissions(limit: Int, sort: String, start: Int, where: JSON): [Permission]
   remark: String
   updatedAt: Float
-  updatedBy: User
-  users(limit: Int, sort: String, start: Int, where: JSON): [User]
+  updatedBy: String
 }
 
-type RoleAggregator {
-  count: Int
-}
-
-type RoleConnection {
-  aggregate: RoleAggregator
-  values: [Role]
+type RoleList {
+  aggregate: AggregateType
+  list: [Role]
 }
 
 type RolePro {
   createdAt: Float
-  createdBy: User
-  id: String
+  createdBy: String
+  id: ID
   name: String
-  permissions: [String]
+  permissions: String
   remark: String
   updatedAt: Float
-  updatedBy: User
+  updatedBy: String
 }
 
-type RoleProAggregator {
-  count: Int
-}
-
-type RoleProConnection {
-  aggregate: RoleProAggregator
-  values: [RolePro]
+type RoleProList {
+  aggregate: AggregateType
+  list: [RolePro]
 }
 
 type Tag {
   createdAt: Float
-  createdBy: User
-  id: String
+  createdBy: String
+  id: ID
   name: String
-  posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
   remark: String
   updatedAt: Float
-  updatedBy: User
+  updatedBy: String
 }
 
-type TagAggregator {
-  count: Int
+type TagList {
+  aggregate: AggregateType
+  list: [Tag]
 }
 
-type TagConnection {
-  aggregate: TagAggregator
-  values: [Tag]
+type TagPostCount {
+  createdAt: Float
+  createdBy: String
+  id: ID
+  name: String
+  postCount: String
+  remark: String
+  updatedAt: Float
+  updatedBy: String
+}
+
+type TagPostCountList {
+  aggregate: AggregateType
+  list: [TagPostCount]
 }
 
 type TagPro {
   createdAt: Float
-  createdBy: User
-  id: String
+  createdBy: String
+  id: ID
   name: String
-  postCount: Int
-  posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
+  postCount: String
   remark: String
   updatedAt: Float
-  updatedBy: User
+  updatedBy: String
 }
 
-type TagProConnection {
-  aggregate: TagAggregator
-  values: [TagPro]
+type TagProList {
+  aggregate: AggregateType
+  list: [TagPro]
 }
 
 type User {
   avatar: String
   createdAt: Float
-  createdBy: User
+  createdBy: String
   email: String
-  id: String
+  id: ID
   name: String
   password: String
   remark: String
-  roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
   salt: String
   updatedAt: Float
-  updatedBy: User
+  updatedBy: String
 }
 
-type UserAggregator {
-  count: Int
-}
-
-type UserConnection {
-  aggregate: UserAggregator
-  values: [User]
+type UserList {
+  aggregate: AggregateType
+  list: [User]
 }
 
 type UserPro {
   avatar: String
   createdAt: Float
-  createdBy: User
+  createdBy: String
   email: String
-  id: String
+  id: ID
   name: String
   password: String
   remark: String
-  roles: [String]
+  roles: String
   salt: String
   updatedAt: Float
-  updatedBy: User
+  updatedBy: String
 }
 
-type UserProAggregator {
-  count: Int
-}
-
-type UserProConnection {
-  aggregate: UserProAggregator
-  values: [UserPro]
-}
-
-type createCategoryPayload {
-  category: Category
-}
-
-type createPermissionPayload {
-  permission: Permission
-}
-
-type createPostPayload {
-  post: Post
-}
-
-type createRolePayload {
-  role: Role
-}
-
-type createTagPayload {
-  tag: Tag
-}
-
-type createUserPayload {
-  user: User
-}
-
-type deleteCategoryPayload {
-  category: Category
-}
-
-type deletePermissionPayload {
-  permission: Permission
-}
-
-type deletePostPayload {
-  post: Post
-}
-
-type deleteRolePayload {
-  role: Role
-}
-
-type deleteTagPayload {
-  tag: Tag
-}
-
-type deleteUserPayload {
-  user: User
+type UserProList {
+  aggregate: AggregateType
+  list: [UserPro]
 }
 
 type loginPayload {
@@ -371,8 +252,75 @@ type registerPayload {
   success: Boolean
 }
 
-type updateCategoryPayload {
-  category: Category
+type rootMutation {
+  createCategory(data: categoryInput!): Category
+  createPermission(data: permissionInput!): Permission
+  createPost(data: postInput!): Post
+  createRole(data: roleInput!): Role
+  createTag(data: tagInput!): Tag
+  createUser(data: userInput!): User
+  deleteCategory(id: ID!): Boolean
+  deletePermission(id: ID!): Boolean
+  deletePost(id: ID!): Boolean
+  deleteRole(id: ID!): Boolean
+  deleteTag(id: ID!): Boolean
+  deleteUser(id: ID!): Boolean
+  login(input: loginInput): loginPayload
+  logout: logoutPayload
+  register(input: registerInput): registerPayload
+  updateCategory(data: categoryInput!, id: ID!): Boolean
+  updateEmail(input: updateEmailInput): updateEmailPayload
+  updateName(input: updateNameInput): updateNamePayload
+  updatePassword(input: updatePasswordInput): updatePasswordPayload
+  updatePermission(data: permissionInput!, id: ID!): Boolean
+  updatePost(data: postInput!, id: ID!): Boolean
+  updateRole(data: roleInput!, id: ID!): Boolean
+  updateTag(data: tagInput!, id: ID!): Boolean
+  updateUser(data: userInput!, id: ID!): Boolean
+  userResetPassword(id: String!, pwd: String!): Boolean
+}
+
+type rootQuery {
+  categories(limit: Int, sort: String, start: Int, where: JSON): [Category]
+  category(id: ID!): Category
+  categoryList(limit: Int, sort: String, start: Int, where: JSON): CategoryList
+  categoryPro(id: ID!): CategoryPro
+  categoryProList(limit: Int, sort: String, start: Int, where: JSON): CategoryProList
+  categoryPros(limit: Int, sort: String, start: Int, where: JSON): [CategoryPro]
+  me: Me
+  permission(id: ID!): Permission
+  permissionList(limit: Int, sort: String, start: Int, where: JSON): PermissionList
+  permissionPro(id: ID!): PermissionPro
+  permissionProList(limit: Int, sort: String, start: Int, where: JSON): PermissionProList
+  permissionPros(limit: Int, sort: String, start: Int, where: JSON): [PermissionPro]
+  permissions(limit: Int, sort: String, start: Int, where: JSON): [Permission]
+  post(id: ID!): Post
+  postList(limit: Int, sort: String, start: Int, where: JSON): PostList
+  postPro(id: ID!): PostPro
+  postProList(limit: Int, sort: String, start: Int, where: JSON): PostProList
+  postPros(limit: Int, sort: String, start: Int, where: JSON): [PostPro]
+  posts(limit: Int, sort: String, start: Int, where: JSON): [Post]
+  role(id: ID!): Role
+  roleList(limit: Int, sort: String, start: Int, where: JSON): RoleList
+  rolePro(id: ID!): RolePro
+  roleProList(limit: Int, sort: String, start: Int, where: JSON): RoleProList
+  rolePros(limit: Int, sort: String, start: Int, where: JSON): [RolePro]
+  roles(limit: Int, sort: String, start: Int, where: JSON): [Role]
+  tag(id: ID!): Tag
+  tagList(limit: Int, sort: String, start: Int, where: JSON): TagList
+  tagPostCount(id: ID!): TagPostCount
+  tagPostCountList(limit: Int, sort: String, start: Int, where: JSON): TagPostCountList
+  tagPostCounts(limit: Int, sort: String, start: Int, where: JSON): [TagPostCount]
+  tagPro(id: ID!): TagPro
+  tagProList(limit: Int, sort: String, start: Int, where: JSON): TagProList
+  tagPros(limit: Int, sort: String, start: Int, where: JSON): [TagPro]
+  tags(limit: Int, sort: String, start: Int, where: JSON): [Tag]
+  user(id: ID!): User
+  userList(limit: Int, sort: String, start: Int, where: JSON): UserList
+  userPro(id: ID!): UserPro
+  userProList(limit: Int, sort: String, start: Int, where: JSON): UserProList
+  userPros(limit: Int, sort: String, start: Int, where: JSON): [UserPro]
+  users(limit: Int, sort: String, start: Int, where: JSON): [User]
 }
 
 type updateEmailPayload {
@@ -387,228 +335,33 @@ type updatePasswordPayload {
   success: Boolean
 }
 
-type updatePermissionPayload {
-  permission: Permission
-}
-
-type updatePostPayload {
-  post: Post
-}
-
-type updateRolePayload {
-  role: Role
-}
-
-type updateTagPayload {
-  tag: Tag
-}
-
-type updateUserPayload {
-  user: User
-}
-
-input CategoryInput {
-  createdAt: Float
-  createdBy: String
+input categoryInput {
   name: String
   remark: String
-  updatedAt: Float
-  updatedBy: String
-}
-
-input InputID {
-  id: ID!
-}
-
-input PermissionInput {
-  createdAt: Float
-  createdBy: String
-  name: String
-  remark: String
-  roles: [String]
-  type: Int
-  updatedAt: Float
-  updatedBy: String
-}
-
-input PostInput {
-  category: String
-  createdAt: Float
-  createdBy: String
-  html: String
-  intro: String
-  markdown: String
-  readTime: Int
-  releaseDate: Float
-  status: Int
-  tags: [String]
-  title: String
-  updatedAt: Float
-  updatedBy: String
-}
-
-input RoleInput {
-  createdAt: Float
-  createdBy: String
-  name: String
-  permissions: [String]
-  remark: String
-  updatedAt: Float
-  updatedBy: String
-  users: [String]
-}
-
-input TagInput {
-  createdAt: Float
-  createdBy: String
-  name: String
-  posts: [String]
-  remark: String
-  updatedAt: Float
-  updatedBy: String
-}
-
-input UserInput {
-  avatar: String
-  createdAt: Float
-  createdBy: String
-  email: String
-  name: String
-  password: String
-  remark: String
-  roles: [String]
-  salt: String
-  updatedAt: Float
-  updatedBy: String
-}
-
-input UsersPermissionsLoginInput {
-  identifier: String
-  password: String
-}
-
-input createCategoryInput {
-  data: CategoryInput
-}
-
-input createPermissionInput {
-  data: PermissionInput
-}
-
-input createPostInput {
-  data: PostInput
-}
-
-input createRoleInput {
-  data: RoleInput
-}
-
-input createTagInput {
-  data: TagInput
-}
-
-input createUserInput {
-  data: UserInput
-}
-
-input deleteCategoryInput {
-  where: InputID
-}
-
-input deletePermissionInput {
-  where: InputID
-}
-
-input deletePostInput {
-  where: InputID
-}
-
-input deleteRoleInput {
-  where: InputID
-}
-
-input deleteTagInput {
-  where: InputID
-}
-
-input deleteUserInput {
-  where: InputID
-}
-
-input editCategoryInput {
-  createdAt: Float
-  createdBy: String
-  name: String
-  remark: String
-  updatedAt: Float
-  updatedBy: String
-}
-
-input editPermissionInput {
-  createdAt: Float
-  createdBy: String
-  name: String
-  remark: String
-  roles: [String]
-  type: Int
-  updatedAt: Float
-  updatedBy: String
-}
-
-input editPostInput {
-  category: String
-  createdAt: Float
-  createdBy: String
-  html: String
-  intro: String
-  markdown: String
-  readTime: Int
-  releaseDate: Float
-  status: Int
-  tags: [String]
-  title: String
-  updatedAt: Float
-  updatedBy: String
-}
-
-input editRoleInput {
-  createdAt: Float
-  createdBy: String
-  name: String
-  permissions: [String]
-  remark: String
-  updatedAt: Float
-  updatedBy: String
-  users: [String]
-}
-
-input editTagInput {
-  createdAt: Float
-  createdBy: String
-  name: String
-  posts: [String]
-  remark: String
-  updatedAt: Float
-  updatedBy: String
-}
-
-input editUserInput {
-  avatar: String
-  createdAt: Float
-  createdBy: String
-  email: String
-  name: String
-  password: String
-  remark: String
-  roles: [String]
-  salt: String
-  updatedAt: Float
-  updatedBy: String
 }
 
 input loginInput {
   account: String
   password: String
+}
+
+input permissionInput {
+  name: String
+  remark: String
+  roles: [ID]
+  type: Int
+}
+
+input postInput {
+  category: String
+  html: String
+  intro: String
+  markdown: String
+  readTime: Int
+  releaseDate: Float
+  status: Int
+  tags: [ID]
+  title: String
 }
 
 input registerInput {
@@ -617,9 +370,17 @@ input registerInput {
   password: String
 }
 
-input updateCategoryInput {
-  data: editCategoryInput
-  where: InputID
+input roleInput {
+  name: String
+  permissions: [ID]
+  remark: String
+  users: [ID]
+}
+
+input tagInput {
+  name: String
+  posts: [ID]
+  remark: String
 }
 
 input updateEmailInput {
@@ -634,30 +395,16 @@ input updatePasswordInput {
   password: String
 }
 
-input updatePermissionInput {
-  data: editPermissionInput
-  where: InputID
-}
-
-input updatePostInput {
-  data: editPostInput
-  where: InputID
-}
-
-input updateRoleInput {
-  data: editRoleInput
-  where: InputID
-}
-
-input updateTagInput {
-  data: editTagInput
-  where: InputID
-}
-
-input updateUserInput {
-  data: editUserInput
-  where: InputID
+input userInput {
+  avatar: String
+  email: String
+  name: String
+  password: String
+  remark: String
+  roles: [ID]
+  salt: String
 }
 
 
+"The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
 scalar JSON

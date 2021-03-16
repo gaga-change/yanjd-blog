@@ -90,9 +90,9 @@ export default {
         { label: '状态', prop: 'status', type: 'dom', dom: CellEnum, enumKey: 'postStatus' },
         { label: '发布时间', prop: 'releaseDate', type: 'time', width: 140, sortable: 'custom' },
         { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
-        { label: '创建人', prop: 'createdBy.name' },
+        { label: '创建人', prop: 'createdBy' },
         { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
-        { label: '修改人', prop: 'updatedBy.name' },
+        { label: '修改人', prop: 'updatedBy' },
         { label: '操作', prop: 'control', type: 'dom', width: 200, dom: ColPostModifyAndDel, fixed: 'right' }
       ]
       const searchConfig = [

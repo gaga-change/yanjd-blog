@@ -46,9 +46,9 @@ export default {
       { label: '名称', prop: 'name' },
       { label: '描述', prop: 'remark', type: 'dom', dom: CellInput, width: 200 },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
-      { label: '创建人', prop: 'createdBy.name' },
+      { label: '创建人', prop: 'createdBy' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
-      { label: '修改人', prop: 'updatedBy.name' },
+      { label: '修改人', prop: 'updatedBy' },
       { label: '操作', prop: 'control', type: 'dom', dom: ColModifyAndDel, fixed: 'right' }
     ]
     const searchConfig = [
@@ -100,7 +100,6 @@ export default {
     },
     // 修改单元格
     handleEditCell({ prop, value, row }) {
-      console.log(prop, value)
       permissionUpdate(row.id, { [prop]: value })
       this.$refs['baseTablePro'].getList()
     },

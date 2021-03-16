@@ -25,7 +25,6 @@ export default {
   methods: {
     opened() {
       const dom = this.$refs['markdownCon']
-      console.log('opened', dom)
       dom.querySelectorAll('pre code').forEach((block) => {
         hljs.highlightBlock(block)
       })

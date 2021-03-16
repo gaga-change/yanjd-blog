@@ -6,13 +6,9 @@ export function permissionCreate(data) {
   return strapi.post('/graphql', {
     variables: { permission: data },
     query: gql`
-      mutation ($permission: PermissionInput) {
-        createPermission(input: {
-          data: $permission
-        }) {
-          permission {
-            id
-          }
+      mutation ($permission: permissionInput!) {
+        createPermission(data: $permission) {
+          id
         }
       }
     `.loc.source.body
@@ -29,13 +25,8 @@ export function permissionDelete(id) {
     query: gql`
       mutation {
         ${
-  idArr.map((id, i) => `delPermission${i}: deletePermission(input: {
-          where: { id: "${id}"}
-        }) {
-          permission {
-            id
-          }
-        }`)
+  idArr.map((id, i) => `delPermission${i}: deletePermission(id: "${id}")
+  `)
 }
       }
     `.loc.source.body
@@ -49,15 +40,8 @@ export function permissionUpdate(id, data) {
   return strapi.post('/graphql', {
     variables: { id, permission: data },
     query: gql`
-      mutation ($id: ID!, $permission: editPermissionInput ) {
-        updatePermission(input: {
-          where: { id: $id},
-          data: $permission
-        }) {
-          permission {
-            id
-          }
-        }
+      mutation ($id: ID!, $permission: permissionInput! ) {
+        updatePermission(id: $id,data: $permission)
       }
     `.loc.source.body
   }).then(res => {
@@ -90,19 +74,15 @@ export async function permissionList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        permissionsConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        permissionProList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             createdAt
             updatedAt
             remark
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            }
+            createdBy
+            updatedBy
           },
           aggregate {
             count
@@ -111,9 +91,9 @@ export async function permissionList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['permissionsConnection']
+    const { list, aggregate } = res.data['permissionProList']
     return {
-      list: values,
+      list,
       total: aggregate.count
     }
   })

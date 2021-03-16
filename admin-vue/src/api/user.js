@@ -5,13 +5,9 @@ export function userCreate(data) {
   return strapi.post('/graphql', {
     variables: { user: data },
     query: gql`
-      mutation ($user: UserInput) {
-        createUser(input: {
-          data: $user
-        }) {
-          user {
-            id
-          }
+      mutation ($user: userInput!) {
+        createUser(data: $user) {
+          id
         }
       }
     `.loc.source.body
@@ -24,16 +20,8 @@ export function userDelete(id) {
     variables: { },
     query: gql`
       mutation {
-        ${
-  idArr.map((id, i) => `delUser${i}: deleteUser(input: {
-          where: { id: "${id}"}
-        }) {
-          user {
-            id
-          }
-        }`)
-}
-      }
+        ${idArr.map((id, i) => `delUser${i}: deleteUser(id: "${id}")
+        `)}}
     `.loc.source.body
   })
 }
@@ -42,15 +30,8 @@ export function userUpdate(id, data) {
   return strapi.post('/graphql', {
     variables: { id, user: data },
     query: gql`
-      mutation ($id: ID!, $user: editUserInput ) {
-        updateUser(input: {
-          where: { id: $id},
-          data: $user
-        }) {
-          user {
-            id
-          }
-        }
+      mutation ($id: ID!, $user: userInput! ) {
+        updateUser( id: $id, data: $user)
       }
     `.loc.source.body
   })
@@ -65,7 +46,7 @@ export function userResetPassword(id) {
   return strapi.post('/graphql', {
     variables: { id, pwd: '123456' },
     query: gql`
-      mutation ($id: ID!, $pwd: String ) {
+      mutation ($id: ID!, $pwd: String! ) {
         userResetPassword(id: $id, pwd: $pwd)
       }
     `.loc.source.body
@@ -78,19 +59,15 @@ export async function userProList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        userProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        userProList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             avatar
             createdAt
             updatedAt
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            }
+            createdBy
+            updatedBy
             roles
           },
           aggregate {
@@ -100,9 +77,9 @@ export async function userProList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['userProConnection']
+    const { list, aggregate } = res.data['userProList']
     return {
-      list: values,
+      list: list.map(v => ({ ...v, roles: v.roles ? v.roles.split(',') : [] })),
       total: aggregate.count
     }
   })
@@ -114,19 +91,15 @@ export async function userList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        usersConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        userList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             avatar
             createdAt
             updatedAt
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            }
+            createdBy
+            updatedBy
           },
           aggregate {
             count
@@ -135,9 +108,9 @@ export async function userList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['usersConnection']
+    const { list, aggregate } = res.data['userList']
     return {
-      list: values,
+      list,
       total: aggregate.count
     }
   })

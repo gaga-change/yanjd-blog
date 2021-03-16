@@ -5,13 +5,9 @@ export function tagCreate(data) {
   return strapi.post('/graphql', {
     variables: { tag: data },
     query: gql`
-      mutation ($tag: TagInput) {
-        createTag(input: {
-          data: $tag
-        }) {
-          tag {
-            id
-          }
+      mutation ($tag: tagInput!) {
+        createTag(data: $tag) {
+          id
         }
       }
     `.loc.source.body
@@ -28,13 +24,8 @@ export function tagDelete(id) {
     query: gql`
       mutation {
         ${
-  idArr.map((id, i) => `delTag${i}: deleteTag(input: {
-          where: { id: "${id}"}
-        }) {
-          tag {
-            id
-          }
-        }`)
+  idArr.map((id, i) => `delTag${i}: deleteTag(id: "${id}")
+  `)
 }
       }
     `.loc.source.body
@@ -48,15 +39,8 @@ export function tagUpdate(id, data) {
   return strapi.post('/graphql', {
     variables: { id, tag: data },
     query: gql`
-      mutation ($id: ID!, $tag: editTagInput ) {
-        updateTag(input: {
-          where: { id: $id},
-          data: $tag
-        }) {
-          tag {
-            id
-          }
-        }
+      mutation ($id: ID!, $tag: tagInput! ) {
+        updateTag(id: $id, data: $tag)
       }
     `.loc.source.body
   }).then(res => {
@@ -71,18 +55,14 @@ export async function tagList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        tagsConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        tagList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             createdAt
             updatedAt
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            }
+            createdBy
+            updatedBy
           },
           aggregate {
             count
@@ -91,9 +71,9 @@ export async function tagList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['tagsConnection']
+    const { list, aggregate } = res.data['tagList']
     return {
-      list: values,
+      list,
       total: aggregate.count
     }
   })
@@ -104,18 +84,14 @@ export async function tagProList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        tagsProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        tagProList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             createdAt
             updatedAt
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            }
+            createdBy
+            updatedBy
             postCount
           },
           aggregate {
@@ -125,9 +101,9 @@ export async function tagProList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['tagsProConnection']
+    const { list, aggregate } = res.data['tagProList']
     return {
-      list: values,
+      list,
       total: aggregate.count
     }
   })
@@ -139,8 +115,8 @@ export async function tagProCharData(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        tagsProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        tagProList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             postCount
@@ -149,9 +125,9 @@ export async function tagProCharData(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values } = res.data['tagsProConnection']
+    const { list } = res.data['tagProList']
     return {
-      list: values
+      list
     }
   })
 }

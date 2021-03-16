@@ -31,7 +31,6 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import { sendRestPwdEmail } from '@/api/auth'
 import defImg from '@/assets/img/avatar_default.png'
 
 export default {

@@ -9,8 +9,8 @@ export default {
     return this.ctx.$axios.$post('/graphql', {
       query: gql`
         query {
-          postsConnection(sort: "releaseDate:desc", limit: 999, start: 0, where: ${toStr({ ...defFilter })}) {
-            values {
+          postList(sort: "releaseDate:desc", limit: 999, start: 0, where: ${toStr({ ...defFilter })}) {
+            list {
               id
               title
               releaseDate
@@ -58,11 +58,11 @@ export default {
       variables: { filter: { ...filter, ...defFilter } },
       query: gql`
         query ($filter: JSON){
-          postsProConnection(limit: ${limit}, start: ${start}, where: $filter, sort: "releaseDate:desc") {
+          postProList(limit: ${limit}, start: ${start}, where: $filter, sort: "releaseDate:desc") {
             aggregate {
               count
             }
-            values {
+            list {
               id
               title
               releaseDate
@@ -75,9 +75,9 @@ export default {
         }
       `.loc.source.body
     }).then((res) => {
-      const { values, aggregate } = res.data.postsProConnection
+      const { list, aggregate } = res.data.postProList
       return {
-        list: values,
+        list: list.map(v => ({ ...v, tags: v.tags ? v.tags.split(',') : [] })),
         total: aggregate.count
       }
     })

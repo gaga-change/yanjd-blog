@@ -6,13 +6,9 @@ export function categoryCreate(data) {
   return strapi.post('/graphql', {
     variables: { category: data },
     query: gql`
-      mutation ($category: CategoryInput) {
-        createCategory(input: {
-          data: $category
-        }) {
-          category {
-            id
-          }
+      mutation ($category: categoryInput!) {
+        createCategory(data: $category) {
+          id
         }
       }
     `.loc.source.body
@@ -29,13 +25,8 @@ export function categoryDelete(id) {
     query: gql`
       mutation {
         ${
-  idArr.map((id, i) => `delCategory${i}: deleteCategory(input: {
-          where: { id: "${id}"}
-        }) {
-          category {
-            id
-          }
-        }`)
+  idArr.map((id, i) => `delCategory${i}: deleteCategory(id: "${id}")
+  `)
 }
       }
     `.loc.source.body
@@ -49,15 +40,8 @@ export function categoryUpdate(id, data) {
   return strapi.post('/graphql', {
     variables: { id, category: data },
     query: gql`
-      mutation ($id: ID!, $category: editCategoryInput ) {
-        updateCategory(input: {
-          where: { id: $id},
-          data: $category
-        }) {
-          category {
-            id
-          }
-        }
+      mutation ($id: ID!, $category: categoryInput! ) {
+        updateCategory(id: $id, data: $category)
       }
     `.loc.source.body
   }).then(res => {
@@ -72,18 +56,14 @@ export async function categoryList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        categoriesConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        categoryList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             createdAt
             updatedAt
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            }
+            createdBy
+            updatedBy
           },
           aggregate {
             count
@@ -92,9 +72,9 @@ export async function categoryList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['categoriesConnection']
+    const { list, aggregate } = res.data['categoryList']
     return {
-      list: values,
+      list,
       total: aggregate.count
     }
   })
@@ -106,18 +86,14 @@ export async function categoryProList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        categoryProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        categoryProList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             createdAt
             updatedAt
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            }
+            createdBy
+            updatedBy
             postCount
             remark
           },
@@ -128,9 +104,9 @@ export async function categoryProList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['categoryProConnection']
+    const { list, aggregate } = res.data['categoryProList']
     return {
-      list: values,
+      list,
       total: aggregate.count
     }
   })
@@ -142,8 +118,8 @@ export async function categoryProChartData(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        categoryProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        categoryProList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             postCount
@@ -152,9 +128,9 @@ export async function categoryProChartData(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values } = res.data['categoryProConnection']
+    const { list } = res.data['categoryProList']
     return {
-      list: values
+      list
     }
   })
 }

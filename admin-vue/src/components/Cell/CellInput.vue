@@ -36,7 +36,6 @@ export default {
       this.edit = true
       this.value = this.show
       this.$nextTick(() => {
-        console.log(this.$refs['input'])
         this.$refs['input'].focus()
       })
     },

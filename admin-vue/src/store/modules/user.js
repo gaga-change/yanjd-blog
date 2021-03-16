@@ -36,10 +36,10 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ identifier: username.trim(), password: password }).then(response => {
+      login({ account: username.trim(), password: password }).then(response => {
         const { jwt, user } = response.data.login
         commit('SET_TOKEN', jwt)
-        commit('SET_NAME', user.username)
+        commit('SET_NAME', user.name)
         commit('SET_EMAIL', user.email)
         commit('SET_AVATAR', user.avatar)
         setToken(jwt)
@@ -54,13 +54,13 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { username, avatar, email } = response.data['me']
+        const { name, avatar, email } = response.data['me']
 
-        if (!username) {
+        if (!name) {
           return reject('Verification failed, please Login again.')
         }
 
-        commit('SET_NAME', username)
+        commit('SET_NAME', name)
         commit('SET_EMAIL', email)
         commit('SET_AVATAR', avatar)
         resolve(response)

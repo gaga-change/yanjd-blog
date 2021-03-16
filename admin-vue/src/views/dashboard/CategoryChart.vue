@@ -3,7 +3,6 @@
 </template>
 <script>
 import * as echarts from 'echarts'
-import { tagProCharData } from '@/api/tag'
 import { categoryProChartData } from '@/api/category'
 export default {
   data() {

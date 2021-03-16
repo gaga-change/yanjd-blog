@@ -49,9 +49,9 @@ export default {
       { label: '头像', prop: 'avatar', type: 'dom', dom: ColAvatar },
       { label: '角色', prop: 'roles', type: 'dom', dom: CellEnums, enumKey: 'roles' },
       { label: '创建时间', prop: 'createdAt', type: 'time', width: 140, sortable: 'custom' },
-      { label: '创建人', prop: 'createdBy.name' },
+      { label: '创建人', prop: 'createdBy' },
       { label: '修改时间', prop: 'updatedAt', type: 'time', width: 140, sortable: 'custom' },
-      { label: '修改人', prop: 'updatedBy.name' },
+      { label: '修改人', prop: 'updatedBy' },
       { label: '操作', prop: 'control', type: 'dom', width: 160, dom: ColModifyAndDel, fixed: 'right' }
     ]
     const searchConfig = [

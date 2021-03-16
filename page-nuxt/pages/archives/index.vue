@@ -22,9 +22,9 @@
 export default {
   async asyncData ({ $api }) {
     const { data: res } = await $api.archivesTotal()
-    const { postsConnection } = res
+    const { postList } = res
     return {
-      posts: postsConnection.values
+      posts: postList.list
     }
   },
   data () {

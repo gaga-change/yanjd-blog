@@ -5,17 +5,14 @@ export function login(data) {
   return strapi.post('/graphql', {
     variables: { input: data },
     query: gql`
-      mutation($input: UsersPermissionsLoginInput!) {
+      mutation($input: loginInput!) {
         login(input: $input) {
           jwt
           user {
             id
-            username
+            name
             email
             avatar
-            role {
-              name
-            }
           }
         }
       }
@@ -32,7 +29,7 @@ export function getInfo() {
           id
           avatar
           email
-          username
+          name
         }
       }
     `.loc.source.body

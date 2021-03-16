@@ -1,6 +1,6 @@
 <template>
   <span>
-    <el-avatar shape="square" :size="small" :src="row.avatar || defImg" />
+    <el-avatar shape="square" size="medium" :src="row.avatar || defImg" />
   </span>
 </template>
 <script>

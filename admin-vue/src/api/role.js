@@ -6,13 +6,9 @@ export function roleCreate(data) {
   return strapi.post('/graphql', {
     variables: { role: data },
     query: gql`
-      mutation ($role: RoleInput) {
-        createRole(input: {
-          data: $role
-        }) {
-          role {
-            id
-          }
+      mutation ($role: roleInput!) {
+        createRole(data: $role) {
+          id
         }
       }
     `.loc.source.body
@@ -29,13 +25,8 @@ export function roleDelete(id) {
     query: gql`
       mutation {
         ${
-  idArr.map((id, i) => `delRole${i}: deleteRole(input: {
-          where: { id: "${id}"}
-        }) {
-          role {
-            id
-          }
-        }`)
+  idArr.map((id, i) => `delRole${i}: deleteRole(id: "${id}")
+  `)
 }
       }
     `.loc.source.body
@@ -49,15 +40,8 @@ export function roleUpdate(id, data) {
   return strapi.post('/graphql', {
     variables: { id, role: data },
     query: gql`
-      mutation ($id: ID!, $role: editRoleInput ) {
-        updateRole(input: {
-          where: { id: $id},
-          data: $role
-        }) {
-          role {
-            id
-          }
-        }
+      mutation ($id: ID!, $role: roleInput! ) {
+        updateRole(id: $id,data: $role)
       }
     `.loc.source.body
   }).then(res => {
@@ -89,19 +73,15 @@ export async function roleProList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        roleProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        roleProList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             remark
             createdAt
             updatedAt
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            },
+            createdBy
+            updatedBy
             permissions
           },
           aggregate {
@@ -111,9 +91,9 @@ export async function roleProList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['roleProConnection']
+    const { list, aggregate } = res.data['roleProList']
     return {
-      list: values,
+      list: list.map(v => ({ ...v, permissions: v.permissions ? v.permissions.split(',') : [] })),
       total: aggregate.count
     }
   })
@@ -125,19 +105,15 @@ export async function roleList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        rolesConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        roleList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             name
             remark
             createdAt
             updatedAt
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            }
+            createdBy
+            updatedBy
           },
           aggregate {
             count
@@ -146,9 +122,9 @@ export async function roleList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['rolesConnection']
+    const { list, aggregate } = res.data['roleList']
     return {
-      list: values,
+      list,
       total: aggregate.count
     }
   })

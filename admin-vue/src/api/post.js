@@ -21,13 +21,9 @@ export function postCreate(data) {
   return strapi.post('/graphql', {
     variables: { post: data },
     query: gql`
-      mutation ($post: PostInput) {
-        createPost(input: {
-          data: $post
-        }) {
-          post {
-            id
-          }
+      mutation ($post: postInput!) {
+        createPost(data: $post) {
+          id
         }
       }
     `.loc.source.body
@@ -41,13 +37,8 @@ export function postDelete(id) {
     query: gql`
       mutation {
         ${
-  idArr.map((id, i) => `delPost${i}: deletePost(input: {
-          where: { id: "${id}"}
-        }) {
-          post {
-            id
-          }
-        }`)
+  idArr.map((id, i) => `delPost${i}: deletePost(id: "${id}")
+  `)
 }
       }
     `.loc.source.body
@@ -59,15 +50,8 @@ export function postUpdate(id, data) {
   return strapi.post('/graphql', {
     variables: { id, post: data },
     query: gql`
-      mutation ($id: ID!, $post: editPostInput ) {
-        updatePost(input: {
-          where: { id: $id},
-          data: $post
-        }) {
-          post {
-            id
-          }
-        }
+      mutation ($id: ID!, $post: postInput! ) {
+        updatePost(id: $id,data: $post)
       }
     `.loc.source.body
   })
@@ -79,22 +63,14 @@ export async function postList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        postsConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        postList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             title
             createdAt
             updatedAt
-            tags {
-              id
-              name
-            }
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            }
+            createdBy
+            updatedBy
           },
           aggregate {
             count
@@ -103,9 +79,9 @@ export async function postList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['postsConnection']
+    const { list, aggregate } = res.data['postList']
     return {
-      list: values,
+      list,
       total: aggregate.count
     }
   })
@@ -117,8 +93,8 @@ export async function postProList(params) {
     variables: { start, limit, sort, filter },
     query: gql`
       query ($start: Int, $limit: Int, $sort: String, $filter: JSON) {
-        postsProConnection(start: $start, limit: $limit, sort: $sort, where: $filter ) {
-          values {
+        postProList(start: $start, limit: $limit, sort: $sort, where: $filter ) {
+          list {
             id
             title
             createdAt
@@ -128,12 +104,8 @@ export async function postProList(params) {
             status
             intro
             releaseDate
-            createdBy {
-              name
-            }
-            updatedBy {
-              name
-            }
+            createdBy
+            updatedBy
           },
           aggregate {
             count
@@ -142,9 +114,9 @@ export async function postProList(params) {
       }
     `.loc.source.body
   }).then(res => {
-    const { values, aggregate } = res.data['postsProConnection']
+    const { list, aggregate } = res.data['postProList']
     return {
-      list: values,
+      list: list.map(v => ({ ...v, tags: v.tags ? v.tags.split(',') : [] })),
       total: aggregate.count
     }
   })
