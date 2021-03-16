@@ -4,7 +4,7 @@ import {
   graphqlPlayground,
   logger,
   oakAllowOrigin,
-  oakJuwParse,
+  oakJwtParse,
 } from "qapi/oak_plugins/mod.ts";
 import { oakSqliteGraphql } from "qapi/mod.ts";
 import { oakSqliteGraphqlAuth } from "qapi/plugin/auth/mod.ts";
@@ -26,7 +26,7 @@ app.use(logger);
 // 允许跨域设置
 app.use(oakAllowOrigin);
 // 解析cookie和header中的jwt
-app.use(oakJuwParse);
+app.use(oakJwtParse);
 app.use(graphqlPlayground());
 app.use(router.routes());
 app.use(router.allowedMethods());

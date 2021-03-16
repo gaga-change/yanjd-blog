@@ -1,6 +1,6 @@
 {
   "imports": {
-    "qapi/": "https://gitee.com/yanjd/oak-qapi/raw/1.1.0/",
+    "qapi/": "https://gitee.com/yanjd/oak-qapi/raw/1.1.1/",
     "oak_graphql/": "https://deno.land/x/oak_graphql@0.6.2/",
     "oak/": "https://deno.land/x/oak@v6.5.0/"
   }
