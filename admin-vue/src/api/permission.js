@@ -64,7 +64,7 @@ export async function permissionListAll(params = {}) {
         }
     `.loc.source.body
   }).then(res => {
-    return res.data['permissions'].map(v => ({ ...v, name: v.remark || v.name }))
+    return res.data['permissions'].map(v => ({ ...v, name: v.remark || v.name, isQuery: v.name.indexOf('query_') === 0 }))
   })
 }
 

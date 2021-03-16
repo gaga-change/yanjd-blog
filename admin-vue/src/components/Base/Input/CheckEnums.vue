@@ -4,7 +4,10 @@
       <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">全选</el-checkbox>
       <div style="margin: 15px 0;" />
       <el-checkbox-group :value="value" @input="handleInput" @change="handleCheckedCitiesChange">
-        <el-checkbox v-for="item in enumOptions" :key="item.value" :label="item.value">{{ item.label }}</el-checkbox>
+        <el-divider>query</el-divider>
+        <el-checkbox v-for="item in enumOptionsIsQuery" :key="item.value" :label="item.value">{{ item.label }}</el-checkbox>
+        <el-divider>mutation</el-divider>
+        <el-checkbox v-for="item in enumOptionsIsMutation" :key="item.value" :label="item.value">{{ item.label }}</el-checkbox>
       </el-checkbox-group>
     </template>
     <template v-else>
@@ -46,6 +49,12 @@ export default {
       } else {
         return this.aEnum
       }
+    },
+    enumOptionsIsQuery() {
+      return this.enumOptions.filter(v => v.isQuery)
+    },
+    enumOptionsIsMutation() {
+      return this.enumOptions.filter(v => !v.isQuery)
     }
   },
   created() {

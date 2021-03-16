@@ -21,7 +21,7 @@ const fetchEnumFun = {
   },
   permissions({ commit }) {
     return permissionListAll().then(data => {
-      commit('SET_ENUM', { key: 'permissions', values: data.map(v => ({ label: v.name, value: v.id })) })
+      commit('SET_ENUM', { key: 'permissions', values: data.map(v => ({ label: v.name, value: v.id, isQuery: v.isQuery })) })
     })
   }
 }
