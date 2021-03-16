@@ -33,7 +33,7 @@ app.use(router.allowedMethods());
 app.use(
   await oakSqliteGraphql({
     dex: DexSqlite({
-      dbPath: Deno.env.get("PORT") || "C:\\yanjd\\db\\qapi-blog.db",
+      dbPath: Deno.env.get("DB_PATH") || "C:\\yanjd\\db\\qapi-blog.db",
     }),
     async before(options: any) {
       const { root, dex } = options;
