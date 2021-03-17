@@ -72,7 +72,7 @@ export default {
         },
         {
           url: '/about',
-          name: '关于我',
+          name: '关于本站',
           icon: 'icon-wo'
         }
       ]
