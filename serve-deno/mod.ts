@@ -6,13 +6,13 @@ import {
   oakAllowOrigin,
   oakJwtParse,
 } from "qapi/oak_plugins/mod.ts";
-import { oakSqliteGraphql } from "qapi/mod.ts";
-import { oakSqliteGraphqlAuth } from "qapi/plugin/auth/mod.ts";
+import { oakQapi } from "qapi/mod.ts";
+import { oakQapiAuth } from "qapi/plugin/auth/mod.ts";
 import {
-  oakSqliteGraphqlPermission,
-  oakSqliteGraphqlPermissionInit,
+  oakQapiPermission,
+  oakQapiPermissionInit,
 } from "qapi/middleware/permission/mod.ts";
-import DexSqlite from "qapi/dex_sqlite/mod.ts";
+import DexMysql from "qapi/dex_mysql/mod.ts";
 import { qapiAppend } from "./append.ts";
 
 const app = new Application();
@@ -31,9 +31,12 @@ app.use(graphqlPlayground());
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.use(
-  await oakSqliteGraphql({
-    dex: DexSqlite({
-      dbPath: Deno.env.get("DB_PATH") || "C:\\yanjd\\db\\qapi-blog.db",
+  await oakQapi({
+    dex: DexMysql({
+      hostname: "dsh.yanjd.top",
+      username: "root",
+      db: "blog-dev",
+      password: Deno.env.get("MYSQL_PASSWORD") || "123456",
     }),
     async before(options: any) {
       const { root, dex } = options;
@@ -47,11 +50,11 @@ app.use(
         await dex("post").updateById(res.id, { readTime: res.readTime });
         return res;
       };
-      await oakSqliteGraphqlPermissionInit(options);
+      await oakQapiPermissionInit(options);
     },
-    plugins: [oakSqliteGraphqlAuth, qapiAppend],
+    plugins: [oakQapiAuth, qapiAppend],
     middlewares: [
-      oakSqliteGraphqlPermission({ whiteList: ["mutation_login"] }),
+      oakQapiPermission({ whiteList: ["mutation_login"] }),
     ],
   }),
 );
