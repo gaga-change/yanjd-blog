@@ -33,9 +33,9 @@ app.use(router.allowedMethods());
 app.use(
   await oakQapi({
     dex: DexMysql({
-      hostname: "dsh.yanjd.top",
-      username: "root",
-      db: "blog-dev",
+      hostname: Deno.env.get("MYSQL_HOSTNAME") || "dsh.yanjd.top",
+      username: Deno.env.get("MYSQL_USERNAME") || "root",
+      db: Deno.env.get("MYSQL_DB") || "blog-dev",
       password: Deno.env.get("MYSQL_PASSWORD") || "123456",
     }),
     async before(options: any) {
