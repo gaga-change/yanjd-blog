@@ -17,7 +17,7 @@
               <p>
                 | - admin-vue  <a target="_blank" href="https://www.yanjd.top/admin">后台管理 vue + element-ui</a><br>
                 | - page-nuxt <a target="_blank" href="https://www.yanjd.top">前台页面  nuxt.js(ssr)</a><br>
-                | - serve-deno <a target="_blank" href="https://www.yanjd.top/graphql">后端接口服务 deno+graphql+sqlite</a>
+                | - serve-deno <a target="_blank" href="https://www.yanjd.top/graphql">后端接口服务 deno+graphql+mysql</a>
               </p>
               <h3>使用到的技术</h3>
               <ul>
@@ -26,7 +26,7 @@
                 <li>es6</li>
                 <li>TypeScript</li>
                 <li>deno</li>
-                <li>sqlite</li>
+                <li>mysql</li>
                 <li>vue</li>
                 <li>nuxt</li>
                 <li>element-ui</li>
